@@ -3,7 +3,7 @@ package org.projectmanagement.model.dto.user;
 import java.sql.Timestamp;
 
 public record UserResponseDto(
-        Integer user_id,
+        String user_id,
         String username,
         String email,
         String first_name,

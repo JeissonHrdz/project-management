@@ -18,8 +18,7 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer  user_id;
+    private String  user_id;
 
     @Column(name = "username")
     private String username;
@@ -48,8 +47,13 @@ public class User {
     @Column(name = "last_login")
     private Timestamp last_login;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP", insertable = false)
     private Timestamp created_at;
+
+    @PrePersist
+    protected void onCreate() {
+        this.created_at = new Timestamp(System.currentTimeMillis());
+    }
 
     @Column(name = "updated_at")
     private Timestamp updated_at;
