@@ -47,4 +47,9 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
+    @Override
+    public String findUserId(String username) {
+        return "";
+    }
 }

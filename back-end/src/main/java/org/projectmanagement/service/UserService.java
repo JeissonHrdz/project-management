@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 
 public interface UserService {
     UserResponseDto registerUser(UserRegisterDto userRegisterDto);
+
+    public String findUserId(String username);
 }

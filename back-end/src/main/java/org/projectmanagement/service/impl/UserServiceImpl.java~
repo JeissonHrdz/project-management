@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService {
         System.out.println("NAME: " + userRegisterDto.first_name());
 
         User user = User.builder()
+                .user_id(UUID.randomUUID().toString())
                 .username(userRegisterDto.username())
                 .email(userRegisterDto.email())
                 .password_hash(passwordEncoder.encode(userRegisterDto.password_hash()))
