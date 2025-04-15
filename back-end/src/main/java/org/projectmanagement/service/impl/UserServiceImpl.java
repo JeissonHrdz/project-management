@@ -44,12 +44,10 @@ public class UserServiceImpl implements UserService {
                 savedUser.getRole_id().toString(),
                 savedUser.getCreated_at()
         );
-
-
     }
 
     @Override
-    public String findUserId(String username) {
-        return "";
+    public Integer findUserId(String username) {
+        return userRepository.findIdByUsername(username);
     }
 }
