@@ -7,10 +7,12 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.projectmanagement.service.JwtService;
+import org.projectmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.plugins.tiff.GeoTIFFTagSet;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +25,9 @@ public class JwtServiceImpl implements JwtService {
 
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
+
+    private UserService userService;
+
 
     @Override
     public String getToken(UserDetails user) {
@@ -37,6 +42,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String getToken(Map<String, Object> extraClaims, UserDetails user) {
+        extraClaims.put("UUID",userService.findUserId(user.getUsername()));
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

@@ -42,7 +42,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String getToken(Map<String, Object> extraClaims, UserDetails user) {
-        extraClaims.put("UUID",userService.findUserId(user.getUsername()));
+      //  extraClaims.put("UUID",userService.findUserId(user.getUsername()));
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

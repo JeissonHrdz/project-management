@@ -3,7 +3,9 @@ package org.projectmanagement.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.projectmanagement.model.dto.user.UserRegisterDto;
 import org.projectmanagement.model.dto.user.UserResponseDto;
+import org.projectmanagement.model.entity.Role;
 import org.projectmanagement.model.entity.User;
+import org.projectmanagement.repository.RoleRepository;
 import org.projectmanagement.repository.UserRepository;
 import org.projectmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -32,7 +35,7 @@ public class UserServiceImpl implements UserService {
                 .password_hash(passwordEncoder.encode(userRegisterDto.password_hash()))
                 .first_name(userRegisterDto.first_name())
                 .last_name(userRegisterDto.last_name())
-                .role_id(1).build();
+                .role_id(roleRepository.findById(1).orElseThrow()).build();
         User savedUser = userRepository.save(user);
 
         return new UserResponseDto(

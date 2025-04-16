@@ -3,9 +3,13 @@ package org.projectmanagement.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.bouncycastle.util.Times;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +18,7 @@ import java.sql.Timestamp;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(name = "user_id")
@@ -35,8 +39,9 @@ public class User {
     @Column(name = "last_name")
     private String last_name;
 
+    @ManyToOne
     @Column(name = "role_id")
-    private Integer role_id;
+    private Role role_id;
 
     @Column(name = "is_scrum_master")
     private Boolean is_scrum_master;
@@ -50,13 +55,27 @@ public class User {
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP", insertable = false)
     private Timestamp created_at;
 
+    @Column(name = "updated_at")
+    private Timestamp updated_at;
+
     @PrePersist
     protected void onCreate() {
         this.created_at = new Timestamp(System.currentTimeMillis());
     }
 
-    @Column(name = "updated_at")
-    private Timestamp updated_at;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
 
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password_hash;
+    }
 }

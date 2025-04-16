@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -17,16 +18,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Service;
 
-@Configuration // esta anotación indica que esta clase es una configuración de Spring
-@EnableWebSecurity // esta anotación activa la seguridad de Spring Security
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig   {
 
 
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
     private final  AuthenticationProvider authProvider;
-
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

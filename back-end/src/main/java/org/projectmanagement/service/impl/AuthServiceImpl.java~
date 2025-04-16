@@ -30,8 +30,9 @@ public class AuthServiceImpl implements AuthService {
         UserDetails user =  userRepository.findByUsername(request.username()).orElseThrow();
         String token = jwtService.getToken(user);
         System.out.println("token: " + token);
+        roleService.hasPermission(user, "user", "read");
 
-
+        
         return  AuthResponseDto.builder()
                 .token(token)
                 .build();
