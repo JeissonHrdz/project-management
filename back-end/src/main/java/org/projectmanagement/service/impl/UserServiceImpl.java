@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto registerUser(UserRegisterDto userRegisterDto) {
-        System.out.println("NAME: " + userRegisterDto.first_name());
 
         User user = User.builder()
                 .user_id(UUID.randomUUID().toString())
@@ -50,7 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer findUserId(String username) {
-        return userRepository.findIdByUsername(username);
+    public User findUser(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    @Override
+    public String findUserId(String username) {
+        return "";
     }
 }

@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.projectmanagement.service.JwtService;
 import org.projectmanagement.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,8 @@ public class JwtServiceImpl implements JwtService {
 
 
     @Override
-    public String getToken(UserDetails user) {
-        return getToken(new HashMap<>(), user);
+    public String getToken(UserDetails user, String user_id) {
+        return getToken(new HashMap<>(), user, user_id);
     }
 
     @Override
@@ -41,12 +42,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String getToken(Map<String, Object> extraClaims, UserDetails user) {
-        extraClaims.put("UUID",userService.findUserId(user.getUsername()));
+    public String getToken(Map<String, Object> extraClaims, UserDetails user, String user_id) {
+        extraClaims.put("UUID", user_id);
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(user.getUsername())
+                .setSubject(user_id)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getKey(), SignatureAlgorithm.HS256)

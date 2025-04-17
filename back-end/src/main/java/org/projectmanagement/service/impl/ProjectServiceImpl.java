@@ -1,0 +1,30 @@
+package org.projectmanagement.service.impl;
+
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.projectmanagement.model.dto.project.ProjectCreateDto;
+import org.projectmanagement.model.entity.Project;
+import org.projectmanagement.repository.ProjectRepository;
+import org.projectmanagement.service.ProjectService;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class ProjectServiceImpl  implements ProjectService {
+
+    private final ProjectRepository projectRepository;
+
+    @Override
+    public Project createProject(ProjectCreateDto projectCreateDto) {
+        Project project = Project.builder()
+                .name(projectCreateDto.name())
+                .description(projectCreateDto.description())
+                .product_owner_id(projectCreateDto.product_owner_id())
+                .scrum_master_id(projectCreateDto.scrum_master_id())
+                .start_date(projectCreateDto.start_date())
+                .stimated_end_date(projectCreateDto.stimated_end_date())
+                .build();
+        return projectRepository.save(project);
+
+    }
+}

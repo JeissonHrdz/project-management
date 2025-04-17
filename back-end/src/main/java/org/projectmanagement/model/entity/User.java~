@@ -39,8 +39,9 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String last_name;
 
-    @Column(name = "role_id")
-    private Integer role_id;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role_id;
 
     @Column(name = "is_scrum_master")
     private Boolean is_scrum_master;
@@ -75,6 +76,10 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
+        return this.password_hash;
+    }
+
+    public String getUser_id() {
         return this.password_hash;
     }
 }

@@ -1,0 +1,35 @@
+package org.projectmanagement.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Builder
+@Entity
+@Table(name = "projects")
+public class Project {
+
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     @Column(name = "project_id")
+     Integer project_id;
+     String name;
+     String description;
+     String product_owner_id;
+     String scrum_master_id;
+     Date start_date;
+     Date stimated_end_date;
+     Date actual_end_date;
+     String definition_of_done;
+     String status;
+     Timestamp created_at;
+     Timestamp updated_at;
+
+}
