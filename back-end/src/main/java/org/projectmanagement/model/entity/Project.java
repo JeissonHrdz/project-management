@@ -36,8 +36,8 @@ public class Project {
     @Column(name = "start_date")
     Date start_date;
 
-    @Column(name = "stimated_end_date")
-    Date stimated_end_date;
+    @Column(name = "estimated_end_date")
+    Date estimated_end_date;
 
     @Column(name = "actual_end_date")
     Date actual_end_date;
