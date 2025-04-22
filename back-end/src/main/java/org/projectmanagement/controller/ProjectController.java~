@@ -6,8 +6,6 @@ import org.projectmanagement.model.dto.project.ProjectReadDto;
 import org.projectmanagement.model.dto.project.ProjectResponseDto;
 import org.projectmanagement.model.payload.ResponseMessage;
 import org.projectmanagement.service.ProjectService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,6 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private static final Logger log = LoggerFactory.getLogger(ProjectController.class);
 
     @PostMapping(value = "create")
     public ResponseEntity<?> createProject(@RequestBody ProjectCreateDto projectCreateDto) {
@@ -43,14 +40,13 @@ public class ProjectController {
     //Este metodo devuelve todos los projects de un user que sea scrum master
     // @Param user_id el id del scrum master
     @GetMapping(value = "projects")
-    public ResponseEntity<?> getProjects(@RequestParam String scrum_master_id) {
-        log.info("Controlador: Recibida petición GET /projects con scrum_master_id: '{}'", scrum_master_id);
+    public ResponseEntity<?> getProjects(@RequestBody String scrum_master_id) {
         try{
 
             List<ProjectReadDto> getProjects = projectService.getProjects(scrum_master_id);
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Projects retrieved successfully")
-                    .object(getProjects.size())
+                    .object(getProjects)
                     .build(),
                     HttpStatus.OK);
 

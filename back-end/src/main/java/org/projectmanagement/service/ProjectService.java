@@ -3,12 +3,10 @@ package org.projectmanagement.service;
 import org.projectmanagement.model.dto.project.ProjectCreateDto;
 import org.projectmanagement.model.dto.project.ProjectReadDto;
 import org.projectmanagement.model.dto.project.ProjectResponseDto;
-import org.projectmanagement.model.entity.Project;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public interface ProjectService {
 
     public ProjectResponseDto createProject(ProjectCreateDto project);
-    public ArrayList<ProjectReadDto> getProjects(String user_id);
+    public List<ProjectReadDto> getProjects(String scrum_master_id);
 }

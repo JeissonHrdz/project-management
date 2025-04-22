@@ -1,7 +1,6 @@
 package org.projectmanagement.model.dto.project;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 public record ProjectReadDto(
     Integer project_id,
@@ -13,7 +12,6 @@ public record ProjectReadDto(
     Date stimated_end_date,
     Date actual_end_date,
     String definition_of_done,
-    String status,
-    Timestamp created_at
+    String status
 ) {
 }

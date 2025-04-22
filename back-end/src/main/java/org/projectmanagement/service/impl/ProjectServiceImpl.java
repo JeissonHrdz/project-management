@@ -7,15 +7,18 @@ import org.projectmanagement.model.dto.project.ProjectResponseDto;
 import org.projectmanagement.model.entity.Project;
 import org.projectmanagement.repository.ProjectRepository;
 import org.projectmanagement.service.ProjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl  implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private static final Logger log = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
     @Override
     public ProjectResponseDto createProject(ProjectCreateDto projectCreateDto) {
@@ -41,7 +44,33 @@ public class ProjectServiceImpl  implements ProjectService {
     }
 
     @Override
-    public ArrayList<ProjectReadDto> getProjects(String user_id) {
-        return projectRepository.getProjectsByScrumMasterId(user_id);
+    public List<ProjectReadDto> getProjects(String scrum_master_id) {
+        log.info("Buscando proyectos para scrum_master_id: '{}'", scrum_master_id);
+
+        List<Project> projects = projectRepository.getProjectsByScrumMasterId(scrum_master_id);
+
+        log.info("Proyectos encontrados en BD: {}", projects.size());
+
+        if (projects.isEmpty()) {
+            return List.of(); 
+        }
+
+        List<ProjectReadDto> projectDto = projects.stream()
+                .map(project -> new ProjectReadDto(
+                        project.getProject_id(),
+                        project.getName(),
+                        project.getDescription(),
+                        project.getProduct_owner_id(),
+                        project.getScrum_master_id(),
+                        project.getStart_date(),
+                        project.getEstimated_end_date(),
+                        project.getActual_end_date(),
+                        project.getDefinition_of_done(),
+                        project.getStatus()
+                ))
+                .collect(Collectors.toList());
+
+        log.info("Devolviendo {} ProjectReadDto(s)", projectDto.size());
+        return projectDto;
     }
 }
