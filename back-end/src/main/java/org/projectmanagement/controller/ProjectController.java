@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/project")
@@ -40,11 +41,9 @@ public class ProjectController {
         }
     }
 
-    //Este metodo devuelve todos los projects de un user que sea scrum master
-    // @Param user_id el id del scrum master
+
     @GetMapping(value = "projects")
     public ResponseEntity<?> getProjects(@RequestParam String scrum_master_id) {
-        log.info("Controlador: Recibida petición GET /projects con scrum_master_id: '{}'", scrum_master_id);
         try{
 
             List<ProjectReadDto> getProjects = projectService.getProjects(scrum_master_id);
@@ -62,5 +61,23 @@ public class ProjectController {
             );
         }
 
+    }
+
+    @PatchMapping(value = "/update/{id}")
+    public ResponseEntity<?> updateProject(@PathVariable int id, @RequestBody Map<String, Object> updates) {
+        try {
+            ProjectResponseDto updateProject = projectService.updateProject(id, updates);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Project updated successfully")
+                    .object(updateProject)
+                    .build(),
+                    HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
     }
  }
