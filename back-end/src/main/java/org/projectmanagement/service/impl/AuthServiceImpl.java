@@ -36,14 +36,9 @@ public class AuthServiceImpl implements AuthService {
         String user_id =  userRepository.findByUsername(request.username()).orElseThrow().getUser_id();
         String token = jwtService.getToken(user, user_id);
         System.out.println("token: " + token);
-
-
         User user1 = userService.findUser(jwtService.getUserNameFromToken(token));
-        if (!roleService.hasPermission(user1,"projects", "create")) {
-            throw new AccessDeniedException("Access Denied");
-        } else {
-            System.out.println("Access Granted");
-        }
+
+
 
         return  AuthResponseDto.builder()
                 .token(token)

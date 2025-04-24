@@ -5,6 +5,7 @@ import org.projectmanagement.model.dto.project.ProjectCreateDto;
 import org.projectmanagement.model.dto.project.ProjectReadDto;
 import org.projectmanagement.model.dto.project.ProjectResponseDto;
 import org.projectmanagement.model.entity.Project;
+import org.projectmanagement.model.entity.User;
 import org.projectmanagement.model.mapper.ProjectMapper;
 import org.projectmanagement.repository.ProjectRepository;
 import org.projectmanagement.service.ProjectService;
@@ -56,6 +57,7 @@ public class ProjectServiceImpl  implements ProjectService {
     @Override
     public List<ProjectReadDto> getProjects(String scrum_master_id) {
 
+
         List<Project> projects = projectRepository.getProjectsByScrumMasterId(scrum_master_id);
 
         if (projects.isEmpty()) {
@@ -100,5 +102,10 @@ public class ProjectServiceImpl  implements ProjectService {
 
         return projectMapper.toDto(projectRepository.save(project.get()));
 
+    }
+
+    @Override
+    public void deleteProject(int project_id) {
+        projectRepository.deleteById(project_id);
     }
 }
