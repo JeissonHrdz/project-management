@@ -2,6 +2,9 @@ package org.projectmanagement.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 import org.projectmanagement.model.enums.SprintStatus;
 
 import java.sql.Date;
@@ -10,9 +13,9 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Builder
 @Entity
-@ToString
 @Table(name = "sprints")
 public class Sprint {
 
@@ -36,7 +39,9 @@ public class Sprint {
     @Column(name = "end_date")
     private Date end_date;
 
-    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(columnDefinition = "status")
     private SprintStatus status;
 
     @Column(name = "estimated_velocity")

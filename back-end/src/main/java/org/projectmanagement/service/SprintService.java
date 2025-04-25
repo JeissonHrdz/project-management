@@ -1,7 +1,8 @@
 package org.projectmanagement.service;
 
 import org.projectmanagement.model.dto.sprint.SprintCreateDto;
+import org.projectmanagement.model.dto.sprint.SprintResponseDto;
 
 public interface SprintService {
-    void createSprint(SprintCreateDto sprintCreateDto);
+     SprintResponseDto createSprint(SprintCreateDto sprintCreateDto);
 }

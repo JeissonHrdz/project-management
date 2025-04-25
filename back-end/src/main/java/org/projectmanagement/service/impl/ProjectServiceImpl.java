@@ -5,7 +5,6 @@ import org.projectmanagement.model.dto.project.ProjectCreateDto;
 import org.projectmanagement.model.dto.project.ProjectReadDto;
 import org.projectmanagement.model.dto.project.ProjectResponseDto;
 import org.projectmanagement.model.entity.Project;
-import org.projectmanagement.model.entity.User;
 import org.projectmanagement.model.mapper.ProjectMapper;
 import org.projectmanagement.repository.ProjectRepository;
 import org.projectmanagement.service.ProjectService;
