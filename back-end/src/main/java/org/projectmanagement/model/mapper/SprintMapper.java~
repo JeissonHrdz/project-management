@@ -1,0 +1,32 @@
+package org.projectmanagement.model.mapper;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.projectmanagement.model.dto.sprint.SprintResponseDto;
+import org.projectmanagement.model.dto.sprint.SprintUpdateDto;
+import org.projectmanagement.model.entity.Project;
+import org.projectmanagement.model.entity.Sprint;
+
+@Mapper(componentModel = "spring")
+public interface SprintMapper {
+
+    @Mapping(target = "sprint_id", ignore = true)
+    @Mapping(target = "created_at", ignore = true)
+    @Mapping(target = "project_id", ignore = true)
+    void updateSprintFromDto(SprintUpdateDto sprintUpdateDto, @MappingTarget Sprint sprint);
+    SprintResponseDto toDto(Sprint sprint);
+
+    default Integer map(Project project) {
+        return project != null ? project.getProject_id() : null;
+    }
+
+    default Project map(Integer project_id) {
+        if(project_id == null) {
+            return null;
+        }
+        Project project = new Project();
+        project.setProject_id(project_id);
+        return project;
+    }
+}

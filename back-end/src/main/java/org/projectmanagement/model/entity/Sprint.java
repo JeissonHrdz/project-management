@@ -24,8 +24,9 @@ public class Sprint {
     @Column(name = "sprint_id")
     private Integer sprint_id;
 
-    @Column(name = "project_id")
-    private Integer project_id;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project_id;
 
     @Column(name = "name")
     private String name;

@@ -1,23 +1,36 @@
 package org.projectmanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.projectmanagement.model.dto.project.ProjectReadDto;
 import org.projectmanagement.model.dto.sprint.SprintCreateDto;
+import org.projectmanagement.model.dto.sprint.SprintReadDto;
 import org.projectmanagement.model.dto.sprint.SprintResponseDto;
 import org.projectmanagement.model.entity.Sprint;
+import org.projectmanagement.model.enums.SprintStatus;
+import org.projectmanagement.model.mapper.SprintMapper;
+import org.projectmanagement.repository.ProjectRepository;
 import org.projectmanagement.repository.SprintRepository;
 import org.projectmanagement.service.SprintService;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SprintServiceImpl implements SprintService {
 
     private final SprintRepository sprintRepository;
+    private final ProjectRepository projectRepository;
+    private final SprintMapper sprintMapper;
 
     @Override
     public SprintResponseDto createSprint(SprintCreateDto sprintCreateDto) {
         Sprint sprint =  Sprint.builder()
-                .project_id(sprintCreateDto.project_id())
+                .project_id(projectRepository.findById(sprintCreateDto.project_id()).orElseThrow())
                 .name(sprintCreateDto.name())
                 .goal(sprintCreateDto.goal())
                 .start_date(sprintCreateDto.start_date())
@@ -29,13 +42,59 @@ public class SprintServiceImpl implements SprintService {
 
         return new SprintResponseDto(
                 savedSprint.getSprint_id(),
-                savedSprint.getProject_id(),
+                savedSprint.getProject_id().getProject_id(),
                 savedSprint.getName(),
                 savedSprint.getGoal(),
                 savedSprint.getStart_date(),
                 savedSprint.getEnd_date(),
                 savedSprint.getStatus()
         );
+
+    }
+
+    @Override
+    public List<SprintReadDto> getSprintsByProjectId(Integer project_id) {
+        List<Sprint> sprints = sprintRepository.getSprintsByProjectId(project_id);
+        if (sprints.isEmpty()) {
+            return List.of();
+        }
+        List<SprintReadDto> sprintReadDtos = sprints.stream()
+                .map(sprint -> new SprintReadDto(
+                        sprint.getSprint_id(),
+                        sprint.getProject_id().getProject_id(),
+                        sprint.getName(),
+                        sprint.getGoal(),
+                        sprint.getStart_date(),
+                        sprint.getEnd_date(),
+                        sprint.getStatus(),
+                        sprint.getEstimated_velocity(),
+                        sprint.getActual_velocity(),
+                        sprint.getCreated_at()
+                )).collect(Collectors.toList());
+        return sprintReadDtos;
+    }
+
+    @Override
+    public SprintResponseDto updateSprint(int id, Map<String, Object> updates) {
+        Optional<Sprint> sprint = sprintRepository.findById(id);
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "name" -> sprint.get().setName((String) value);
+                case "goal" -> sprint.get().setGoal((String) value);
+                case "start_date" -> sprint.get().setStart_date((Date) value);
+                case "end_date" -> sprint.get().setEnd_date((Date) value);
+                case "status" -> sprint.get().setStatus((SprintStatus.valueOf((String) value)));
+                case "estimated_velocity" -> sprint.get().setEstimated_velocity((Integer) value);
+                case "actual_velocity" -> sprint.get().setActual_velocity((Integer) value);
+                default -> throw new IllegalArgumentException("Invalid key: " + key);
+            }
+        });
+        return  sprintMapper.toDto(sprintRepository.save(sprint.get()));
+    }
+
+    @Override
+    public void deleteSprint(Integer sprint_id) {
+        sprintRepository.deleteById(sprint_id);
 
     }
 }
