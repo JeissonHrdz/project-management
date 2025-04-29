@@ -1,0 +1,34 @@
+package org.projectmanagement.model.mapper;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.projectmanagement.model.dto.task.TaskResponseDto;
+import org.projectmanagement.model.dto.task.TaskUpdateDto;
+import org.projectmanagement.model.entity.Sprint;
+import org.projectmanagement.model.entity.Task;
+
+@Mapper(componentModel = "spring")
+public interface TaskMapper {
+
+    @Mapping(target = "task_id", ignore = true)
+    @Mapping(target = "project_id", ignore = true)
+    @Mapping(target = "backlog_item_id", ignore = true)
+    @Mapping(target = "created_at", ignore = true)
+    void updateTaskFromDto(TaskUpdateDto taskUpdateDto, @MappingTarget Task task);
+    TaskResponseDto toDto(Task task);
+
+    default Integer map(Sprint sprint) {
+        return sprint != null ? sprint.getSprint_id() : null;
+    }
+
+    default Sprint map(Integer spring_id) {
+        if(spring_id == null) {
+            return null;
+        }
+        Sprint sprint = new Sprint();
+        sprint.setSprint_id(spring_id);
+        return sprint;
+    }
+}
+}

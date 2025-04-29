@@ -1,0 +1,83 @@
+package org.projectmanagement.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.projectmanagement.model.enums.TaskPriority;
+import org.projectmanagement.model.enums.TaskStatus;
+import org.projectmanagement.model.enums.TaskType;
+
+import java.sql.Timestamp;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Builder
+@Entity
+@Table( name = "tasks" )
+public class Task {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id")
+    private Integer task_id;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprint_id;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project_id;
+
+    @Column(name = "backlog_item_id")
+    private Integer backlog_item_id;
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(columnDefinition = "status")
+    private TaskStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(columnDefinition = "priority")
+    private TaskPriority priority;
+
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(columnDefinition = "type")
+    private TaskType type;
+
+    @Column(name = "story_points")
+    private Integer story_points;
+
+    @Column(name = "estimated_hours")
+    private Double  estimate_hours;
+
+    @Column(name = "actual_hours")
+    private Double actual_hours;
+
+    @Column(name = "blockers")
+    private String blockers;
+
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP", insertable = false)
+    private Timestamp created_at;
+
+    @Column(name = "updated_at")
+    private Timestamp updated_at;
+
+    @Column(name = "start_date")
+    private Timestamp start_date;
+
+    @Column(name = "end_date")
+    private Timestamp end_date;
+}
