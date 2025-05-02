@@ -1,6 +1,7 @@
 package org.projectmanagement.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -44,6 +45,7 @@ public class Backlog {
 
     @Column(name = "type")
     private String type;
+
 
     @ManyToOne
     @JoinColumn(name = "epic_id")

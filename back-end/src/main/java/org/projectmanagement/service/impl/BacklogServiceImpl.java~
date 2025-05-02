@@ -99,7 +99,7 @@ public class BacklogServiceImpl  implements BacklogService {
         if (backlogs.isEmpty()) {
             return List.of();
         }
-        if(type.equals("EPIC")) {
+        if(type.equals("epic")) {
             List<BacklogReadItemDto> backlogReadItemDtos = backlogs.stream().map(item -> new BacklogReadItemDto(
                     item.getItem_id(),
                     item.getTitle(),
