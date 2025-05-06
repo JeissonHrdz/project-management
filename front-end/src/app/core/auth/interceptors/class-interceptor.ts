@@ -6,11 +6,13 @@ import { Observable } from "rxjs";
 export class ClassInterceptor implements HttpInterceptor{
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        console.log('Intercepting request:', req);
             const token = 'your-token-here'; // Replace with actual token logic
             const modifiedReq = req.clone({
                 headers: req.headers
                     .set('Content-Type', 'application/json')
                     .set('Accept', 'application/json')
+                    .set('Allow-Access-Control-Origin', '*')
                     .set('Authorization', `Bearer ${token}`)
             });
             return next.handle(modifiedReq);

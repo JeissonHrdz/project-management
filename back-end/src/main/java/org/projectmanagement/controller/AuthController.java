@@ -21,6 +21,7 @@ import java.nio.file.AccessDeniedException;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:4200"})
 @Tag(name = "Authentication")
 public class AuthController {
 
