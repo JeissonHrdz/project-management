@@ -1,13 +1,16 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { AuthServiceService } from "../../../services/auth-service.service";
 
 @Injectable()
 export class ClassInterceptor implements HttpInterceptor{
 
+    private authService = inject(AuthServiceService);
+
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         console.log('Intercepting request:', req);
-            const token = 'your-token-here'; // Replace with actual token logic
+            const token = this.authService.userToken
             const modifiedReq = req.clone({
                 headers: req.headers
                     .set('Content-Type', 'application/json')

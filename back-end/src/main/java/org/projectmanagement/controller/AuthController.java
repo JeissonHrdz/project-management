@@ -42,9 +42,16 @@ public class AuthController {
 
     @Operation(summary = "Login a user")
     @PostMapping(value ="login")
-    public ResponseEntity<AuthResponseDto> loginUser(@RequestBody UserLoginDto request) throws AccessDeniedException {
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginDto request) throws AccessDeniedException {
         System.out.println(request);
-      return ResponseEntity.ok(authService.login(request));
+        try{
+            AuthResponseDto authResponseDto = authService.login(request);
+            return new ResponseEntity<>(authResponseDto, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
