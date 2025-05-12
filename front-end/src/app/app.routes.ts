@@ -2,6 +2,10 @@ import { Routes } from '@angular/router';
 import {  authGuard, authGuardLogin} from './core/auth/guards/auth-gurard';
 
 export const routes: Routes = [
+    {path: 'projects', 
+        loadComponent: () => import('./components/projects/projects.component')
+        .then(m => m.ProjectsComponent)
+        },
     {path:'dashboard', 
         loadComponent: () => import('./components/dashboard/dashboard.component')
         .then(m => m.DashboardComponent) 
