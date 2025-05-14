@@ -5,11 +5,14 @@
 
             <div class="w-full flex flex-col justify-center items-center">
                 <h2 class="text-2xl font-medium m-1"> Create a New Project </h2>
-                <button type="button"
-                    class="bg-neutral-800 hover:bg-neutral-700 cursor-pointer m-2 text-white pl-8 pr-8 font-bold py-2 px-4 rounded">Create</button>
+                <button type="button" (click)="showModalCreateProject()" 
+                    class="bg-neutral-800 text-[14px] hover:bg-neutral-700 cursor-pointer m-2 text-white pl-8 pr-8 font-bold py-2 px-4 rounded">Create</button>
             </div>
         </div>
     </section>  
-</section>
+</section> 
 
-<app-create-project-modal/> 
+<app-create-project-modal  class="dispplay: block transition ease-in duration-1000"
+ (childEvent)="handlerModalCreateProject($event)" 
+ [isModalOpen]="openModalCreateProject()" 
+ *ngIf="openModalCreateProject()"  [@fade]="openModalCreateProject() ? 'visible' : 'hide'"/> 

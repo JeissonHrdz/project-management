@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, input, Output, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroXMark } from '@ng-icons/heroicons/outline';
+import { sign } from 'crypto';
 import $ from 'jquery';
+
 
 @Component({
   selector: 'app-create-project-modal',
@@ -12,8 +14,17 @@ import $ from 'jquery';
   styleUrl: './create-project-modal.component.css'
 })
 export class CreateProjectModalComponent {
-
-  showDescriptionElement: boolean = false;  
+  
+  @Input() isModalOpen: boolean = false;
+  openModalCreateProject = signal(true);
+  @Output() childEvent = new EventEmitter<any>();
+  
+  close(){
+    this.isModalOpen = false;
+    this.openModalCreateProject.set(false);
+    this.childEvent.emit(this.isModalOpen);
+  }
+  
 
   moveSlideForm(direction : string){
     if(direction == "left"){
