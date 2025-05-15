@@ -37,9 +37,6 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtService.getToken(user, user_id);
         System.out.println("token: " + token);
         User user1 = userService.findUser(jwtService.getUserNameFromToken(token));
-
-
-
         return  AuthResponseDto.builder()
                 .token(token)
                 .build();

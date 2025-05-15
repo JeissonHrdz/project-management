@@ -4,7 +4,9 @@ import {  authGuard, authGuardLogin} from './core/auth/guards/auth-gurard';
 export const routes: Routes = [
     {path: 'projects', 
         loadComponent: () => import('./components/projects/projects.component')
-        .then(m => m.ProjectsComponent)
+        .then(m => m.ProjectsComponent),
+        canActivate: [authGuard]
+       
         },
     {path:'dashboard', 
         loadComponent: () => import('./components/dashboard/dashboard.component')

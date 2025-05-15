@@ -14,12 +14,12 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
       animations: [
            trigger('fade', [
                state('visible', style({
-                   opacity: 1,
-                   transform: 'translateX(0)'
+                   opacity: 1
+                  
                })),
                state('hide', style({
-                   opacity: 0,
-                   transform: 'translateX(-100%)'
+                   opacity: 0
+                 
                })),
                transition('visible => hide', animate('300ms ease-out')),
                transition('hide => visible', animate('300ms ease-in'))
@@ -28,7 +28,6 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   
 })
 export class ProjectsComponent {
-
   openModalCreateProject = signal(false); 
 
   showModalCreateProject() { 

@@ -21,4 +21,19 @@ export class ClassInterceptor implements HttpInterceptor{
             return next.handle(modifiedReq);
     }
 
+    getIdfromToken(): string | null {
+        const token = this.authService.userToken;
+        const payload = token.split('.')[1];
+        const payloadDecoded = atob(payload);
+        const values = JSON.parse(payloadDecoded);
+        return values.id;
+      }
+
+      getTimeExpiration(token: String): string | null {       
+        const payload = token.split('.')[1];
+        const payloadDecoded = atob(payload);
+        const values = JSON.parse(payloadDecoded);
+        return values.exp;
+      }
+
 }
