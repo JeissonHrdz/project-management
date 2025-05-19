@@ -13,31 +13,31 @@
                                         class="relative right-3 m-1 cursor-pointer"></ng-icon>
                                 </button>
                             </div>
-                            <form action="">
+                            <form [formGroup]="formProject" (ngSubmit)="sendFormCreateProject()">
                             <div class="grid grid-rows-1 overflow-hidden" id="gridForm">                                
-                                <div class="flex flex-col   p-4 m-1">
+                                <div class="flex flex-col   p-4 m-1"> 
                                     <p class="font-semibold text-[14px] m-1">Enter the project name </p>
-                                    <input placeholder="Project Name"
+                                    <input placeholder="Project Name" name="name" id="name" formControlName="name" required [ngClass]="{'is-invalid': hasErrors('name', 'required')}"
                                         class="placeholder:text-gray-400 rounded-md  w-full text-[14px] focus:border-blue-400 transform-border 
                                          duration-150 ease-linear  border-2 border-gray-300 p-2  m-1   outline-0"  type="text" name="" id="">                  
 
                                     <p class="font-semibold text-[14px] m-1 mt-2">Enter Description </p>
-                                    <textarea placeholder="Project Name"
+                                    <textarea placeholder="Project Name" name="description" id="description" formControlName="description" required [ngClass]="{'is-invalid': hasErrors('description', 'required')}"
                                         class="placeholder:text-gray-400 resize-none  w-full h-[80px] text-[14px] focus:border-blue-400 transform-border 
                                             duration-150 ease-linear  border-2  border-gray-300 p-2 rounded-md m-1   outline-0"> </textarea>
                                   
                              
                                     <p class="font-semibold text-[14px] m-1 mt-2">Start Date </p>
-                                    <input placeholder="Date" type="date"
+                                    <input placeholder="Date" type="date" name="start_date" id="start_date" formControlName="start_date" required [ngClass]="{'is-invalid': hasErrors('start_date', 'required')}"
                                         class="placeholder:text-gray-400   w-full  text-[14px] focus:border-blue-400 transform-border 
                                             duration-150 ease-linear  border-2  border-gray-300 p-2 m-1  rounded-md   outline-0"/>                                  
                                          <p class="font-semibold text-[14px] m-1 mt-2">Estimated End Date </p>
-                                    <input placeholder="Date" type="date"
+                                    <input placeholder="Date" type="date" id="estimated_end_date" name="estimated_end_date" formControlName="estimated_end_date" required [ngClass]="{'is-invalid': hasErrors('estimated_end_date', 'required')}"
                                         class="placeholder:text-gray-400     w-full text-[14px] focus:border-blue-400 transform-border 
                                             duration-150 ease-linear  border-2  border-gray-300 p-2 m-1 rounded-md   outline-0"/>
 
                                     <div class="w-full justify-center items-center flex flex-row mt-2">                                       
-                                        <button  type="button"
+                                        <button  type="submit"
                                             class="bg-blue-400 hover:bg-blue-500 transition duration-100 ease-in text-[14px] cursor-pointer m-2 text-white pl-8 pr-8 font-medium py-2 px-4 rounded">Save</button>
                                     </div>
 

@@ -3,8 +3,7 @@ import { environment } from '../../environment/environment';
 import { UserLoginDTO } from '../core/model/dto/user-login-dto';
 import { catchError, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'jquery';
-import { ClassInterceptor } from '../core/auth/interceptors/class-interceptor';
+
 
 
 @Injectable({
@@ -25,7 +24,7 @@ export class AuthServiceService {
     const token = this.currentUser();
     const expiration = token ? this.getTimeExpiration(token) : null;
 
-    if (expiration && new Date() > new Date(Number(expiration)*1000) ) {
+    if (expiration && new Date() > new Date(Number(expiration)*1000) ) { 
         this.isAuthenticated.set(false); 
         this.currentUser.set('');     
     } else{      
@@ -56,7 +55,14 @@ export class AuthServiceService {
         const payloadDecoded = atob(payload);
         const values = JSON.parse(payloadDecoded);
         return values.exp;
-      }
+    }
+
+    getIdfromToken(token: String): string | null {      
+        const payload = token.split('.')[1];
+        const payloadDecoded = atob(payload);
+        const values = JSON.parse(payloadDecoded);
+        return values.UUID;
+    }
 
   get userToken() : String {
     return this.currentUser()

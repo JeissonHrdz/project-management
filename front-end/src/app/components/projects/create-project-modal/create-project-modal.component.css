@@ -1,0 +1,6 @@
+
+.is-invalid {
+    border: 1px solid #dc2626;    
+    box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25);
+    transition: all 0.2s ease-in-out;
+}
