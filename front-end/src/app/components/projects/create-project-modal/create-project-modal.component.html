@@ -36,7 +36,10 @@
                                         class="placeholder:text-gray-400     w-full text-[14px] focus:border-blue-400 transform-border 
                                             duration-150 ease-linear  border-2  border-gray-300 p-2 m-1 rounded-md   outline-0"/>
 
-                                    <div class="w-full justify-center items-center flex flex-row mt-2">                                       
+                                    <div class="w-full justify-center items-center flex flex-col mt-2">   
+                                           <div *ngIf="!errorDate" class="text-red-500 text-sm mt-1 font-semibold">
+                                             The date must be before the estimated end date
+                                              </div>                                    
                                         <button  type="submit"
                                             class="bg-blue-400 hover:bg-blue-500 transition duration-100 ease-in text-[14px] cursor-pointer m-2 text-white pl-8 pr-8 font-medium py-2 px-4 rounded">Save</button>
                                     </div>

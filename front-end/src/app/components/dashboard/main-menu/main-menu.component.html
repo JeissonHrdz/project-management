@@ -19,9 +19,25 @@
             <li class="p-2"><a  class="flex cursor-pointer hover:text-neutral-800 transition ease-in-out" 
                 routerLink="/dashboard">
                 <ng-icon class="mr-2" size="22" name="heroSquares2x2"></ng-icon>Dashboard</a></li>
-            <li class="p-2 "><a  class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out" 
-                routerLink="/projects">            
-                <ng-icon  class="mr-2" size="22" name="heroRectangleGroup"></ng-icon>Projects</a></li>  
+            <li class="p-2 flex flex-row items-center">
+                <a  class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out"routerLink="/projects">            
+                <ng-icon  class="mr-2" size="22" name="heroRectangleGroup"></ng-icon>
+                Projects
+                </a>  
+                <div (click)="openMenuProjects()" class="relative left-25 cursor-pointer">
+                      <ng-icon   size="18" name="heroChevronDown"></ng-icon> 
+                </div>
+                                       
+            
+            </li>  
+
+            <li class="menu-projects w-full hidden">
+                  <ul class="pl-6 m-1 bg-neutral-200 rounded-md">
+                    <li class="p-1 text-gray-400" >Project 1</li>
+                    <li class="p-1 text-gray-400">Project 2</li>
+                    <li class="p-1 text-gray-400">Project 3</li>
+                </ul>
+            </li>
             <li class="p-2 "><a class="flex w-full  cursor-pointer  hover:text-neutral-800 transition ease-in-out" 
                 routerLink="/settings">
                 <ng-icon  class="mr-2" size="22" name="heroBell" ></ng-icon>
