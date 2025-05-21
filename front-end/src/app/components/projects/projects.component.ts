@@ -5,10 +5,11 @@ import $ from 'jquery';
 
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { DashboardProjectComponent } from "./dashboard-project/dashboard-project.component";
 
 @Component({
   selector: 'app-projects',
-  imports: [MainMenuComponent, CreateProjectModalComponent,CommonModule], 
+  imports: [MainMenuComponent,/* CreateProjectModalComponent,*/ CommonModule, DashboardProjectComponent], 
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css',
       animations: [

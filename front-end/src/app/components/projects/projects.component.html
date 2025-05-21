@@ -1,18 +1,19 @@
+
 <section class="flex flex-row">
     <app-main-menu />
     <section class="flex flex-col w-full h-screen bg-gray-100 pt-3">
-        <div class="flex w-full h-full bg-white rounded-tl-2xl border-t-2 border-l-2 p-4 border-gray-200">
-
-            <div class="w-full flex flex-col justify-center items-center">
+        <div class="flex w-full h-full bg-white rounded-tl-2xl border-t-2 border-l-2  border-gray-200">
+             <app-dashboard-project class="w-full"/>
+            <!-- <div class="w-full flex flex-col justify-center items-center">
                 <h2 class="text-2xl font-medium m-1"> Create a New Project </h2>
                 <button type="button" (click)="showModalCreateProject()" 
                     class="bg-neutral-800 text-[14px] hover:bg-neutral-700 cursor-pointer m-2 text-white pl-8 pr-8 font-bold py-2 px-4 rounded">Create</button>
-            </div>
+            </div> -->
         </div>
     </section>  
 </section> 
 
-<app-create-project-modal  class="dispplay: block transition ease-in duration-1000"
+<!-- <app-create-project-modal  class="dispplay: block transition ease-in duration-1000"
  (childEvent)="handlerModalCreateProject($event)" 
  [isModalOpen]="openModalCreateProject()" 
- *ngIf="openModalCreateProject()"  [@fade]="openModalCreateProject() ? 'visible' : 'hide'"/> 
+ *ngIf="openModalCreateProject()"  [@fade]="openModalCreateProject() ? 'visible' : 'hide'"/>  -->

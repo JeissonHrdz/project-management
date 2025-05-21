@@ -65,7 +65,7 @@ public class ProjectController {
             List<ProjectReadDto> getProjects = projectService.getProjects(scrum_master_id);
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Projects retrieved successfully")
-                    .object(getProjects.size())
+                    .object(getProjects)
                     .build(),
                     HttpStatus.OK);
 

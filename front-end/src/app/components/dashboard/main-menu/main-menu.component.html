@@ -14,12 +14,12 @@
          class="w-[100%] text-[14px] h-10 border-1 outline-0 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-0
           bg-neutral-50 text-neutral-500 p-2 pl-8 "/>
     </div>
-    <nav class="flex flex-col w-auto h-auto p-4">
+    <nav class="flex flex-col w-auto h-auto">
         <ul class="font-semibold w-auto text-gray-500">
-            <li class="p-2"><a  class="flex cursor-pointer hover:text-neutral-800 transition ease-in-out" 
+            <li class="p-2 pl-6"><a  class="flex cursor-pointer hover:text-neutral-800 transition ease-in-out" 
                 routerLink="/dashboard">
                 <ng-icon class="mr-2" size="22" name="heroSquares2x2"></ng-icon>Dashboard</a></li>
-            <li class="p-2 flex flex-row items-center">
+            <li class="p-2 pl-6 flex flex-row items-center">
                 <a  class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out"routerLink="/projects">            
                 <ng-icon  class="mr-2" size="22" name="heroRectangleGroup"></ng-icon>
                 Projects
@@ -31,24 +31,24 @@
             
             </li>  
 
-            <li class="menu-projects w-full hidden">
-                  <ul class="pl-6 m-1 bg-neutral-200 rounded-md">
-                    <li class="p-1 text-gray-400" >Project 1</li>
-                    <li class="p-1 text-gray-400">Project 2</li>
-                    <li class="p-1 text-gray-400">Project 3</li>
+            <li class="menu-projects w-full pl-9 hidden">
+                  <ul class="border-l-2 border-gray-300">
+                    @for(project of projects; track  $index){                     
+                    <li class="p-2 pl-7 text-gray-500  cursor-pointer hover:text-neutral-800" >{{project.name}}</li>                 
+                    }
                 </ul>
             </li>
-            <li class="p-2 "><a class="flex w-full  cursor-pointer  hover:text-neutral-800 transition ease-in-out" 
+            <li class="p-2  pl-6"><a class="flex w-full  cursor-pointer  hover:text-neutral-800 transition ease-in-out" 
                 routerLink="/settings">
                 <ng-icon  class="mr-2" size="22" name="heroBell" ></ng-icon>
                 Notifications
             <span class=" relative left-10 bg-red-500 text-white text-[12px] font-semibold rounded-full px-2 pt-1 ml-2 shadow-md 
                 shadow-red-300">9+</span>
             </a></li>
-            <li class="p-2 "><a class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out" 
+            <li class="p-2 pl-6 "><a class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out" 
                 routerLink="/users">
                 <ng-icon class="mr-2" size="22" name="heroUsers" ></ng-icon>Users</a></li>
-            <li class="p-2 "><a class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out" 
+            <li class="p-2 pl-6"><a class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out" 
                 routerLink="/settings">
                 <ng-icon  class="mr-2" size="22" name="heroCog6Tooth" ></ng-icon>Settings</a></li>
         </ul>
