@@ -33,7 +33,7 @@ export class CreateProjectModalComponent {
 
   constructor(private form: FormBuilder) {
 
-    this.user_id = this.authService.getIdfromToken(this.authService.userToken) ?? ""
+    this.user_id = this.authService.getIdfromToken() ?? ""
 
     this.formProject = this.form.group({
       name: ['', [Validators.required]],

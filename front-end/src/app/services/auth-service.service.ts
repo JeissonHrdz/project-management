@@ -12,60 +12,61 @@ import { HttpClient } from '@angular/common/http';
 export class AuthServiceService {
 
   private urlBase: string = environment.baseUrl + '/auth';
-  private http  = inject(HttpClient);
- 
+  private http = inject(HttpClient);
+
 
   currentUser = signal<String>('');
   isAuthenticated = signal<Boolean>(false);
 
-  constructor() {    
-  this.currentUser = signal<String>(localStorage.getItem('token') || '');
- 
-    const token = this.currentUser();
-    const expiration = token ? this.getTimeExpiration(token) : null;
+  constructor() {
 
-    if (expiration && new Date() > new Date(Number(expiration)*1000) ) { 
-        this.isAuthenticated.set(false); 
-        this.currentUser.set('');     
-    } else{      
-      this.isAuthenticated = signal<Boolean>(localStorage.getItem('token') != null);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      this.currentUser.set(localStorage.getItem('token') ?? '');
+      if (this.currentUser() != '') {
+        const expiration = this.getTimeExpiration();
+        if (expiration && new Date() > new Date(Number(expiration) * 1000)) {
+          this.isAuthenticated.set(false);
+          this.currentUser.set('');
+        } else {
+          this.isAuthenticated = signal<Boolean>(localStorage.getItem('token') != null);
+        }
+      }
+
+
     }
-
   }
 
   login(credentials: UserLoginDTO): Observable<any> {
-  return this.http.post<any>(`${this.urlBase}/login`, credentials).pipe(
-    tap((response) => {
-      if (response && response.token) {
-        localStorage.setItem('token', response.token);
-        this.currentUser.set(response.user); // Assuming the user object is in the response
-        this.isAuthenticated.set(true); // Set the authentication status to true
-      }
-    }),
-    catchError((error) => {
-      console.error('Login error:', error.message);
-      throw error; // Rethrow the error for further handling if needed
-    })
-  )
-    
+    return this.http.post<any>(`${this.urlBase}/login`, credentials).pipe(
+      tap((response) => {
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          this.currentUser.set(response.token);
+          this.isAuthenticated.set(true); // Set the authentication status to true
+        }
+      }),
+      catchError((error) => {
+        console.error('Login error:', error.message);
+        throw error; // Rethrow the error for further handling if needed
+      })
+    )
+
   }
 
-    getTimeExpiration(token: String): string | null {       
-        const payload = token.split('.')[1];
-        const payloadDecoded = atob(payload);
-        const values = JSON.parse(payloadDecoded);
-        return values.exp;
-    }
+  getTimeExpiration(): string {
+    const token = this.currentUser();
+    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    return decodedToken.exp;
+  }
 
-    getIdfromToken(token: String): string | null {      
-        const payload = token.split('.')[1];
-        const payloadDecoded = atob(payload);
-        const values = JSON.parse(payloadDecoded);
-        return values.UUID;
-    }
+  getIdfromToken(): string {
+    const token = this.currentUser();
+    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    return decodedToken.UUID;
+  }
 
-  get userToken() : String {
-    return this.currentUser()
+  get userToken(): String {
+    return this.currentUser();
   }
 
 }

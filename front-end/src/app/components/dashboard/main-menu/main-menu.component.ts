@@ -24,15 +24,15 @@ export class MainMenuComponent {
   projects:Project[] = [];
 
   ngOnInit(){
-    this.projectService.getAllProjects(this.authService.getIdfromToken(this.authService.userToken) ?? "").pipe( 
+        this.projectService.getAllProjects(this.authService.getIdfromToken() ?? "").pipe( 
       takeUntil(this.destroy$)
       ).subscribe(data => {
-        this.projects = data.object;
-      
-      })      
+        this.projects = data.object;      
+      })     
   }
 
   openMenuProjects(){  
+     
     $('.menu-projects').animate({ height: "toggle" }, "fast");
   }
 

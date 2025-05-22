@@ -1,13 +1,15 @@
-<section class="w-full h-full flex flex-col">
+<section class="w-full flex flex-col">
     <div class="w-full p-6 border-b-2 border-gray-200">
         <h1 class="text-2xl font-semibold">Project 1</h1>
     </div>
     <div class="w-auto h-[48px] z-10 ">
         <ul class="grid grid-cols-[repeat(4,minmax(auto,1fr))]  gap-5 font-semibold text-[14px] p-2  pl-6 w-[550px] ">
-            <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row">
+            <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row"
+                 (click)="openItem('overview')">
                 <ng-icon class="mr-1" size="20" name="heroDocumentText"></ng-icon>
                 Overview</li>
-            <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row">
+            <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row"
+             (click)="openItem('backlog')">
                  <ng-icon class="mr-1" size="20" name="heroRectangleStack"></ng-icon>
                 Backlog</li>
             <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row">
@@ -19,4 +21,8 @@
         </ul>        
     </div>
     <hr class="w-full mt-1 border-1 border-gray-200 z-20">
+</section>
+<section class="w-full ">
+    aqui va
+    <router-outlet></router-outlet> 
 </section>
