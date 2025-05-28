@@ -1,39 +1,7 @@
 <section>
-    <div class="w-full p-4">
+    <div class="w-full p-1">
         <table class="w-full border-collapse text-left  rounded-md ">
-            <tbody class=" rounded-md">
-                <tr class=" *:text-left *:p-3">
-                    <td>
-                        <select class="font-medium outline-0 p-2 w-full pr-4 placeholder:text-gray-500 rounded-md border-1
-                                      border-gray-200 text-[14px]">
-                            <option value="none">None</option>
-                            <option value="epic1">Epic</option>
-                            <option value="epic2">Story</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
-                                    border-gray-200 text-[14px]" type="text" name="title" placeholder="Title" id="">
-                    </td>
-                    <td>
-                        <input class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
-                                    border-gray-200 text-[14px]" type="text" name="description"
-                            placeholder="Description" id="">
-                    </td>
-                    <td>
-                        <input class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
-                                    border-gray-200 text-[14px]" type="number" name="priority" placeholder="Priority"
-                            id="">
-                    </td>
-                    <td>
 
-                    </td>
-                    <td>
-                        <button class="p-2 bg-neutral-700 text-white rounded-md hover:bg-neutral-800 transition-colors">
-                            Add
-                        </button>
-                    </td>
-                </tr>
         </table>
     </div>
 
@@ -42,75 +10,114 @@
         <div class="p-4 w-[320px] m-4 h-fit bg-neutral-100  border-1 border-gray-200 rounded-md  ">
             <p class="font-semibold  text-[14px]">Epics</p>
             <ul class=" list-none text-[14px] mt-2 font-medium w-full">
-                <li class=" bg-white m-1 p-3 rounded-md cursor-pointer">Epic 1</li>
-                <li class="bg-white m-1 p-3 rounded-md cursor-pointer">Epic 2</li>
-                <li class="bg-white m-1 p-3 rounded-md cursor-pointer">Epic 3</li>
-                </ul>   
-                <div class="mt-4 hidden" id="form-epic">                    
-                    <input class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
-                                    border-gray-200 focus:border-blue-400  text-[14px]" type="text" name="title" placeholder="Title" id="">
-                    <input class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
-                                    border-gray-200  focus:border-blue-400  text-[14px]" type="text" name="description" placeholder="Description" id="">
+                @for(epics of epics; track  $index){                
+                <li class=" bg-white m-1 p-3 rounded-md cursor-pointer">{{epics.title}}</li>
+               
+                }
+            </ul>
+            <button (click)="showFormEpic()"
+                class="w-fit ml-1 flex justify-center justify-items-center custom-shadow mt-2 p-2 text-[14px] font-medium cursor-pointer bg-blue-500 border-1 border-gray-200 text-neutral-50 rounded-md  hover:bg-blue-600 transition-colors">
+                New Epic <ng-icon class="ml-2 " size="20" name="heroPlus" color="#fff"></ng-icon>
+            </button>
+            <div class="mt-4 hidden" id="form-epic">
+                <form [formGroup]="formEpic" (submit)="createEpic()" >
+                    <input formControlName="title" id="title"  [ngClass]="{'is-invalid': hasErrors('title', 'required')}" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
+                                    border-gray-200 focus:border-blue-400  text-[14px]" type="text" name="title"
+                        placeholder="Title" id="">
+                    <input formControlName="description" id="description" [ngClass]="{'is-invalid': hasErrors('description', 'required')}" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
+                                    border-gray-200  focus:border-blue-400  text-[14px]" type="text" name="description"
+                        placeholder="Description" id="">
+                    <button type="submit"  class="w-full  custom-shadow mt-2 p-2 text-[14px] font-medium cursor-pointer
+                      bg-neutral-50 border-1 border-gray-200 text-neutral-800  rounded-md 
+                       hover:bg-green-500 hover:text-white transition-colors">
+                        Save
+                    </button>
+                </form>
+            </div>
 
-                </div>
-                <button (focus)="showFormEpic()" class="w-full  custom-shadow mt-2 p-2 text-[14px] font-medium cursor-pointer bg-white border-1 border-gray-200 text-neutral-800 rounded-md hover:text-white hover:bg-blue-500 transition-colors">
-                   New Epic
-                </button>
         </div>
-        
 
-    <div class="w-full p-4">
-        <div class="overflow-x-auto rounded-md">
-            <table class="w-full text-left border-collapse rounded-md border-1 border-gray-200">
-                <thead class="rounded-t-md bg-neutral-100">
-                    <tr class="text-neutral-600 *:text-left *:p-2 *:pl-3 text-[12px] font-medium ">
-                        <th>Type</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Epic</th>
-                        <th>Priority</th>                        
-                        <th> </th>
-                    </tr>
-                </thead>             
-                <tbody class=" rounded-md text-[14px] font-medium">
-                    <tr class="border-b-1 border-gray-200 *:text-left *:p-2 *:pl-3">
-                        <td class="">                            
-                            <span
-                                class="bg-blue-200  text-blue-500 text-[14px] font-semibold rounded-sm p-1 pl-2 pr-2">
-                                Story
-                            </span>
-                        </td>
-                        <td> the interface should be red color </td>
-                        <td>this story is about the login page </td>
-                         <td>
-                            <span class="bg-pink-200 text-pink-500 text-[14px] font-semibold rounded-sm p-1 pl-2 pr-2">
-                                Epic 1
-                            </span>
-                        </td>
-                        <td>15</td>
-                        <td>                       
-                            <span (click)="viewMenu('menu-1')"  class="cursor-pointer flex rounded-md group w-fit justify-items-center
+
+        <div class="w-full p-4">
+            <div class="overflow-x-auto rounded-md">
+                <table class="w-full text-left border-collapse rounded-md border-1 border-gray-200">
+                    <thead class="rounded-t-md bg-neutral-100">
+                        <tr class="text-neutral-600 *:text-left *:p-2 *:pl-3 text-[12px] font-medium ">
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Epic</th>
+                            <th>Priority</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody class=" rounded-md">
+                        <tr class=" *:text-left *:p-3">
+                            <td>
+                                <input class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
+                                    border-gray-200 text-[14px]" type="text" name="title" placeholder="Title" id="">
+                            </td>
+                            <td>
+                                <input class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
+                                    border-gray-200 text-[14px]" type="text" name="description"
+                                    placeholder="Description" id="">
+                            </td>
+                            <td>
+                                <select class="font-medium outline-0 p-2 w-full pr-4 placeholder:text-gray-500 rounded-md border-1
+                                      border-gray-200 text-[14px]">
+                                    <option value="none">None</option>
+                                    <option value="epic1">Epic 1</option>
+                                    <option value="epic2">Epic 2</option>
+                                </select>
+
+                            </td>
+                            <td>
+                                <input class="font-medium outline-0 p-2 w-[80px]  placeholder:text-gray-500 rounded-md border-1
+                                    border-gray-200 text-[14px]" type="number" name="priority" placeholder="Priority"
+                                    id="">
+                            </td>
+                            <td>
+                                <button
+                                    class="p-2 bg-neutral-700 text-white rounded-md hover:bg-neutral-800 transition-colors">
+                                    Add
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody class=" rounded-md text-[14px] font-medium">
+                        <tr class="border-b-1 border-gray-200 *:text-left *:p-2 *:pl-3">
+
+                            <td> the interface should be red color </td>
+                            <td>this story is about the login page </td>
+                            <td class="flex justify-center">
+                                <span
+                                    class="bg-pink-200 text-pink-500 text-[14px] font-semibold rounded-sm p-1 pl-2 pr-2">
+                                    Epic 1
+                                </span>
+                            </td>
+                            <td class="items-center">15</td>
+                            <td>
+                                <span (click)="viewMenu('menu-1')" class="cursor-pointer flex rounded-md group w-fit justify-items-center
                                         hover:bg-neutral-200 ">
-                                <ng-icon color="#0C0C0C" size="24" name="heroEllipsisHorizontal"></ng-icon>
+                                    <ng-icon color="#0C0C0C" size="24" name="heroEllipsisHorizontal"></ng-icon>
                                 </span>
                                 <div>
-                                    <ul
-                                        class="hidden right-16 border-1 border-gray-200 absolute bg-white custom-shadow rounded-md p-2" id="menu-1">
-                                        <li class="p-2 hover:bg-neutral-200 cursor-pointer rounded-md">View</li>                                        
+                                    <ul class="hidden right-16 border-1 border-gray-200 absolute bg-white custom-shadow rounded-md p-2"
+                                        id="menu-1">
+                                        <li class="p-2 hover:bg-neutral-200 cursor-pointer rounded-md">View</li>
                                         <li class="p-2 hover:bg-neutral-200 cursor-pointer rounded-md">Edit</li>
                                         <li class="p-2 hover:bg-neutral-200 cursor-pointer rounded-md">Delete</li>
                                     </ul>
                                 </div>
-                            
-                        </td>
-                    </tr>
+
+                            </td>
+                        </tr>
 
 
-                </tbody>
+                    </tbody>
 
-            </table>
+                </table>
+            </div>
         </div>
-    </div>
     </div>
 
 </section>

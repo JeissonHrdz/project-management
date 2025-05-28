@@ -1,6 +1,7 @@
 import { Timestamp, TimestampProvider } from "rxjs";
 
-export interface Project {
+export interface Project {  
+    
     project_id: number;
     name: string;
     description: string;

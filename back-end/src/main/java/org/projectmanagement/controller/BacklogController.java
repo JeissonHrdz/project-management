@@ -73,7 +73,7 @@ public class BacklogController {
            List<BacklogReadItemDto> backlogReadItemDto = backlogService.getItemsByProjectId(project_id, type);
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Backlog items fetched successfully")
-                    .object(backlogReadItemDto.size())
+                    .object(backlogReadItemDto)
                     .build(), HttpStatus.OK);
         } catch (AccessDeniedException e) {
             return new ResponseEntity<>(ResponseMessage.builder()
