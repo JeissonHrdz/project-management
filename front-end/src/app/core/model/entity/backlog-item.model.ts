@@ -1,6 +1,6 @@
  
  export interface BacklogItem {
-    item_id: string;    
+    item_id: number;    
     project_id: number;
     title: string;
     description: string;

@@ -29,6 +29,19 @@ export class BacklogService {
     )
   }
 
+  updateEpic(epic: BacklogItem, epicId: number, projectId: number): Observable<any> {
+  
+    return this.http.patch<any>(this.urlBase + '/' + projectId + '/backlog/update/' + epicId, epic).pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  deleteEpic(epicId: number): Observable<any> {
+    return this.http.delete<any>(this.urlBase + '/' + this.projectId + '/backlog/delete/' + epicId).pipe(
+      catchError(this.handleError)
+    )
+  }
+
     private handleError(error: HttpErrorResponse) {
       if (error.status === 0) {
         console.error('Se ha producio un error ', error.error);

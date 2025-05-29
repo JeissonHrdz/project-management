@@ -75,8 +75,8 @@ public class BacklogServiceImpl  implements BacklogService {
     }
 
     @Override
-    public BacklogResponseDto updateItem(int id, Map<String, Object> updates) {
-        Optional<Backlog> backlog = backlogRepository.findById(id);
+    public BacklogResponseDto updateItem(String id, Map<String, Object> updates) {
+        Optional<Backlog> backlog = backlogRepository.findById(Integer.parseInt(id));
         updates.forEach((key, value) -> {
             switch (key) {
                 case "title" -> backlog.get().setTitle((String) value);
@@ -99,7 +99,7 @@ public class BacklogServiceImpl  implements BacklogService {
         if (backlogs.isEmpty()) {
             return List.of();
         }
-        if(type.equals("epic")) {
+        if(type.equals("EPIC")) {
             List<BacklogReadItemDto> backlogReadItemDtos = backlogs.stream().map(item -> new BacklogReadItemDto(
                     item.getItem_id(),
                     item.getTitle(),

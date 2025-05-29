@@ -1,0 +1,14 @@
+
+.trash-icon, .edit-icon{    
+    color: #C4C4C4;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.trash-icon:hover{
+    color: #FF0000;
+}
+
+.edit-icon:hover{
+    color: #923bf6;
+}

@@ -10,24 +10,47 @@
         <div class="p-4 w-[320px] m-4 h-fit bg-neutral-100  border-1 border-gray-200 rounded-md  ">
             <p class="font-semibold  text-[14px]">Epics</p>
             <ul class=" list-none text-[14px] mt-2 font-medium w-full">
-                @for(epics of epics; track  $index){                
-                <li class=" bg-white m-1 p-3 rounded-md cursor-pointer">{{epics.title}}</li>
-               
+                @for(epics of epics; track $index){
+                <li class="  m-1 p-3 rounded-md cursor-pointer hover:*:block ">{{epics.title}}
+                    <span class="float-right transition duration-300 ease-in-out hidden">
+                        <ng-icon (click)="deleteEpic(epics.item_id)" class="float-right trash-icon" size="20"
+                            name="heroTrash"></ng-icon>
+                        <ng-icon (click)="showFormEditEpic(epics.item_id)" class="float-right mr-2 edit-icon" size="20" color=""
+                            name="heroPencilSquare"></ng-icon>
+                    </span>
+                </li>
+                <li>
+                    <div class="mt-2 w-full rounded-md hidden edit-epic-{{epics.item_id}}">
+                         <form [formGroup]="formEpicUpdate" (submit)="updateEpic(epics.item_id)">
+                        <input formControlName="title" type="text" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
+                                    border-gray-200  focus:border-blue-400  text-[14px]" placeholder="Title" id="title"
+                            value="{{epics.title}}">
+                        <input formControlName="description" type="text" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
+                                    border-gray-200  focus:border-blue-400  text-[14px]" placeholder="Description"
+                            id="description" value="{{epics.description}}">
+                        <button type="submit"
+                            class="p-2 w-full m-1 bg-neutral-200 cursor-pointer text-neutral-800 hover:text-white rounded-md hover:bg-purple-500 transition-colors">Update</button>
+                            </form>
+                     </div>
+                </li>
+
                 }
             </ul>
-            <button (click)="showFormEpic()"
+            <button (click)="showFormEpic()" 
                 class="w-fit ml-1 flex justify-center justify-items-center custom-shadow mt-2 p-2 text-[14px] font-medium cursor-pointer bg-blue-500 border-1 border-gray-200 text-neutral-50 rounded-md  hover:bg-blue-600 transition-colors">
                 New Epic <ng-icon class="ml-2 " size="20" name="heroPlus" color="#fff"></ng-icon>
             </button>
             <div class="mt-4 hidden" id="form-epic">
-                <form [formGroup]="formEpic" (submit)="createEpic()" >
-                    <input formControlName="title" id="title"  [ngClass]="{'is-invalid': hasErrors('title', 'required')}" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
+                <form [formGroup]="formEpic" (submit)="createEpic()">
+                    <input formControlName="title" id="title" [ngClass]="{'is-invalid': hasErrors('title', 'required')}"
+                        class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
                                     border-gray-200 focus:border-blue-400  text-[14px]" type="text" name="title"
                         placeholder="Title" id="">
-                    <input formControlName="description" id="description" [ngClass]="{'is-invalid': hasErrors('description', 'required')}" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
+                    <input formControlName="description" id="description"
+                        [ngClass]="{'is-invalid': hasErrors('description', 'required')}" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
                                     border-gray-200  focus:border-blue-400  text-[14px]" type="text" name="description"
                         placeholder="Description" id="">
-                    <button type="submit"  class="w-full  custom-shadow mt-2 p-2 text-[14px] font-medium cursor-pointer
+                    <button type="submit" class="w-full  custom-shadow mt-2 p-2 text-[14px] font-medium cursor-pointer
                       bg-neutral-50 border-1 border-gray-200 text-neutral-800  rounded-md 
                        hover:bg-green-500 hover:text-white transition-colors">
                         Save
@@ -64,9 +87,11 @@
                             <td>
                                 <select class="font-medium outline-0 p-2 w-full pr-4 placeholder:text-gray-500 rounded-md border-1
                                       border-gray-200 text-[14px]">
-                                    <option value="none">None</option>
-                                    <option value="epic1">Epic 1</option>
-                                    <option value="epic2">Epic 2</option>
+                                    <option value="" disabled selected>Select Epic</option>
+                                    @for (epic of epics; track $index){
+                                    <option value="{{epic.item_id}}">{{epic.title}}</option>
+                                    }
+
                                 </select>
 
                             </td>
