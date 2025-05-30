@@ -23,8 +23,20 @@ export class BacklogService {
     )
   }
 
+  createStory(story: BacklogItem): Observable<any> {
+    return this.http.post<any>(this.urlBase + '/' + this.projectId + '/backlog/create-story', story).pipe(
+      catchError(this.handleError)
+    )
+  }
+
   getEpics(projectId: number): Observable<any> {
     return this.http.get<any>(this.urlBase + '/' + projectId + '/backlog/items/EPIC').pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getStories(projectId: number): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/' + projectId + '/backlog/items/USER_STORY').pipe(
       catchError(this.handleError)
     )
   }

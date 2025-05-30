@@ -44,7 +44,7 @@ public class BacklogController {
         }
     }
 
-    @PostMapping("create-history")
+    @PostMapping("create-story")
     public ResponseEntity<?> createHistory(@RequestBody BacklogCreateHistoryDto backlogCreateHistoryDto) {
         if(!roleService.hasPermission("backlog", "create")) {
             throw new AccessDeniedException("Access Denied");

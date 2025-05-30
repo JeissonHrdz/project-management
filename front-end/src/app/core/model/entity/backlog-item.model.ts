@@ -8,7 +8,7 @@
     priority: number;
     story_points: number;
     type: string;
-    epic_id: string;
+    epic_id: number;
     status: string;   
     created_at: string;
     updated_at: string;
