@@ -108,7 +108,7 @@ public class BacklogController {
             throw new AccessDeniedException("Access Denied");
         }
         try {
-            if(backlogService.deleteItemByEpicId(id) > 0) {
+            if(!backlogService.deleteItemByEpicId(id)) {
                 backlogService.deleteItem(id);
                 return new ResponseEntity<>(ResponseMessage.builder()
                         .message("Backlog item deleted successfully")
@@ -117,7 +117,7 @@ public class BacklogController {
                 return new ResponseEntity<>(ResponseMessage.builder()
                         .message("Backlog item not deleted")
                         .build(), HttpStatus.CONFLICT);
-            }
+            }             
 
         } catch (AccessDeniedException e) {
             return new ResponseEntity<>(ResponseMessage.builder()

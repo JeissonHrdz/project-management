@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare } from '@ng-icons/heroicons/outline';
+import { heroTrashSolid } from '@ng-icons/heroicons/solid';
 import $ from 'jquery';
 import { BacklogService } from '../../../services/backlog.service';
 import { CommonModule } from '@angular/common';
@@ -12,7 +13,7 @@ import { ToastService } from '../../../services/toast.service';
 @Component({
   selector: 'app-backlog',
   imports: [NgIcon, ReactiveFormsModule, CommonModule],
-  providers: [provideIcons({ heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare })],
+  providers: [provideIcons({ heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare, heroTrashSolid })],
   templateUrl: './backlog.component.html',
   styleUrl: './backlog.component.css'
 })
@@ -23,6 +24,7 @@ export class BacklogComponent {
   formEpicUpdate: FormGroup | any;
   epics: BacklogItem[] = [];
   stories: BacklogItem[] = [];
+  epicIdToDelete = signal(0)
   private destroy$ = new Subject<void>();
   private backlogService = inject(BacklogService)
   private toastService = inject(ToastService)
@@ -58,14 +60,17 @@ export class BacklogComponent {
         this.epics = data.object;
         console.log(this.epics);
       })
+      this.getAllStorysByProject();
+  }
 
-    this.backlogService.getStories(2).pipe(
+  getAllStorysByProject() {
+   this.backlogService.getStories(2).pipe(
       takeUntil(this.destroy$))
       .subscribe(data => {
         this.stories = data.object;
         console.log(this.stories);
       })
-
+   
   }
 
   createEpic() {
@@ -131,11 +136,21 @@ export class BacklogComponent {
     })
   }
 
+  modalConfirmDeleteEpic(epicId: number) {   
+    this.epicIdToDelete.set(epicId);
+    $("#modal-delete-epic").toggle("fast");
+  }
+
   deleteEpic(epicId: number) {
+    alert(epicId);
     this.backlogService.deleteEpic(epicId).subscribe({
       next: (response) => {
+        this.getAllStorysByProject()
         this.epics = this.epics.filter(epic => epic.item_id !== epicId);
         this.toastService.toast('Epic deleted successfully', 'success');
+        this.stories = this.stories.filter(story => story.epic_id !== epicId); 
+        this.modalConfirmDeleteEpic(0);      
+       
       },
       error: (error) => {
         console.log(error);

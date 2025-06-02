@@ -136,4 +136,10 @@ public class BacklogServiceImpl  implements BacklogService {
     public void deleteItem(Integer item_id) {
         backlogRepository.deleteById(item_id);
     }
+
+    @Override
+    public int deleteItemByEpicId(Integer epic_id) {
+        System.out.println("deleteItemByEpicId: " + epic_id);
+       return backlogRepository.deleteByEpicId(epic_id);
+    }
 }
