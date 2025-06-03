@@ -54,6 +54,12 @@ export class BacklogService {
     )
   }
 
+  deleteStory(itemId: number): Observable<any> {
+    return this.http.delete<any>(this.urlBase + '/' + this.projectId + '/backlog/delete-story/' + itemId).pipe(
+      catchError(this.handleError)
+    )
+  }
+
     private handleError(error: HttpErrorResponse) {
       if (error.status === 0) {
         console.error('Se ha producio un error ', error.error);

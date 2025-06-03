@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare } from '@ng-icons/heroicons/outline';
@@ -19,12 +19,17 @@ import { ToastService } from '../../../services/toast.service';
 })
 export class BacklogComponent {
 
+
   formEpic: FormGroup | any;
   formStory: FormGroup | any;
-  formEpicUpdate: FormGroup | any;
+  formStoryUpdate: FormGroup | any;
+  formEpicUpdate: FormGroup | any; 
+  
+
   epics: BacklogItem[] = [];
   stories: BacklogItem[] = [];
   epicIdToDelete = signal(0)
+  openedMenuId: string | null = null;
   private destroy$ = new Subject<void>();
   private backlogService = inject(BacklogService)
   private toastService = inject(ToastService)
@@ -47,7 +52,7 @@ export class BacklogComponent {
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       project_id: [2],
-      priority: [0],
+      priority: ['', [Validators.required]],
       epic_id: ['', [Validators.required]],
       type: ['USER_STORY']
     })
@@ -141,8 +146,7 @@ export class BacklogComponent {
     $("#modal-delete-epic").toggle("fast");
   }
 
-  deleteEpic(epicId: number) {
-    alert(epicId);
+  deleteEpic(epicId: number) {  
     this.backlogService.deleteEpic(epicId).subscribe({
       next: (response) => {
         this.getAllStorysByProject()
@@ -151,6 +155,18 @@ export class BacklogComponent {
         this.stories = this.stories.filter(story => story.epic_id !== epicId); 
         this.modalConfirmDeleteEpic(0);      
        
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
+  deleteStory(storyId: number) {
+    this.backlogService.deleteStory(storyId).subscribe({
+      next: (response) => {
+        this.stories = this.stories.filter(story => story.item_id !== storyId);
+        this.toastService.toast('Story deleted successfully', 'success');
       },
       error: (error) => {
         console.log(error);
@@ -173,17 +189,35 @@ export class BacklogComponent {
     }
   }
 
-  viewMenu(id: string): void {    
-    const menu = document.getElementById(id);
-    if (menu) {
-      menu.classList.toggle('hidden');
-    }
-  }
-
   showFormEpic() {
-
     $("#form-epic").animate({ height: "toggle" }, "fast");
   }
+  toggleMenu(menuId: string): void {   
+    this.openedMenuId = this.openedMenuId === `menu-${menuId}` ? null : `${menuId}`;    
+  }
+   closeMenu(): void {
+    this.openedMenuId = null;
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.closeMenu();
+  } 
+
+  showFieldsEditStory(storyId: number) {
+     $(".story-" + storyId).toggle('fast');
+    $(".edit-story-" + storyId).toggle('fast');
+    
+ /*   const storyToEdit = this.stories.find(story => story.item_id === storyId);
+    if (storyToEdit) {
+      this.formStoryUpdate.patchValue({
+        title: storyToEdit.title,
+        description: storyToEdit.description,
+        epic_id: storyToEdit.epic_id,
+        priority: storyToEdit.priority
+      }); */
+  }
+ 
 
 
   hasErrors(controlName: string, errorType: string) {

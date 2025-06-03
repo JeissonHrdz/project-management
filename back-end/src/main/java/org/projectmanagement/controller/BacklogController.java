@@ -113,11 +113,30 @@ public class BacklogController {
                 return new ResponseEntity<>(ResponseMessage.builder()
                         .message("Backlog item deleted successfully")
                         .build(), HttpStatus.OK);
-            }    else {
+            }  else {
                 return new ResponseEntity<>(ResponseMessage.builder()
                         .message("Backlog item not deleted")
                         .build(), HttpStatus.CONFLICT);
             }
+
+        } catch (AccessDeniedException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("delete-story/{id}")
+    public ResponseEntity<?> deleteBacklogStory(@PathVariable int id) {
+        if(!roleService.hasPermission("backlog", "delete")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        try {
+                backlogService.deleteItem(id);
+                return new ResponseEntity<>(ResponseMessage.builder()
+                        .message("Backlog item deleted successfully")
+                        .build(), HttpStatus.OK);
+
 
         } catch (AccessDeniedException e) {
             return new ResponseEntity<>(ResponseMessage.builder()
