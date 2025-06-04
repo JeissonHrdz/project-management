@@ -41,8 +41,7 @@ export class BacklogService {
     )
   }
 
-  updateEpic(epic: BacklogItem, epicId: number, projectId: number): Observable<any> {
-  
+  updateEpic(epic: BacklogItem, epicId: number, projectId: number): Observable<any> {  
     return this.http.patch<any>(this.urlBase + '/' + projectId + '/backlog/update/' + epicId, epic).pipe(
       catchError(this.handleError)
     )

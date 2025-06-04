@@ -20,19 +20,22 @@ import { ToastService } from '../../../services/toast.service';
 export class BacklogComponent {
 
 
+  private destroy$ = new Subject<void>();
+  private backlogService = inject(BacklogService)
+  private toastService = inject(ToastService) 
+
   formEpic: FormGroup | any;
   formStory: FormGroup | any;
   formStoryUpdate: FormGroup | any;
   formEpicUpdate: FormGroup | any; 
-  
+ 
 
   epics: BacklogItem[] = [];
   stories: BacklogItem[] = [];
   epicIdToDelete = signal(0)
+  storyIdToDelete = signal(0);
   openedMenuId: string | null = null;
-  private destroy$ = new Subject<void>();
-  private backlogService = inject(BacklogService)
-  private toastService = inject(ToastService)
+  
 
 
   constructor(private form: FormBuilder) {
@@ -55,6 +58,12 @@ export class BacklogComponent {
       priority: ['', [Validators.required]],
       epic_id: ['', [Validators.required]],
       type: ['USER_STORY']
+    })
+    this.formStoryUpdate = this.form.group({
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      epic_id: [0, [Validators.required]],
+      priority: [0, [Validators.required]]
     })
   }
 
@@ -122,10 +131,10 @@ export class BacklogComponent {
   }
 
   updateEpic(epicId: number) {
-
     const projectId = 2
     this.backlogService.updateEpic(this.formEpicUpdate.value, epicId, projectId).subscribe({
       next: (response) => {
+    
         this.epics = this.epics.map(epic => {
           if (epic.item_id === epicId) {
             return response.object;
@@ -140,6 +149,27 @@ export class BacklogComponent {
       }
     })
   }
+
+   updateStory(storyId: number) {    
+    const projectId = 2
+    this.backlogService.updateEpic(this.formStoryUpdate.value, storyId, projectId).subscribe({
+      next: (response) => {
+           console.log(response);
+        this.stories = this.stories.map(story => {
+          if (story.item_id === storyId) {
+            return response.object;
+          }
+          return story;
+        });
+        this.toastService.toast('Story updated successfully', 'success');
+        this.showModalEditStory(0);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
 
   modalConfirmDeleteEpic(epicId: number) {   
     this.epicIdToDelete.set(epicId);
@@ -204,19 +234,20 @@ export class BacklogComponent {
     this.closeMenu();
   } 
 
-  showFieldsEditStory(storyId: number) {
-     $(".story-" + storyId).toggle('fast');
-    $(".edit-story-" + storyId).toggle('fast');
-    
- /*   const storyToEdit = this.stories.find(story => story.item_id === storyId);
+  showModalEditStory(storyId: number) {
+   
+     $("#modal-edit-story").toggle('fast');   
+      this.storyIdToDelete.set(storyId);
+    const storyToEdit = this.stories.find(story => story.item_id === storyId);
     if (storyToEdit) {
       this.formStoryUpdate.patchValue({
         title: storyToEdit.title,
         description: storyToEdit.description,
         epic_id: storyToEdit.epic_id,
         priority: storyToEdit.priority
-      }); */
+      }); 
   }
+}
  
 
 
