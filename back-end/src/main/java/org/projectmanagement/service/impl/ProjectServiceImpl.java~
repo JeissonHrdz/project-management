@@ -83,18 +83,22 @@ public class ProjectServiceImpl  implements ProjectService {
     public ProjectReadDto getProject(int id) {
         Optional<Project> project = projectRepository.findById(id);
 
-        return project.map(value -> new ProjectReadDto(
-                value.getProject_id(),
-                value.getName(),
-                value.getDescription(),
-                value.getProduct_owner_id(),
-                value.getScrum_master_id(),
-                value.getStart_date(),
-                value.getEstimated_end_date(),
-                value.getActual_end_date(),
-                value.getDefinition_of_done(),
-                value.getStatus()
-        )).orElse(null);
+        if (project.isEmpty()) {
+            return null;
+        }
+        return new ProjectReadDto(
+                project.get().getProject_id(),
+                project.get().getName(),
+                project.get().getDescription(),
+                project.get().getProduct_owner_id(),
+                project.get().getScrum_master_id(),
+                project.get().getStart_date(),
+                project.get().getEstimated_end_date(),
+                project.get().getActual_end_date(),
+                project.get().getDefinition_of_done(),
+                project.get().getStatus()
+        );
+      
 
     }
 

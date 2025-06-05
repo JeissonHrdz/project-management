@@ -3,16 +3,17 @@ import { authGuard, authGuardLogin } from './core/auth/guards/auth-gurard';
 import { BacklogComponent } from './components/projects/backlog/backlog.component';
 
 export const routes: Routes = [
-      {
+    {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
     },
 
     {
-        path: 'projects',
-        loadComponent: () => import('./components/projects/projects.component')
-            .then(m => m.ProjectsComponent),
+        path: 'project/:projectId/dashboard',
+
+        loadComponent: () => import('./components/projects/dashboard-project/dashboard-project.component')
+            .then(m => m.DashboardProjectComponent),
         canActivate: [authGuard],
         children: [
             {

@@ -86,13 +86,17 @@ public class BacklogServiceImpl  implements BacklogService {
                 case "story_points" -> backlog.get().setStory_points((Integer) value);
                 case "type" -> backlog.get().setType((String) value);
                 case "epic_id" -> {
-
+                    Integer epicId = convertToInteger(value);
+                    backlog.get().setEpic(backlogRepository.findById(epicId)
+                            .orElseThrow(() -> new IllegalArgumentException("Epic not found with id: " + epicId)));
                 }
 
-                
+
                 default -> throw new IllegalArgumentException("Invalid key: " + key);
             }
         });
+
+        System.err.println(backlogMapper.toDto(backlogRepository.save(backlog.get())));
          return backlogMapper.toDto(backlogRepository.save(backlog.get()));
 
     }

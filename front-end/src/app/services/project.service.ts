@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environment/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -11,8 +11,9 @@ import { ProjectCreateDTO } from '../core/model/dto/project-create-dto';
 })
 export class ProjectService {
 
-  private urlBase: string = environment.baseUrl + '/project';
+  private urlBase: string = environment.baseUrl + '/project';  
   private http = inject(HttpClient);
+  projectId = signal(0);
 
   createProject(project: ProjectCreateDTO): Observable<Project> {
     return this.http.post<Project>(this.urlBase + '/create', project).pipe(
@@ -23,6 +24,13 @@ export class ProjectService {
   getAllProjects(scrum_master_id: string ): Observable<any> {
     return this.http.get<any>(this.urlBase + '/projects', { params: { scrum_master_id: scrum_master_id } }).pipe(
       tap((response) => console.log(response.object)),
+      catchError(this.handleError)
+    )
+  }
+
+  getProjectById(projectId: number): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/' + projectId).pipe(
+      tap((response) => console.log(response)),
       catchError(this.handleError)
     )
   }

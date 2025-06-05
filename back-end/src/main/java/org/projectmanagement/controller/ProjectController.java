@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/project")
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4500"})
 @RequiredArgsConstructor
 public class ProjectController {
 
@@ -59,9 +59,7 @@ public class ProjectController {
         if (!roleService.hasPermission("projects", "read")) {
             throw new AccessDeniedException("Access Denied");
         }
-
         try{
-
             List<ProjectReadDto> getProjects = projectService.getProjects(scrum_master_id);
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Projects retrieved successfully")
@@ -76,7 +74,27 @@ public class ProjectController {
                     HttpStatus.BAD_REQUEST
             );
         }
+    }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getProject(@PathVariable int id) {
+        if (!roleService.hasPermission("projects", "read")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        try {
+            ProjectReadDto getProject = projectService.getProject(id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Project retrieved successfully")
+                    .object(getProject)
+                    .build(),
+                    HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
     }
 
     @PatchMapping(value = "/update/{id}")

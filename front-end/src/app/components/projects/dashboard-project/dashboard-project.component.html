@@ -1,28 +1,43 @@
-<section class="w-full flex flex-col">
-    <div class="w-full p-6 border-b-2 border-gray-200">
-        <h1 class="text-2xl font-semibold">Project 1</h1>
-    </div>
-    <div class="w-auto h-[48px] z-10 ">
-        <ul class="grid grid-cols-[repeat(4,minmax(auto,1fr))]  gap-5 font-semibold text-[14px] p-2  pl-6 w-[550px] ">
-            <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row"
-                 (click)="openItem('overview')">
-                <ng-icon class="mr-1" size="20" name="heroDocumentText"></ng-icon>
-                Overview</li>
-            <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row"
-             (click)="openItem('backlog')">
-                 <ng-icon class="mr-1" size="20" name="heroRectangleStack"></ng-icon>
-                Backlog</li>
-            <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row">
-                 <ng-icon class="mr-1" size="20" name="heroArrowPathRoundedSquare"></ng-icon>
-                Sprints</li>
-            <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row">
-                 <ng-icon class="mr-1" size="20" name="heroDocumentCheck"></ng-icon>
-                Tasks</li>          
-        </ul>        
-    </div>
-    <hr class="w-full mt-1 border-1 border-gray-200 z-10">
-</section>
-<section class="w-full ">
-    
-    <router-outlet></router-outlet> 
+<section class="flex flex-row">
+    <app-main-menu />
+    <section class="flex flex-col w-full h-screen bg-gray-100 pt-3">
+        <div class="flex flex-col w-full h-full bg-white rounded-tl-2xl border-t-2 border-l-2  border-gray-200">
+            <section class="w-full flex flex-col">
+                <div class="w-full p-6 border-b-2 border-gray-200">
+                    <h1 class="text-2xl font-semibold">{{project?.name}}</h1>
+                </div>
+                <div class="w-auto h-[48px] z-10 ">
+                    <ul
+                        class="grid grid-cols-[repeat(4,minmax(auto,1fr))]  gap-5 font-semibold text-[14px] p-2  pl-6 w-[550px] ">
+                        <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row"
+                            (click)="openItem('overview')">
+                            <ng-icon class="mr-1" size="20" name="heroDocumentText"></ng-icon>
+                            Overview
+                        </li>
+                        <li class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row"
+                            (click)="openItem('backlog')">
+                            <ng-icon class="mr-1" size="20" name="heroRectangleStack"></ng-icon>
+                            Backlog
+                        </li>
+                        <li
+                            class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row">
+                            <ng-icon class="mr-1" size="20" name="heroArrowPathRoundedSquare"></ng-icon>
+                            Sprints
+                        </li>
+                        <li
+                            class="hover:border-1 w-fit  border-neutral-300 hover:bg-neutral-100 hover:rounded-md p-2 cursor-pointer flex flex-row">
+                            <ng-icon class="mr-1" size="20" name="heroDocumentCheck"></ng-icon>
+                            Tasks
+                        </li>
+                    </ul>
+                </div>
+                <hr class="w-full mt-1 border-1 border-gray-200 z-10">
+            </section>
+            <section class="w-full ">
+
+                <router-outlet></router-outlet>
+            </section>
+
+        </div>
+    </section>
 </section>

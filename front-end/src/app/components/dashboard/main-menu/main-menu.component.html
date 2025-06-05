@@ -19,11 +19,9 @@
             <li class="p-2 pl-6"><a  class="flex cursor-pointer hover:text-neutral-800 transition ease-in-out" 
                 routerLink="/dashboard">
                 <ng-icon class="mr-2" size="22" name="heroSquares2x2"></ng-icon>Dashboard</a></li>
-            <li class="p-2 pl-6 flex flex-row items-center">
-                <a  class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out"routerLink="/projects">            
+            <li class="p-2 pl-6 flex flex-row items-center">                           
                 <ng-icon  class="mr-2" size="22" name="heroRectangleGroup"></ng-icon>
-                Projects
-                </a>  
+                Projects              
                 <div (click)="openMenuProjects()" class="relative left-25 cursor-pointer">
                       <ng-icon   size="18" name="heroChevronDown"></ng-icon> 
                 </div>
@@ -34,7 +32,12 @@
             <li class="menu-projects w-full pl-9 hidden">
                   <ul class="border-l-2 border-gray-300">
                     @for(project of projects; track  $index){                     
-                    <li class="p-2 pl-7 text-gray-500  cursor-pointer hover:text-neutral-800" >{{project.name}}</li>                 
+                    <li class="p-2 pl-7 text-gray-500  cursor-pointer hover:text-neutral-800" >
+                         <a  class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out"
+                          routerLink="/project/{{project.project_id}}/dashboard">
+                          {{project.name}}
+                          </a>
+                        </li>                 
                     }
                 </ul>
             </li>

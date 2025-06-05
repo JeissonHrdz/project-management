@@ -90,6 +90,7 @@ public class BacklogController {
         }
         try{
             BacklogResponseDto backlogResponseDto = backlogService.updateItem(id, updates);
+            System.err.println("EPIC:" +backlogResponseDto.epic_id());
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Backlog item updated successfully")
                     .object(backlogResponseDto)

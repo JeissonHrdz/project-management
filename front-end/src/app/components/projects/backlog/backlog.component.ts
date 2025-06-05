@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { BacklogItem } from '../../../core/model/entity/backlog-item.model';
 import { ToastService } from '../../../services/toast.service';
+import { ProjectService } from '../../../services/project.service';
 
 @Component({
   selector: 'app-backlog',
@@ -23,6 +24,8 @@ export class BacklogComponent {
   private destroy$ = new Subject<void>();
   private backlogService = inject(BacklogService)
   private toastService = inject(ToastService) 
+  private projectService = inject(ProjectService); // Assuming BacklogService has methods to get project context
+  projectId = 0; // Hardcoded for now, should be dynamic based on the project context
 
   formEpic: FormGroup | any;
   formStory: FormGroup | any;
@@ -68,17 +71,18 @@ export class BacklogComponent {
   }
 
   ngOnInit() {
-    this.backlogService.getEpics(2).pipe(
+    this.backlogService.getEpics(this.projectService.projectId()).pipe(
       takeUntil(this.destroy$))
       .subscribe(data => {
         this.epics = data.object;
         console.log(this.epics);
       })
       this.getAllStorysByProject();
+       
   }
 
   getAllStorysByProject() {
-   this.backlogService.getStories(2).pipe(
+   this.backlogService.getStories(this.projectService.projectId()).pipe(
       takeUntil(this.destroy$))
       .subscribe(data => {
         this.stories = data.object;
@@ -131,7 +135,7 @@ export class BacklogComponent {
   }
 
   updateEpic(epicId: number) {
-    const projectId = 2
+    const projectId = this.projectService.projectId();
     this.backlogService.updateEpic(this.formEpicUpdate.value, epicId, projectId).subscribe({
       next: (response) => {
     
@@ -151,10 +155,10 @@ export class BacklogComponent {
   }
 
    updateStory(storyId: number) {    
-    const projectId = 2
+    const projectId = this.projectService.projectId();
     this.backlogService.updateEpic(this.formStoryUpdate.value, storyId, projectId).subscribe({
       next: (response) => {
-           console.log(response);
+           console.log(response.object);
         this.stories = this.stories.map(story => {
           if (story.item_id === storyId) {
             return response.object;

@@ -31,8 +31,7 @@ export class MainMenuComponent {
       })     
   }
 
-  openMenuProjects(){  
-     
+  openMenuProjects(){       
     $('.menu-projects').animate({ height: "toggle" }, "fast");
   }
 

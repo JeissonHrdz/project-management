@@ -90,6 +90,7 @@ public class BacklogController {
         }
         try{
             BacklogResponseDto backlogResponseDto = backlogService.updateItem(id, updates);
+            System.err.println("EPICA:" +backlogResponseDto.epic_id());
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Backlog item updated successfully")
                     .object(backlogResponseDto)
@@ -132,16 +133,11 @@ public class BacklogController {
             throw new AccessDeniedException("Access Denied");
         }
         try {
-            if(backlogService.deleteItemByEpicId(id) > 0) {
                 backlogService.deleteItem(id);
                 return new ResponseEntity<>(ResponseMessage.builder()
                         .message("Backlog item deleted successfully")
                         .build(), HttpStatus.OK);
-            }  else {
-                return new ResponseEntity<>(ResponseMessage.builder()
-                        .message("Backlog item not deleted")
-                        .build(), HttpStatus.CONFLICT);
-            }
+
 
         } catch (AccessDeniedException e) {
             return new ResponseEntity<>(ResponseMessage.builder()

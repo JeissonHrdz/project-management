@@ -10,6 +10,7 @@ public interface ProjectService {
 
     public ProjectResponseDto createProject(ProjectCreateDto project);
     public List<ProjectReadDto> getProjects(String scrum_master_id);
+    public ProjectReadDto getProject(int id);
     public ProjectResponseDto updateProject(int id, Map<String, Object> updates);
     public void deleteProject(int project_id);
 

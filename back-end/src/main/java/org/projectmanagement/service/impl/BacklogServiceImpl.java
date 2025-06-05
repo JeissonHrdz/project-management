@@ -95,6 +95,8 @@ public class BacklogServiceImpl  implements BacklogService {
                 default -> throw new IllegalArgumentException("Invalid key: " + key);
             }
         });
+
+        System.err.println(backlogMapper.toDto(backlogRepository.save(backlog.get())).epic_id());
          return backlogMapper.toDto(backlogRepository.save(backlog.get()));
 
     }
