@@ -25,7 +25,7 @@ export class BacklogComponent {
   private backlogService = inject(BacklogService)
   private toastService = inject(ToastService) 
   private projectService = inject(ProjectService); // Assuming BacklogService has methods to get project context
-  projectId = 0; // Hardcoded for now, should be dynamic based on the project context
+  projectId = Number(localStorage.getItem('projectId')); // Hardcoded for now, should be dynamic based on the project context
 
   formEpic: FormGroup | any;
   formStory: FormGroup | any;
@@ -45,7 +45,7 @@ export class BacklogComponent {
     this.formEpic = this.form.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      project_id: [2],
+      project_id: [this.projectId],
       priority: [0],
       type: ['EPIC']
     })
@@ -57,7 +57,7 @@ export class BacklogComponent {
     this.formStory = this.form.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      project_id: [2],
+      project_id: [this.projectId],
       priority: ['', [Validators.required]],
       epic_id: ['', [Validators.required]],
       type: ['USER_STORY']
@@ -71,7 +71,7 @@ export class BacklogComponent {
   }
 
   ngOnInit() {
-    this.backlogService.getEpics(this.projectService.projectId()).pipe(
+    this.backlogService.getEpics(this.projectId).pipe(
       takeUntil(this.destroy$))
       .subscribe(data => {
         this.epics = data.object;
@@ -82,51 +82,42 @@ export class BacklogComponent {
   }
 
   getAllStorysByProject() {
-   this.backlogService.getStories(this.projectService.projectId()).pipe(
+   this.backlogService.getStories(this.projectId).pipe(
       takeUntil(this.destroy$))
       .subscribe(data => {
         this.stories = data.object;
         console.log(this.stories);
       })
    
-  }
+  }  
 
-  createEpic() {
-    if (this.formEpic.valid) {
-      this.backlogService.createEpic(this.formEpic.value).subscribe({
+  createBacklogItem(type: string) {
+    const form = type === 'EPIC' ? this.formEpic : this.formStory;
+    const funcSend = type === 'EPIC' ? this.backlogService.createEpic(form.value) : this.backlogService.createStory(form.value);  
+       
+    if(form.valid){
+      funcSend.subscribe({
         next: (response) => {
-          this.epics.push(response.object);
-          this.showFormEpic();
+          if (type === 'EPIC') {
+            this.epics.push(response.object);
+            this.toastService.toast('Epic created successfully', 'success');
+            this.showFormEpic();
+          } else {
+            this.stories.push(response.object);
+            this.toastService.toast('Story created successfully', 'success');
+          }
         },
         error: (error) => {
           console.log(error);
         }
-      })
+      });
     } else {
-      this.formEpic.markAllAsTouched();
-      $('#title').addClass('is-invalid');
-      $('#description').addClass('is-invalid');
+      form.markAllAsTouched();
+      const fields = type === 'EPIC' ? ['title', 'description'] : ['title', 'description', 'epic_id', 'priority'];
+      fields.forEach(field => $(`#${field}`).addClass('is-invalid'));
     }
-  }
+    
 
-  createStory() {
-    if (this.formStory.valid) {
-      this.backlogService.createStory(this.formStory.value).subscribe({
-        next: (response) => {
-          this.stories.push(response.object);
-          this.toastService.toast('Story created successfully', 'success');
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      })
-    } else {
-      this.formStory.markAllAsTouched();
-      $('#title').addClass('is-invalid');
-      $('#description').addClass('is-invalid');
-      $('#epic_id').addClass('is-invalid');
-      $('#priority').addClass('is-invalid');
-    }
   }
 
   getEpicName(epicId: number): string {
@@ -134,44 +125,42 @@ export class BacklogComponent {
     return epic ? epic.title : '';
   }
 
-  updateEpic(epicId: number) {
-    const projectId = this.projectService.projectId();
-    this.backlogService.updateEpic(this.formEpicUpdate.value, epicId, projectId).subscribe({
-      next: (response) => {
-    
-        this.epics = this.epics.map(epic => {
-          if (epic.item_id === epicId) {
-            return response.object;
-          }
-          return epic;
-        });
-        this.toastService.toast('Epic updated successfully', 'success');
-        this.showFormEditEpic(epicId);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
-  }
 
-   updateStory(storyId: number) {    
-    const projectId = this.projectService.projectId();
-    this.backlogService.updateEpic(this.formStoryUpdate.value, storyId, projectId).subscribe({
-      next: (response) => {
-           console.log(response.object);
-        this.stories = this.stories.map(story => {
-          if (story.item_id === storyId) {
-            return response.object;
+  updateItemBacklog(itemId: number, type: string) {
+    const projectId = this.projectId; // Assuming you have a way to get the current project ID
+     const form = type === 'EPIC' ? this.formEpicUpdate : this.formStoryUpdate;
+     const functionSend = this.backlogService.updateItem( form.value, itemId, projectId)    
+      
+    if (form.valid) { 
+      functionSend.subscribe({
+        next: (response) => {
+          if (type === 'EPIC') {
+            this.epics = this.epics.map(epic => {
+              if (epic.item_id === itemId) {
+                return response.object;
+              }
+              return epic;
+            });
+            this.toastService.toast('Epic updated successfully', 'success');
+            this.showFormEditEpic(itemId);
+          } else {
+            this.stories = this.stories.map(story => {
+              if (story.item_id === itemId) {
+                return response.object;
+              }
+              return story;
+            });
+            this.toastService.toast('Story updated successfully', 'success');
+            this.showModalEditStory(0);
           }
-          return story;
-        });
-        this.toastService.toast('Story updated successfully', 'success');
-        this.showModalEditStory(0);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })     
+      
+    }
+  
   }
 
 
@@ -180,33 +169,30 @@ export class BacklogComponent {
     $("#modal-delete-epic").toggle("fast");
   }
 
-  deleteEpic(epicId: number) {  
-    this.backlogService.deleteEpic(epicId).subscribe({
+
+  deleteItemBacklog(itemId: number, type: string) {
+    const functionSend = type === 'EPIC' ? this.backlogService.deleteEpic(itemId) : this.backlogService.deleteStory(itemId);
+
+    functionSend.subscribe({
       next: (response) => {
-        this.getAllStorysByProject()
-        this.epics = this.epics.filter(epic => epic.item_id !== epicId);
-        this.toastService.toast('Epic deleted successfully', 'success');
-        this.stories = this.stories.filter(story => story.epic_id !== epicId); 
-        this.modalConfirmDeleteEpic(0);      
-       
+        if (type === 'EPIC') {
+          this.epics = this.epics.filter(epic => epic.item_id !== itemId);
+          this.stories = this.stories.filter(story => story.epic_id !== itemId); 
+          this.toastService.toast('Epic deleted successfully', 'success');
+          this.modalConfirmDeleteEpic(0);    
+          
+        } else {
+          this.stories = this.stories.filter(story => story.item_id !== itemId);
+          this.toastService.toast('Story deleted successfully', 'success');
+        }
       },
       error: (error) => {
         console.log(error);
       }
     })
+
   }
 
-  deleteStory(storyId: number) {
-    this.backlogService.deleteStory(storyId).subscribe({
-      next: (response) => {
-        this.stories = this.stories.filter(story => story.item_id !== storyId);
-        this.toastService.toast('Story deleted successfully', 'success');
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
-  }
 
   showFormEditEpic(epicid: number) {
     const epicToEdit = this.epics.find(epic => epic.item_id === epicid);

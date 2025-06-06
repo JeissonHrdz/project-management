@@ -42,7 +42,7 @@ export class DashboardProjectComponent {
       if (project) {      
         this.project = project.object;
         if (this.project) {
-          this.projectService.projectId.set(this.project.project_id); // Set the projectId in the service
+          localStorage.setItem('projectId', this.project.project_id.toString()); // Set the projectId in the service
         }
       }
     }); 

@@ -4,21 +4,21 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { BacklogItem } from '../core/model/entity/backlog-item.model';
 import { BacklogEpicCreateDTO } from '../core/model/dto/Backlog-epic-create-dto';
+import { ProjectService } from './project.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BacklogService {
 
-    projectId: number = 0
-    private urlBase: string = environment.baseUrl + '/project'
-    private http = inject(HttpClient);
+    private projectId:number = Number(localStorage.getItem('projectId')); // Assuming you have a ProjectService to get the current project ID
+    private urlBase: string = environment.baseUrl + '/project'  
 
-  constructor() { }
+  constructor(private http : HttpClient) { }
 
   createEpic(epic: BacklogEpicCreateDTO ): Observable<any> {      
-    this.projectId = epic.project_id;
-    return this.http.post<any>(this.urlBase + '/' + this.projectId + '/backlog/create-epic', epic).pipe(
+   
+    return this.http.post<any>(this.urlBase + '/' + epic.project_id + '/backlog/create-epic', epic).pipe(
       catchError(this.handleError)
     )
   }
@@ -41,8 +41,8 @@ export class BacklogService {
     )
   }
 
-  updateEpic(epic: BacklogItem, epicId: number, projectId: number): Observable<any> {  
-    return this.http.patch<any>(this.urlBase + '/' + projectId + '/backlog/update/' + epicId, epic).pipe(
+  updateItem(item: BacklogItem, itemId: number, projectId: number): Observable<any> {  
+    return this.http.patch<any>(this.urlBase + '/' + projectId + '/backlog/update/' + itemId, item).pipe(
       catchError(this.handleError)
     )
   }

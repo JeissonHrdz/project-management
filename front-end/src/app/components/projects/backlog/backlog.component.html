@@ -21,7 +21,7 @@
                 </li>
                 <li>
                     <div class="mt-2 w-full rounded-md hidden edit-epic-{{epics.item_id}}">
-                        <form [formGroup]="formEpicUpdate" (submit)="updateEpic(epics.item_id)">
+                        <form [formGroup]="formEpicUpdate" (submit)="updateItemBacklog(epics.item_id, 'EPIC')">
                             <input formControlName="title" type="text" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
                                     border-gray-200  focus:border-blue-400  text-[14px]" placeholder="Title" id="title"
                                 value="{{epics.title}}">
@@ -41,7 +41,7 @@
                 New Epic <ng-icon class="ml-2 " size="20" name="heroPlus" color="#fff"></ng-icon>
             </button>
             <div class="mt-4 hidden" id="form-epic">
-                <form [formGroup]="formEpic" (submit)="createEpic()">
+                <form [formGroup]="formEpic" (submit)="createBacklogItem('EPIC')">
                     <input formControlName="title" id="title" [ngClass]="{'is-invalid': hasErrors('title', 'required')}"
                         class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-md border-1
                                     border-gray-200 focus:border-blue-400  text-[14px]" type="text" name="title"
@@ -60,7 +60,7 @@
 
         </div>
         <div class="w-full flex flex-col p-4">
-            <form [formGroup]="formStory" (ngSubmit)="createStory()">
+            <form [formGroup]="formStory" (submit)="createBacklogItem('USER_STORY')">
                 <table class="w-full text-left border-collapse rounded-md border-1 border-gray-200">
                     <thead class="rounded-t-md bg-neutral-100">
                         <tr class="text-neutral-600 *:text-left *:p-2 *:pl-3 text-[12px] font-medium ">
@@ -154,7 +154,7 @@
                                                 <ng-icon class="mr-2" size="18" name="heroPencilSquare"></ng-icon>
                                                 Edit
                                             </li>
-                                            <li (click)="deleteStory(story.item_id)"
+                                            <li (click)="deleteItemBacklog(story.item_id, 'USER_STORY')"
                                                 class="p-3 flex hover:bg-neutral-100 text-red-500 cursor-pointer rounded-md">
                                                 <ng-icon class="mr-2" size="18" color="#fb2c36"
                                                     name="heroTrash"></ng-icon>
@@ -198,7 +198,7 @@
                                     <button (click)="modalConfirmDeleteEpic(0)" class="border-1 border-neutral-400 w-full font-medium rounded-md pl-3 pr-3 hover:text-white
                          text-neutral-800 hover:bg-neutral-800 
                                         transition duration-150 ease-in-out cursor-pointer p-2"> No</button>
-                                    <button (click)="deleteEpic(this.epicIdToDelete())" class=" w-full bg-red-500 font-medium text-white rounded-md pl-3 pr-3 hover:bg-red-400 
+                                    <button (click)="deleteItemBacklog(this.epicIdToDelete(), 'EPIC')" class=" w-full bg-red-500 font-medium text-white rounded-md pl-3 pr-3 hover:bg-red-400 
                                         transition duration-150 ease-in-out cursor-pointer p-2">Yes</button>
 
                                 </div>
@@ -258,7 +258,7 @@
                                                 [ngClass]="{'is-invalid': hasErrorsStory('priority', 'required')}">
                                         </div>
                                     </div>
-                                    <button type="submit" (click)="updateStory(this.storyIdToDelete())"
+                                    <button type="submit" (click)="updateItemBacklog(this.storyIdToDelete(), 'USER_STORY')"
                                         class="p-2 border-1 border-green-500 mt-4 cursor-pointer text-green-500 rounded-md hover:bg-green-500 hover:text-white transition-colors">
                                         Save
                                     </button>
