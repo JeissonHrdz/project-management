@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroDocumentText, heroRectangleStack, heroArrowPathRoundedSquare, heroDocumentCheck } from '@ng-icons/heroicons/outline';
@@ -11,7 +11,7 @@ import { MainMenuComponent } from '../../dashboard/main-menu/main-menu.component
 
 @Component({
   selector: 'app-dashboard-project', 
-  imports: [ NgIcon,RouterModule, CommonModule, MainMenuComponent ],
+  imports: [ NgIcon,RouterModule, CommonModule, MainMenuComponent],
   providers: [ provideIcons({ heroDocumentText, heroRectangleStack, heroArrowPathRoundedSquare, heroDocumentCheck }) ],
   templateUrl: './dashboard-project.component.html',
   styleUrl: './dashboard-project.component.css'
@@ -26,36 +26,43 @@ export class DashboardProjectComponent {
   projectId: number = 0;
   project: Project | null = null;
 
-  ngOnInit(){
-    this.route.paramMap.pipe(
-      switchMap(params => { 
-        this.projectId = Number(params.get('projectId'));
-        return this.projectService.getProjectById(this.projectId).pipe(
-          catchError(error => {
-            console.error('Error fetching project:', error);
-            return of(null); // Return null or handle the error as needed
-          }) 
-        );
-      }),
-      takeUntil(this.destroy$)
-    ).subscribe(project => {
-      if (project) {      
-        this.project = project.object;
-        if (this.project) {
-          localStorage.setItem('projectId', this.project.project_id.toString()); // Set the projectId in the service
+
+  constructor() { 
+    // Effect to log projectId changes
+    effect(() => {
+      console.log('Project ID:', this.projectService._projectId());
+    });    // Subscribe to projectId changes
+   
+  }
+  ngOnInit(){  
+   this.getProjectInfo();
+  }
+
+  getProjectInfo(){
+       this.projectService.getProjectById(this.projectService._projectId()) .pipe(
+      takeUntil(this.destroy$))
+      .subscribe(project => {
+        this.project= project;
+        if (project) {
+          this.project = project.object; 
+          localStorage.setItem('projectId',this.project?.project_id.toString() ?? '');
         }
-      }
-    }); 
-    
+      })   
+
   }
 
 
   openItem(item: string) {
     if(item == 'backlog') {
-      this.router.navigate(['/project/' + this.projectId + '/dashboard/backlog'],{
+      this.router.navigate(['/project/dashboard/backlog'],{
         relativeTo: this.route
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

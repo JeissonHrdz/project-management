@@ -10,7 +10,7 @@ export const routes: Routes = [
     },
 
     {
-        path: 'project/:projectId/dashboard',
+        path: 'project/dashboard',
 
         loadComponent: () => import('./components/projects/dashboard-project/dashboard-project.component')
             .then(m => m.DashboardProjectComponent),

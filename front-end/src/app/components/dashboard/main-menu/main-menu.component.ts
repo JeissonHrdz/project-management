@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroSquares2x2, heroRectangleGroup, heroUsers,heroCog6Tooth, heroMagnifyingGlass, heroBell, heroChevronDown} from '@ng-icons/heroicons/outline';
 import $ from 'jquery';
@@ -19,6 +19,7 @@ export class MainMenuComponent {
 
   private projectService = inject(ProjectService)
   private authService = inject(AuthServiceService)
+  private router = inject(Router);
   private destroy$ = new Subject<void>();
   
   projects:Project[] = [];
@@ -29,6 +30,12 @@ export class MainMenuComponent {
       ).subscribe(data => {
         this.projects = data.object;      
       })     
+  }
+
+  gotoProject( projectId: number) {
+
+    this.projectService._projectId.set(projectId);  
+    this.router.navigate(['/project/dashboard']);    
   }
 
   openMenuProjects(){       

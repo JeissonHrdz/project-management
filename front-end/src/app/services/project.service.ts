@@ -13,7 +13,7 @@ export class ProjectService {
 
   private urlBase: string = environment.baseUrl + '/project';  
   private http = inject(HttpClient);
-  projectId = signal(0);
+   _projectId = signal<number>(0);
 
   createProject(project: ProjectCreateDTO): Observable<Project> {
     return this.http.post<Project>(this.urlBase + '/create', project).pipe(
@@ -29,8 +29,9 @@ export class ProjectService {
   }
 
   getProjectById(projectId: number): Observable<any> {
-    return this.http.get<any>(this.urlBase + '/' + projectId).pipe(
-      tap((response) => console.log(response)),
+    this._projectId.set(projectId);
+    console.log('Project ID set in service:', this._projectId());
+    return this.http.get<any>(this.urlBase + '/' + projectId).pipe(  
       catchError(this.handleError)
     )
   }

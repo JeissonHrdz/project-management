@@ -34,7 +34,8 @@
                     @for(project of projects; track  $index){                     
                     <li class="p-2 pl-7 text-gray-500  cursor-pointer hover:text-neutral-800" >
                          <a  class="flex  cursor-pointer  hover:text-neutral-800 transition ease-in-out"
-                          routerLink="/project/{{project.project_id}}/dashboard">
+                          (click)="gotoProject(project.project_id)">
+                            
                           {{project.name}}
                           </a>
                         </li>                 

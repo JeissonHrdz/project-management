@@ -7,7 +7,7 @@ import { heroCheckCircleSolid, heroXCircleSolid, heroInformationCircleSolid, her
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgIcon, MainMenuComponent],  
+  imports: [RouterOutlet, NgIcon],   
   providers: [provideIcons({ heroCheckCircleSolid, heroXCircleSolid, heroInformationCircleSolid, heroExclamationCircleSolid })],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
