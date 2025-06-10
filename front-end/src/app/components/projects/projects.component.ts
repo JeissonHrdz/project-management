@@ -9,7 +9,7 @@ import { DashboardProjectComponent } from "./dashboard-project/dashboard-project
 
 @Component({
   selector: 'app-projects',
-  imports: [MainMenuComponent,/* CreateProjectModalComponent,*/ CommonModule, DashboardProjectComponent], 
+  imports: [CommonModule, DashboardProjectComponent], 
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css',
       animations: [

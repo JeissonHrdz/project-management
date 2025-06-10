@@ -23,22 +23,22 @@ export class BacklogComponent {
 
   private destroy$ = new Subject<void>();
   private backlogService = inject(BacklogService)
-  private toastService = inject(ToastService) 
-  private projectService = inject(ProjectService); // Assuming BacklogService has methods to get project context
-  projectId = Number(localStorage.getItem('projectId')); // Hardcoded for now, should be dynamic based on the project context
+  private toastService = inject(ToastService)
+  private projectService = inject(ProjectService);
+  projectId = 0;
 
   formEpic: FormGroup | any;
   formStory: FormGroup | any;
   formStoryUpdate: FormGroup | any;
-  formEpicUpdate: FormGroup | any; 
- 
+  formEpicUpdate: FormGroup | any;
+
 
   epics: BacklogItem[] = [];
   stories: BacklogItem[] = [];
   epicIdToDelete = signal(0)
   storyIdToDelete = signal(0);
   openedMenuId: string | null = null;
-  
+
 
 
   constructor(private form: FormBuilder) {
@@ -71,31 +71,33 @@ export class BacklogComponent {
   }
 
   ngOnInit() {
+    this.projectId = this.projectService._projectId() ?? 0;
+    if (this.projectId == 0) {
+      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
+    }
     this.backlogService.getEpics(this.projectId).pipe(
       takeUntil(this.destroy$))
       .subscribe(data => {
         this.epics = data.object;
-        console.log(this.epics);
       })
-      this.getAllStorysByProject();
-       
+    this.getAllStorysByProject();
+
   }
 
   getAllStorysByProject() {
-   this.backlogService.getStories(this.projectId).pipe(
+    this.backlogService.getStories(this.projectId).pipe(
       takeUntil(this.destroy$))
       .subscribe(data => {
         this.stories = data.object;
-        console.log(this.stories);
       })
-   
-  }  
+
+  }
 
   createBacklogItem(type: string) {
     const form = type === 'EPIC' ? this.formEpic : this.formStory;
-    const funcSend = type === 'EPIC' ? this.backlogService.createEpic(form.value) : this.backlogService.createStory(form.value);  
-       
-    if(form.valid){
+    const funcSend = type === 'EPIC' ? this.backlogService.createEpic(form.value) : this.backlogService.createStory(form.value);
+
+    if (form.valid) {
       funcSend.subscribe({
         next: (response) => {
           if (type === 'EPIC') {
@@ -116,7 +118,7 @@ export class BacklogComponent {
       const fields = type === 'EPIC' ? ['title', 'description'] : ['title', 'description', 'epic_id', 'priority'];
       fields.forEach(field => $(`#${field}`).addClass('is-invalid'));
     }
-    
+
 
   }
 
@@ -128,10 +130,10 @@ export class BacklogComponent {
 
   updateItemBacklog(itemId: number, type: string) {
     const projectId = this.projectId; // Assuming you have a way to get the current project ID
-     const form = type === 'EPIC' ? this.formEpicUpdate : this.formStoryUpdate;
-     const functionSend = this.backlogService.updateItem( form.value, itemId, projectId)    
-      
-    if (form.valid) { 
+    const form = type === 'EPIC' ? this.formEpicUpdate : this.formStoryUpdate;
+    const functionSend = this.backlogService.updateItem(form.value, itemId, projectId)
+
+    if (form.valid) {
       functionSend.subscribe({
         next: (response) => {
           if (type === 'EPIC') {
@@ -157,14 +159,14 @@ export class BacklogComponent {
         error: (error) => {
           console.log(error);
         }
-      })     
-      
+      })
+
     }
-  
+
   }
 
 
-  modalConfirmDeleteEpic(epicId: number) {   
+  modalConfirmDeleteEpic(epicId: number) {
     this.epicIdToDelete.set(epicId);
     $("#modal-delete-epic").toggle("fast");
   }
@@ -177,10 +179,10 @@ export class BacklogComponent {
       next: (response) => {
         if (type === 'EPIC') {
           this.epics = this.epics.filter(epic => epic.item_id !== itemId);
-          this.stories = this.stories.filter(story => story.epic_id !== itemId); 
+          this.stories = this.stories.filter(story => story.epic_id !== itemId);
           this.toastService.toast('Epic deleted successfully', 'success');
-          this.modalConfirmDeleteEpic(0);    
-          
+          this.modalConfirmDeleteEpic(0);
+
         } else {
           this.stories = this.stories.filter(story => story.item_id !== itemId);
           this.toastService.toast('Story deleted successfully', 'success');
@@ -212,22 +214,22 @@ export class BacklogComponent {
   showFormEpic() {
     $("#form-epic").animate({ height: "toggle" }, "fast");
   }
-  toggleMenu(menuId: string): void {   
-    this.openedMenuId = this.openedMenuId === `menu-${menuId}` ? null : `${menuId}`;    
+  toggleMenu(menuId: string): void {
+    this.openedMenuId = this.openedMenuId === `menu-${menuId}` ? null : `${menuId}`;
   }
-   closeMenu(): void {
+  closeMenu(): void {
     this.openedMenuId = null;
   }
 
   @HostListener('document:click')
   onDocumentClick(): void {
     this.closeMenu();
-  } 
+  }
 
   showModalEditStory(storyId: number) {
-   
-     $("#modal-edit-story").toggle('fast');   
-      this.storyIdToDelete.set(storyId);
+
+    $("#modal-edit-story").toggle('fast');
+    this.storyIdToDelete.set(storyId);
     const storyToEdit = this.stories.find(story => story.item_id === storyId);
     if (storyToEdit) {
       this.formStoryUpdate.patchValue({
@@ -235,10 +237,10 @@ export class BacklogComponent {
         description: storyToEdit.description,
         epic_id: storyToEdit.epic_id,
         priority: storyToEdit.priority
-      }); 
+      });
+    }
   }
-}
- 
+
 
 
   hasErrors(controlName: string, errorType: string) {

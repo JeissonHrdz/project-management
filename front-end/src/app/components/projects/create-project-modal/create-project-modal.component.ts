@@ -50,8 +50,7 @@ export class CreateProjectModalComponent {
       if (this.formProject.valid) {
          if (Date.parse(this.formProject.value.start_date) < Date.parse(this.formProject.value.estimated_end_date)) {
         this.projectService.createProject(this.formProject.value).subscribe({
-          next: (response) => {
-            console.log(response);
+          next: (response) => {           
             this.close();
             this.toastService.toast('Project created successfully', 'success');
           },

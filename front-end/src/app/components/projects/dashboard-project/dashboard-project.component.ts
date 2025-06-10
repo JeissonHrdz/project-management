@@ -10,9 +10,9 @@ import { MainMenuComponent } from '../../dashboard/main-menu/main-menu.component
 
 
 @Component({
-  selector: 'app-dashboard-project', 
-  imports: [ NgIcon,RouterModule, CommonModule, MainMenuComponent],
-  providers: [ provideIcons({ heroDocumentText, heroRectangleStack, heroArrowPathRoundedSquare, heroDocumentCheck }) ],
+  selector: 'app-dashboard-project',
+  imports: [NgIcon, RouterModule, CommonModule],
+  providers: [provideIcons({ heroDocumentText, heroRectangleStack, heroArrowPathRoundedSquare, heroDocumentCheck })],
   templateUrl: './dashboard-project.component.html',
   styleUrl: './dashboard-project.component.css'
 })
@@ -27,34 +27,38 @@ export class DashboardProjectComponent {
   project: Project | null = null;
 
 
-  constructor() { 
+  constructor() {
     // Effect to log projectId changes
     effect(() => {
       console.log('Project ID:', this.projectService._projectId());
     });    // Subscribe to projectId changes
-   
+
   }
-  ngOnInit(){  
-   this.getProjectInfo();
+  ngOnInit() {
+    this.getProjectInfo();
   }
 
-  getProjectInfo(){
-       this.projectService.getProjectById(this.projectService._projectId()) .pipe(
+  getProjectInfo() {
+    this.projectId = this.projectService._projectId() ?? 0;
+
+    if (this.projectId == 0) {
+      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
+    }
+
+    this.projectService.getProjectById(this.projectId).pipe(
       takeUntil(this.destroy$))
       .subscribe(project => {
-        this.project= project;
+        this.project = project;
         if (project) {
-          this.project = project.object; 
-          localStorage.setItem('projectId',this.project?.project_id.toString() ?? '');
+          this.project = project.object;          
         }
-      })   
-
+      })
   }
 
 
   openItem(item: string) {
-    if(item == 'backlog') {
-      this.router.navigate(['/project/dashboard/backlog'],{
+    if (item == 'backlog') {
+      this.router.navigate(['backlog'], {
         relativeTo: this.route
       });
     }

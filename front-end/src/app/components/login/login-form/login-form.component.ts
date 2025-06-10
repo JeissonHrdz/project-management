@@ -35,15 +35,14 @@ export class LoginFormComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value as UserLoginDTO).subscribe({
         next: (response) => {
-          console.log(response);
+         
         },
         error: (error) => {
           this.responseMessage = "Invalid username or password";
           console.error('Login error:', error.message);
           this.errorInput = false;
         },
-        complete: () => {
-          console.log('Login request completed');
+        complete: () => {         
           this.router.navigate(['/dashboard']);
           this.errorInput = false;
           this.loginForm.reset();

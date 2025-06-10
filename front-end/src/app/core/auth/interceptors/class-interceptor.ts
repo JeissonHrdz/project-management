@@ -9,7 +9,7 @@ export class ClassInterceptor implements HttpInterceptor{
     private authService = inject(AuthServiceService);
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log('Intercepting request:', req);
+       // console.log('Intercepting request:', req);
             const token = this.authService.userToken
             const modifiedReq = req.clone({
                 headers: req.headers

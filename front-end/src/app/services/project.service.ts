@@ -22,15 +22,13 @@ export class ProjectService {
   }
 
   getAllProjects(scrum_master_id: string ): Observable<any> {
-    return this.http.get<any>(this.urlBase + '/projects', { params: { scrum_master_id: scrum_master_id } }).pipe(
-      tap((response) => console.log(response.object)),
+    return this.http.get<any>(this.urlBase + '/projects', { params: { scrum_master_id: scrum_master_id } }).pipe(    
       catchError(this.handleError)
     )
   }
 
   getProjectById(projectId: number): Observable<any> {
-    this._projectId.set(projectId);
-    console.log('Project ID set in service:', this._projectId());
+    this._projectId.set(projectId);   
     return this.http.get<any>(this.urlBase + '/' + projectId).pipe(  
       catchError(this.handleError)
     )

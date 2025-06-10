@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroSquares2x2, heroRectangleGroup, heroUsers,heroCog6Tooth, heroMagnifyingGlass, heroBell, heroChevronDown} from '@ng-icons/heroicons/outline';
+import { heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroMagnifyingGlass, heroBell, heroChevronDown } from '@ng-icons/heroicons/outline';
 import $ from 'jquery';
 import { Project } from '../../../core/model/entity/project.model';
 import { ProjectService } from '../../../services/project.service';
@@ -10,35 +10,44 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthServiceService } from '../../../services/auth-service.service';
 @Component({
   selector: 'app-main-menu',
-  imports: [ NgIcon,RouterLink, CommonModule],
-  providers: [provideIcons( { heroSquares2x2, heroRectangleGroup, heroUsers,heroCog6Tooth, heroMagnifyingGlass, heroBell, heroChevronDown } )],
+  imports: [NgIcon, RouterLink, CommonModule,],
+  providers: [provideIcons({ heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroMagnifyingGlass, heroBell, heroChevronDown })],
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.css'
-}) 
+})
 export class MainMenuComponent {
 
   private projectService = inject(ProjectService)
   private authService = inject(AuthServiceService)
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private destroy$ = new Subject<void>();
-  
-  projects:Project[] = [];
 
-  ngOnInit(){
-        this.projectService.getAllProjects(this.authService.getIdfromToken() ?? "").pipe( 
+  projects: Project[] = [];
+
+  ngOnInit() {
+    this.projectService.getAllProjects(this.authService.getIdfromToken() ?? "").pipe(
       takeUntil(this.destroy$)
-      ).subscribe(data => {
-        this.projects = data.object;      
-      })     
+    ).subscribe(data => {
+      this.projects = data.object;
+    })
   }
 
-  gotoProject( projectId: number) {
+  gotoProject(projectId: number) {
 
-    this.projectService._projectId.set(projectId);  
-    this.router.navigate(['/project/dashboard']);    
+    this.projectService._projectId.set(projectId);
+    localStorage.setItem('PPIN', projectId.toString());
+
+    this.router.navigate([
+      '/app',
+      { outlets: { container: ['project', 'dashboard'] } }
+    ], { relativeTo: this.route });
+
+
+
   }
 
-  openMenuProjects(){       
+  openMenuProjects() {
     $('.menu-projects').animate({ height: "toggle" }, "fast");
   }
 

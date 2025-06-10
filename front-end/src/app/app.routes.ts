@@ -5,32 +5,36 @@ import { BacklogComponent } from './components/projects/backlog/backlog.componen
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'app',
         pathMatch: 'full'
     },
-
     {
-        path: 'project/dashboard',
-
-        loadComponent: () => import('./components/projects/dashboard-project/dashboard-project.component')
-            .then(m => m.DashboardProjectComponent),
+        path: 'app',
+        loadComponent: () => import('./components/dashboard/dashboard.component')
+            .then(m => m.DashboardComponent),
         canActivate: [authGuard],
         children: [
+
             {
-                path: 'backlog',
-                component: BacklogComponent,
-                canActivate: [authGuard]
-            },
+                path: 'project/dashboard',
+                loadComponent: () => import('./components/projects/dashboard-project/dashboard-project.component')
+                    .then(m => m.DashboardProjectComponent),
+                canActivate: [authGuard],
+                outlet: 'container',               
+                children: [
+                    {
+                        path: 'backlog',
+                        component: BacklogComponent,
+                        canActivate: [authGuard]
+                    },
+
+                ]
+            }
 
         ]
 
     },
-    {
-        path: 'dashboard',
-        loadComponent: () => import('./components/dashboard/dashboard.component')
-            .then(m => m.DashboardComponent)
-        , canActivate: [authGuard]
-    },
+
     {
         path: 'login',
         loadComponent: () => import('./components/login/login-form/login-form.component')

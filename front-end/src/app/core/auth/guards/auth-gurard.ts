@@ -21,7 +21,7 @@ const authService = inject(AuthServiceService);
   if (!authService.isAuthenticated()) {		 
 	return true;
   } else {
-	return router.createUrlTree(['/dashboard'])	
+	return router.createUrlTree(['/app'])	
   }
 }
 
