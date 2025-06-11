@@ -19,8 +19,7 @@ export const routes: Routes = [
                 path: 'project/dashboard',
                 loadComponent: () => import('./components/projects/dashboard-project/dashboard-project.component')
                     .then(m => m.DashboardProjectComponent),
-                canActivate: [authGuard],
-                outlet: 'container',               
+                canActivate: [authGuard],                              
                 children: [
                     {
                         path: 'backlog',

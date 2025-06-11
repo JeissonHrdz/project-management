@@ -12,3 +12,12 @@
 .edit-icon:hover{
     color: #923bf6;
 }
+
+.active{
+    
+    color: #3b4ef6;
+    font-weight: bold;
+    transition: all .1s ease-in-out;
+    border: 1px solid #3b4ef6;
+
+}

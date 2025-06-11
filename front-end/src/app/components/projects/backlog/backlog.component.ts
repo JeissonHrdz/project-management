@@ -35,6 +35,8 @@ export class BacklogComponent {
 
   epics: BacklogItem[] = [];
   stories: BacklogItem[] = [];
+  savedStories: BacklogItem[] = [];
+  epicIdSelected = signal(0);
   epicIdToDelete = signal(0)
   storyIdToDelete = signal(0);
   openedMenuId: string | null = null;
@@ -45,7 +47,7 @@ export class BacklogComponent {
     this.formEpic = this.form.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      project_id: [this.projectId],
+      project_id: [this.projectService._projectId() ?? 0],
       priority: [0],
       type: ['EPIC']
     })
@@ -57,7 +59,7 @@ export class BacklogComponent {
     this.formStory = this.form.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      project_id: [this.projectId],
+      project_id: [this.projectService._projectId() ?? 0],
       priority: ['', [Validators.required]],
       epic_id: ['', [Validators.required]],
       type: ['USER_STORY']
@@ -89,7 +91,21 @@ export class BacklogComponent {
       takeUntil(this.destroy$))
       .subscribe(data => {
         this.stories = data.object;
+        this.savedStories = data.object;
       })
+  }
+  showStoriesByEpicSelected(epicId: number) {
+    if (this.epicIdSelected() == epicId) {
+      this.stories = this.savedStories;
+      this.epicIdSelected.set(0);
+        $(".epic-item-"+epicId).removeClass("active");
+    } else {
+       $(".epic-item-"+this.epicIdSelected()).removeClass("active");
+      $(".epic-item-"+epicId).addClass("active");
+      this.stories = this.savedStories;
+      this.stories = this.stories.filter(story => story.epic_id === epicId);
+      this.epicIdSelected.set(epicId);
+    }
 
   }
 
@@ -106,6 +122,7 @@ export class BacklogComponent {
             this.showFormEpic();
           } else {
             this.stories.push(response.object);
+            this.savedStories.push(response.object);
             this.toastService.toast('Story created successfully', 'success');
           }
         },

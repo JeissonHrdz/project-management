@@ -29,14 +29,16 @@ export class DashboardProjectComponent {
 
   constructor() {
     // Effect to log projectId changes
-    effect(() => {
-      console.log('Project ID:', this.projectService._projectId());
+    effect(() => {     
+        this.getProjectInfo();
     });    // Subscribe to projectId changes
+  
+  }  
 
-  }
   ngOnInit() {
     this.getProjectInfo();
   }
+  
 
   getProjectInfo() {
     this.projectId = this.projectService._projectId() ?? 0;
@@ -50,7 +52,8 @@ export class DashboardProjectComponent {
       .subscribe(project => {
         this.project = project;
         if (project) {
-          this.project = project.object;          
+          this.project = project.object;    
+            
         }
       })
   }

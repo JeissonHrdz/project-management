@@ -38,10 +38,7 @@ export class MainMenuComponent {
     this.projectService._projectId.set(projectId);
     localStorage.setItem('PPIN', projectId.toString());
 
-    this.router.navigate([
-      '/app',
-      { outlets: { container: ['project', 'dashboard'] } }
-    ], { relativeTo: this.route });
+    this.router.navigate(['app/project/dashboard']);
 
 
 

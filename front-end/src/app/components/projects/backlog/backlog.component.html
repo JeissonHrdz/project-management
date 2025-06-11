@@ -7,11 +7,11 @@
 
 
     <div class="flex flex-row w-full p-2">
-        <div class="p-4 w-[320px] m-4 h-fit bg-neutral-100  border-1 border-gray-200 rounded-md  ">
+        <div class="p-4 w-[320px] m-4 h-fit bg-white custom-shadow rounded-md  ">
             <p class="font-semibold  text-[14px]">Epics</p>
             <ul class=" list-none text-[14px] mt-2 font-medium w-full">
                 @for(epics of epics; track $index){
-                <li class="  m-1 p-3 rounded-md cursor-pointer hover:*:block ">{{epics.title}}
+                <li (click)="showStoriesByEpicSelected(epics.item_id)" class="epic-item-{{epics.item_id}} m-1 p-3 rounded-md cursor-pointer hover:*:block ">{{epics.title}}
                     <span class="float-right transition duration-300 ease-in-out hidden">
                         <ng-icon (click)="modalConfirmDeleteEpic(epics.item_id)" class="float-right trash-icon"
                             size="20" name="heroTrash"></ng-icon>
@@ -61,29 +61,29 @@
         </div>
         <div class="w-full flex flex-col p-4">
             <form [formGroup]="formStory" (submit)="createBacklogItem('USER_STORY')">
-                <table class="w-full text-left border-collapse rounded-md border-1 border-gray-200">
-                    <thead class="rounded-t-md bg-neutral-100">
+                <table class="w-full text-left border-collapse rounded-md ">
+                    <thead class="rounded-t-md">
                         <tr class="text-neutral-600 *:text-left *:p-2 *:pl-3 text-[12px] font-medium ">
                             <th colspan="5">Add Story</th>
 
                         </tr>
                     </thead>
                     <tbody class=" rounded-md">
-
-                        <tr class=" *:text-left *:p-3">
-                            <td>
-                                <input formControlName="title" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
-                                    border-gray-200 text-[14px]" type="text" name="title" placeholder="Title" id=""
+                        <tr class=" *:text-left *:p-3">                            <td>
+                                <input formControlName="title" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 
+                                rounded-md bg-white custom-shadow text-[14px]" type="text" name="title" placeholder="Title" id=""
                                     [ngClass]="{'is-invalid': hasErrorsStory('title', 'required')}">
                             </td>
                             <td>
-                                <input formControlName="description" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
-                                    border-gray-200 text-[14px]" type="text" name="description"
+                                <input formControlName="description" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 
+                                bg-white custom-shadow  rounded-md 
+                                    text-[14px]" type="text" name="description"
                                     placeholder="Description" id=""
                                     [ngClass]="{'is-invalid': hasErrorsStory('description', 'required')}">
                             </td>
                             <td>
-                                <select formControlName="epic_id" class="font-medium outline-0 p-2 w-full pr-4 placeholder:text-gray-500 rounded-md border-1
+                                <select formControlName="epic_id" class="font-medium outline-0 p-2 w-full pr-4 placeholder:text-gray-500 
+                               bg-white custom-shadow rounded-md
                                       border-gray-200 text-[14px]"
                                     [ngClass]="{'is-invalid': hasErrorsStory('epic_id', 'required')}">
                                     <option value="" class="text-neutral-400 " disabled selected>Select Epic
@@ -96,8 +96,8 @@
 
                             </td>
                             <td>
-                                <input formControlName="priority" class="font-medium outline-0 p-2 w-[80px]  placeholder:text-gray-500 rounded-md border-1
-                                    border-gray-200 text-[14px]" type="number" name="priority" placeholder="Priority"
+                                <input formControlName="priority" class="font-medium outline-0 p-2 w-[80px]  placeholder:text-gray-500 rounded-md 
+                                    bg-white custom-shadow  text-[14px]" type="number" name="priority" placeholder="Priority"
                                     id="" [ngClass]="{'is-invalid': hasErrorsStory('priority', 'required')}">
                             </td>
                             <td>
@@ -112,42 +112,54 @@
                 </table>
             </form>
             <br>
-            <div class="overflow-x-auto rounded-md">
-                <form [formGroup]="formStoryUpdate">
-                    <table class="w-full text-left border-collapse rounded-md border-1 border-gray-200">
-                        <thead class="rounded-t-md bg-neutral-100">
-                            <tr class="text-neutral-600 *:text-left *:p-2 *:pl-3 text-[12px] font-medium ">
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Epic</th>
-                                <th>Priority</th>
-                                <th> </th>
-                            </tr>
-                        </thead>
-
+            <form [formGroup]="formStoryUpdate">
+            <div class="overflow-x-auto rounded-md bg-neutral-100  pt-4 pl-4 pr-4">
+                
+                      <div class="w-full p-3 grid grid-cols-5 mb-3 text-neutral-600 *:text-left text-[12px] font-bold">
+                        <div>
+                            <p>Title</p>
+                        </div>
+                        <div>
+                            <p>Description</p>
+                        </div>
+                        <div>
+                            <p>Epic</p>
+                        </div>
+                        <div>
+                            <p>Priority</p>
+                        </div>
+                        <div class="flex justify-center">
+                            <p>Actions</p>
+                        </div>
+                    </div>
+                </div>
+                    
+                    <div class="w-full overflow-x-auto rounded-md bg-white m-0 p-4"> 
                         @for (story of stories; track $index){
-
-                        <tbody class=" rounded-md text-[14px] font-medium">
-                            <tr class="border-b-1 border-gray-200 *:text-left *:p-2 *:pl-3 story-{{story.item_id}}">
-                                <td> {{story.title}} </td>
-                                <td> {{story.description}} </td>
-                                <td class="">
-                                    @if( story.epic_id != null){
-                                    <span
-                                        class="bg-pink-200 text-pink-500 text-[14px] font-semibold rounded-sm p-1 pl-2 pr-2">
+                            <div class="w-full p-3 bg-white grid grid-cols-5 text-[14px] font-medium 
+                                hover:bg-neutral-50 hover:text-neutral-800 hover:cursor-pointer
+                            ">
+                                <div>
+                                    <p>{{story.title}}</p>
+                                </div>
+                                <div>
+                                    <p>{{story.description}}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[12px] w-fit bg-pink-200 p-1 rounded-md text-pink-500">
                                         {{getEpicName(story.epic_id)}}
-                                    </span>
-                                    }
-
-                                </td>
-                                <td class="items-center">{{story.priority}}</td>
-                                <td>
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <p>{{story.priority}}</p>
+                                </div>
+                                 <div class="flex justify-center">
                                     <span (click)="toggleMenu('menu-'+story.item_id); $event.stopPropagation()" class="cursor-pointer flex rounded-md group w-fit justify-items-center
                                         hover:bg-neutral-200 ">
                                         <ng-icon color="#0C0C0C" size="24" name="heroEllipsisHorizontal"></ng-icon>
                                     </span>
-                                    <div *ngIf="openedMenuId === 'menu-'+story.item_id">
-                                        <ul class=" right-16 border-1 border-gray-200 absolute bg-white custom-shadow rounded-md p-3"
+                                      <div *ngIf="openedMenuId === 'menu-'+story.item_id">
+                                        <ul class=" right-40 mt-5 border-1 border-gray-200 absolute bg-white custom-shadow rounded-md p-3"
                                             id="menu-{{story.item_id}}">
                                             <li (click)="showModalEditStory(story.item_id)"
                                                 class="p-3 flex flex-row hover:bg-neutral-100 cursor-pointer rounded-md">
@@ -161,15 +173,17 @@
                                                 Delete
                                             </li>
                                         </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                                    </div>                                     
+                                </div>
+                                
+                            </div>
+                                     
                         }
-                    </table>
+                        </div>
+                    
                 </form>
 
-            </div>
+            
         </div>
     </div>
 </section>
