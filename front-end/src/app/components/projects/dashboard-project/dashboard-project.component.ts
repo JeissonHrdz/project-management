@@ -2,11 +2,11 @@ import { Component, effect, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroDocumentText, heroRectangleStack, heroArrowPathRoundedSquare, heroDocumentCheck } from '@ng-icons/heroicons/outline';
-import { catchError, of, Subject, switchMap, takeUntil } from 'rxjs';
+import {  Subject,  takeUntil } from 'rxjs';
 import { ProjectService } from '../../../services/project.service';
 import { Project } from '../../../core/model/entity/project.model';
 import { CommonModule } from '@angular/common';
-import { MainMenuComponent } from '../../dashboard/main-menu/main-menu.component';
+import $ from 'jquery';
 
 
 @Component({
@@ -59,7 +59,8 @@ export class DashboardProjectComponent {
   }
 
 
-  openItem(item: string) {
+  openItem(item: string, id?: string) {
+    $("#"+id).addClass("active");
     if (item == 'backlog') {
       this.router.navigate(['backlog'], {
         relativeTo: this.route

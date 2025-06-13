@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroMagnifyingGlass, heroBell, heroChevronDown } from '@ng-icons/heroicons/outline';
+import { heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroMagnifyingGlass, heroQuestionMarkCircle,
+   heroBell, heroChevronDown } from '@ng-icons/heroicons/outline';
 import $ from 'jquery';
 import { Project } from '../../../core/model/entity/project.model';
 import { ProjectService } from '../../../services/project.service';
@@ -11,7 +12,8 @@ import { AuthServiceService } from '../../../services/auth-service.service';
 @Component({
   selector: 'app-main-menu',
   imports: [NgIcon, RouterLink, CommonModule,],
-  providers: [provideIcons({ heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroMagnifyingGlass, heroBell, heroChevronDown })],
+  providers: [provideIcons({ heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroQuestionMarkCircle,
+     heroMagnifyingGlass, heroBell, heroChevronDown })],
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.css'
 })
