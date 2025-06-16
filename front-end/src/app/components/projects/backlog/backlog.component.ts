@@ -260,19 +260,24 @@ export class BacklogComponent {
 
 
 
-  hasErrors(controlName: string, errorType: string) {
+  hasErrors(controlName: string, errorType: string, form: 'Epic' | 'EpicUpdate' | 'StoryUpdate' | 'Story') {
+
+    const forms: { [key in 'Epic' | 'EpicUpdate' | 'StoryUpdate' | 'Story' ]: FormGroup } = {
+      Epic: this.formEpic,
+      EpicUpdate: this.formEpicUpdate,
+      StoryUpdate: this.formStoryUpdate,
+      Story: this.formStory
+    };
+
+    const formSelected = forms[form];
+
     return (
-      this.formEpic.get(controlName)?.hasError(errorType)
-      && this.formEpic.get(controlName)?.touched
-    )
+      formSelected.get(controlName)?.hasError(errorType)
+      && formSelected.get(controlName)?.touched
+    );
   }
 
-  hasErrorsStory(controlName: string, errorType: string) {
-    return (
-      this.formStory.get(controlName)?.hasError(errorType)
-      && this.formStory.get(controlName)?.touched
-    )
-  }
+  
 
   ngOnDestroy() {
     this.destroy$.next();
