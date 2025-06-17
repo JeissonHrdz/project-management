@@ -1,0 +1,45 @@
+<section>
+    <div class="flex w-[400px] h-auto flex-col m-auto bg-white items-center justify-center mt-15 custom-shadow rounded-xl p-4">
+        <div>
+            <img src="logo.png" class="w-24 h-20 m-4" alt="">
+        </div>
+        <div class="flex flex-col items-center justify-center m-2">
+            <h1 class="text-2xl font-semibold">Create Account</h1>
+            <p class="text-sm text-neutral-600 mt-2">Already have an account?
+                <a class="text-neutral-800 font-semibold cursor-pointer" (click)="goToLogin()">Login</a>
+            </p>
+        </div>
+        <form [formGroup]="registerForm" (ngSubmit)="register()" class="w-[400px] relative flex items-center flex-col mt-4">
+            <input class="w-[320px] font-medium outline-0 p-2 m-2 pl-4 placeholder:text-gray-500 rounded-md border-1
+             border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('first_name', 'required')}" id="firstName"
+                formControlName="first_name" type="text" placeholder="First Name" required />
+
+            <input class="w-[320px] font-medium outline-0 p-2 m-2 pl-4 placeholder:text-gray-500 rounded-md border-1
+             border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('last_name', 'required')}" id="lastName"
+                formControlName="last_name" type="text" placeholder="Last Name" required />
+
+            <input class="w-[320px] font-medium outline-0 p-2 m-2 pl-4 placeholder:text-gray-500 rounded-md border-1
+             border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('email', 'required')}" id="email"
+                formControlName="email" type="email" placeholder="Email" required />
+
+            <input class="w-[320px] font-medium outline-0 p-2 m-2 pl-4 placeholder:text-gray-500 rounded-md border-1
+             border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('username', 'required')}" id="username"
+                formControlName="username" type="text" placeholder="Username" required />
+
+            <input class="w-[320px] font-medium outline-0 p-2 m-2 pl-4 placeholder:text-gray-500 rounded-md border-1
+             border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('password_hash', 'required')}" id="password"
+                formControlName="password_hash" type="password" placeholder="Password" required />
+
+            <input class="w-[320px] font-medium outline-0 p-2 m-2 pl-4 placeholder:text-gray-500 rounded-md border-1
+             border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('confirmPassword', 'required')}" id="confirmPassword"
+                formControlName="confirmPassword" type="password" placeholder="Confirm Password" required />
+
+            <div *ngIf="responseMessage" class="text-red-500 text-sm mt-1 font-semibold">
+                {{responseMessage}}
+            </div>
+
+            <button class="w-[320px] p-2 m-2 rounded-md bg-teal-500 cursor-pointer text-white"
+                type="submit">Register</button>
+        </form>
+    </div>
+</section>

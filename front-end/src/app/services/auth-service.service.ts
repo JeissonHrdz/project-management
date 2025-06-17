@@ -3,6 +3,7 @@ import { environment } from '../../environment/environment';
 import { UserLoginDTO } from '../core/model/dto/user-login-dto';
 import { catchError, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { UserRegisterDTO } from '../core/model/dto/user-register-dto';
 
 
 
@@ -51,6 +52,24 @@ export class AuthServiceService {
       })
     )
 
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.currentUser.set('');
+    this.isAuthenticated.set(false);
+  }
+
+  register(credentials: UserRegisterDTO): Observable<any> {
+    return this.http.post<any>(`${this.urlBase}/register`, credentials).pipe(
+      tap((response) => {
+        console.log(response);
+      }),
+      catchError((error) => {
+        console.error('Register error:', error.message);
+        throw error; // Rethrow the error for further handling if needed
+      })
+    )
   }
 
   getTimeExpiration(): string {

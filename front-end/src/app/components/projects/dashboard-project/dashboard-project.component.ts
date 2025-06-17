@@ -42,11 +42,9 @@ export class DashboardProjectComponent {
 
   getProjectInfo() {
     this.projectId = this.projectService._projectId() ?? 0;
-
     if (this.projectId == 0) {
       this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
     }
-
     this.projectService.getProjectById(this.projectId).pipe(
       takeUntil(this.destroy$))
       .subscribe(project => {
@@ -63,6 +61,16 @@ export class DashboardProjectComponent {
     $("#"+id).addClass("active");
     if (item == 'backlog') {
       this.router.navigate(['backlog'], {
+        relativeTo: this.route
+      });
+    }
+    if (item == 'sprints') {
+      this.router.navigate(['sprints'], {
+        relativeTo: this.route
+      });
+    }
+    if (item == 'tasks') {
+      this.router.navigate(['tasks'], {
         relativeTo: this.route
       });
     }

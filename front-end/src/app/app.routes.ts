@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard, authGuardLogin } from './core/auth/guards/auth-gurard';
 import { BacklogComponent } from './components/projects/backlog/backlog.component';
+import { SprintComponent } from './components/projects/sprint/sprint.component';
 
 export const routes: Routes = [
     {
@@ -26,7 +27,12 @@ export const routes: Routes = [
                         component: BacklogComponent,
                         canActivate: [authGuard]
                     },
-
+                    {
+                        path: 'sprints',
+                        component: SprintComponent,
+                        canActivate: [authGuard]
+                    }
+                  
                 ]
             }
 
@@ -38,6 +44,12 @@ export const routes: Routes = [
         path: 'login',
         loadComponent: () => import('./components/login/login-form/login-form.component')
             .then(m => m.LoginFormComponent),
+        canActivate: [authGuardLogin]
+    },
+    {
+        path: 'register',
+        loadComponent: () => import('./components/register/register-form/register-form.component')
+            .then(m => m.RegisterFormComponent),
         canActivate: [authGuardLogin]
     },
     { path: '**', canActivate: [authGuard], children: [] }

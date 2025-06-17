@@ -43,7 +43,7 @@ export class LoginFormComponent {
           this.errorInput = false;
         },
         complete: () => {         
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/app']);
           this.errorInput = false;
           this.loginForm.reset();
         }
@@ -56,6 +56,10 @@ export class LoginFormComponent {
       this.errorInput = false;
     }
 
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 
   hasErrors(controlName: string, errorType: string) {

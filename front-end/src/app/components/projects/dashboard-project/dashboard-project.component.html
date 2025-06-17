@@ -15,12 +15,14 @@
                 Backlog
             </li>
             <li id="3" 
-                class="hover:bg-teal-500 hover:text-white transition-colors rounded-md w-fit  p-2 cursor-pointer flex flex-row">
+                class="hover:bg-teal-500 hover:text-white transition-colors rounded-md w-fit  p-2 cursor-pointer flex flex-row"
+                (click)="openItem('sprints','3')">
                 <ng-icon class="mr-1" size="20" name="heroArrowPathRoundedSquare"></ng-icon>
                 Sprints
             </li>
-            <li id="4" 
-                class="hover:bg-teal-500 hover:text-white transition-colors rounded-md w-fit  p-2 cursor-pointer flex flex-row">
+            <li id="4"  
+                class="hover:bg-teal-500 hover:text-white transition-colors rounded-md w-fit  p-2 cursor-pointer flex flex-row"
+                (click)="openItem('tasks','4')">
                 <ng-icon class="mr-1" size="20" name="heroDocumentCheck"></ng-icon>
                 Tasks
             </li>
