@@ -1,6 +1,116 @@
 <section class="select-none">
-    <div class="flex flex-row w-full p-2">
-        <h1>Sprint</h1>
+    <div class="flex flex-row justify-between items-center w-full p-6 mt-5">
+        <h1 class="font-semibold text-[20px]">Sprints</h1> 
+        <button (click)="showModalCreateSprint(1)"
+            class="bg-teal-500 text-white font-medium rounded-md px-3 py-2 hover:bg-teal-600 transition-colors">
+            Create Sprint
+        </button>
+    </div>
+    <div class="w-full p-4">
+        <div class="w-full bg-white p-6 custom-shadow rounded-md">
+            <div class="w-full border-b-1 border-t-1 border-neutral-200 p-3 grid grid-cols-8 mb-3 text-neutral-500 *:text-left text-[12px] font-bold">
+                <div>
+                    <p>Task</p>
+                </div>
+                <div>
+                    <p>Description</p>
+                </div>
+                <div>
+                    <p>Status</p>
+                </div>
+                <div>
+                    <p>Type</p>
+                </div>
+                <div>
+                    <p>Priority</p>
+                </div>
+                <div>
+                    <p>End Date</p>
+                </div>
+                <div class="flex justify-center">
+                    <p>Actions</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+<div class="relative z-30 hidden" id="modal-create-sprint" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+    <div class="fixed inset-0 z-10 w-screen p-2 overflow-y-auto">
+        <div class="flex min-h-full w-full items-center justify-center text-center sm:items-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Create Sprint</h3>
+                        <div class="mt-2 p-2">
+                            <form [formGroup]="formSprint" (submit)="createSprint()">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                                        <input formControlName="name" type="text"  class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
+                                        border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('name', 'required','Sprint')}"
+                                        
+                                            placeholder="Sprint name" required>
+                                    </div>
+
+                                    <div>
+                                        <label for="goal" class="block text-sm font-medium text-gray-700">Goal</label>
+                                        <input formControlName="goal" type="text" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
+                                        border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('goal', 'required','Sprint')}"
+                                            placeholder="Sprint goal" required> 
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+                                            <input formControlName="start_date" type="date"  class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
+                                            border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('start_date', 'required','Sprint')}"
+                                                required>
+                                        </div>
+                                        <div>
+                                            <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
+                                            <input formControlName="end_date" type="date" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
+                                            border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('end_date', 'required','Sprint')}"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                                        <select formControlName="status" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
+                                        border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('status', 'required','Sprint')}"
+                                            required>
+                                            <option value="" disabled selected >Select status</option>
+                                            <option value="planned">Planned</option>
+                                            <option value="completed">Completed</option>
+                                            <option value="in_progress">In Progress</option>    
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="estimated_velocity" class="block text-sm font-medium text-gray-700">Estimated Velocity</label>
+                                        <input formControlName="estimated_velocity" type="number" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
+                                        border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('estimated_velocity', 'required','Sprint')}"
+                                            placeholder="Estimated velocity" required>
+                                    </div>
+                                </div>
+
+                                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                    <button type="submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-teal-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
+                                        Save
+                                    </button>
+                                    <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm" (click)="showModalCreateSprint(0)">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
