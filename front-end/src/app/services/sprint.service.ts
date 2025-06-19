@@ -21,6 +21,12 @@ export class SprintService {
       )
     }
 
+    getSprints(): Observable<any> {
+      return this.http.get<any>(this.urlBase + '/' + this.projectId + '/sprint/sprints').pipe(
+        catchError(this.handleError)
+      )
+    }
+
     private handleError(error: HttpErrorResponse) {
       if (error.status === 0) {
         console.error('Se ha producido un error ', error.error);

@@ -46,7 +46,7 @@ public class SprintController {
     }
 
     @GetMapping(value = "sprints")
-    public ResponseEntity<?> getSprints(@RequestParam("project_id") Integer project_id) {
+    public ResponseEntity<?> getSprints(@PathVariable int project_id) {
         if (!roleService.hasPermission("sprints", "read")) {
             throw new AccessDeniedException("Access Denied");
         }
@@ -55,7 +55,7 @@ public class SprintController {
             List<SprintReadDto> getSprints = sprintService.getSprintsByProjectId(project_id);
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Sprints retrieved successfully")
-                    .object(getSprints.size())
+                    .object(getSprints)
                     .build(),
                     HttpStatus.OK);
         } catch (DataAccessException e) {

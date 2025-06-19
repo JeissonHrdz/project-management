@@ -2,12 +2,19 @@
     <div class="flex flex-row justify-between items-center w-full p-6 mt-5">
         <h1 class="font-semibold text-[20px]">Sprints</h1> 
         <button (click)="showModalCreateSprint(1)"
-            class="bg-teal-500 text-white font-medium rounded-md px-3 py-2 hover:bg-teal-600 transition-colors">
+            class="bg-teal-500 text-white font-medium rounded-md px-3 py-2 text-[14px] cursor-pointer hover:bg-teal-600 transition-colors">
             Create Sprint
-        </button>
+        </button>  
     </div>
-    <div class="w-full p-4">
-        <div class="w-full bg-white p-6 custom-shadow rounded-md">
+    <div class="w-full px-6 overflow-y-auto h-[calc(92vh-200px)]"> 
+    @for (sprint of sprints; track $index){   
+        <div class="w-full bg-white p-6 mb-4 mt-4 custom-shadow rounded-md ">
+            <div class="flex flex-row justify-between items-center py-4">
+                <h1 class="font-semibold text-[16px]">{{ sprint.name }}</h1>
+                <button class="border-1 border-teal-500 text-teal-500 font-medium text-[14px] cursor-pointer rounded-md px-3 py-2 hover:bg-teal-500
+                 hover:text-white transition-colors">Add Task</button>
+            </div>
+        
             <div class="w-full border-b-1 border-t-1 border-neutral-200 p-3 grid grid-cols-8 mb-3 text-neutral-500 *:text-left text-[12px] font-bold">
                 <div>
                     <p>Task</p>
@@ -32,8 +39,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    
+    }
+</div>
 </section>
+
+
 
 <div class="relative z-30 hidden" id="modal-create-sprint" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
@@ -87,13 +98,7 @@
                                             <option value="in_progress">In Progress</option>    
                                         </select>
                                     </div>
-
-                                    <div>
-                                        <label for="estimated_velocity" class="block text-sm font-medium text-gray-700">Estimated Velocity</label>
-                                        <input formControlName="estimated_velocity" type="number" class="font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-md border-1
-                                        border-gray-200 text-[14px]" [ngClass]="{'is-invalid': hasErrors('estimated_velocity', 'required','Sprint')}"
-                                            placeholder="Estimated velocity" required>
-                                    </div>
+                                  
                                 </div>
 
                                 <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
