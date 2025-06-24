@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -7,11 +7,14 @@ import { SprintService } from '../../../services/sprint.service';
 import { ToastService } from '../../../services/toast.service';
 import { Sprint } from '../../../core/model/entity/sprint.model';
 import { takeUntil, Subject } from 'rxjs';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash } from '@ng-icons/heroicons/outline';
 
 @Component({
   selector: 'app-sprint',
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './sprint.component.html',
+  imports: [CommonModule, ReactiveFormsModule, NgIcon],
+  providers: [provideIcons({heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash})],
+  templateUrl: './sprint.component.html', 
   styleUrl: './sprint.component.css'
 })
 export class SprintComponent {
@@ -23,6 +26,9 @@ export class SprintComponent {
   private toastService = inject(ToastService);
 
   sprints: Sprint[] = [];
+  dataSprintUpdate: Sprint | any;
+  openedMenuId: string | null = null;
+ 
 
   private destroy$ = new Subject<void>();
 
@@ -32,7 +38,7 @@ export class SprintComponent {
       goal: ['', Validators.required],
       start_date: ['', Validators.required],
       end_date: ['', Validators.required],
-      status: ['', Validators.required],
+      status: ['planned', Validators.required],
       project_id: [this.projectId, Validators.required]
     });
   }
@@ -54,8 +60,18 @@ export class SprintComponent {
     this.destroy$.complete();
   }
 
-  showModalCreateSprint(show: number) {
+  showModalCreateSprint(show: number, type: string, sprintId?: number) {
+    
     $("#modal-create-sprint").toggle("fast");
+    if (type === 'create') {
+      this.dataSprintUpdate = null;
+      this.formSprint.reset();
+    } else {
+      this.dataSprintUpdate = this.sprints.find(sprint => sprint.sprint_id === sprintId);
+      this.dataSprintUpdate.start_date = this.setFormatDate(this.dataSprintUpdate.start_date);
+      this.dataSprintUpdate.end_date = this.setFormatDate(this.dataSprintUpdate.end_date);
+      this.formSprint.patchValue(this.dataSprintUpdate);
+    } 
   }
 
   createSprint() {
@@ -70,7 +86,7 @@ export class SprintComponent {
             console.log(error);
           }
         })
-        this.showModalCreateSprint(0);
+        this.showModalCreateSprint(0, 'create');
         this.formSprint.reset();
       } else {
         this.toastService.toast('Start date must be less than end date', 'error');
@@ -80,9 +96,28 @@ export class SprintComponent {
       this.formSprint.updateValueAndValidity();
 
     }
+  }
 
+  setFormatDate(date: string): string {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  }
+
+  updateSprint(){ 
 
   }
+
+   toggleMenu(menuId: string): void {
+     this.openedMenuId = this.openedMenuId === `menu-${menuId}` ? null : `${menuId}`;
+   }
+   closeMenu(): void {
+     this.openedMenuId = null;
+   }
+ 
+   @HostListener('document:click')
+   onDocumentClick(): void {
+     this.closeMenu(); 
+   }
 
   hasErrors(controlName: string, validation: string, type: string): boolean {
     const control = this.formSprint.get(controlName);
