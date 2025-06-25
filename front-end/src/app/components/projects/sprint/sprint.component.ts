@@ -9,6 +9,7 @@ import { Sprint } from '../../../core/model/entity/sprint.model';
 import { takeUntil, Subject } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash } from '@ng-icons/heroicons/outline';
+import  $ from 'jquery';
 
 @Component({
   selector: 'app-sprint',
@@ -64,30 +65,36 @@ export class SprintComponent {
     
     $("#modal-create-sprint").toggle("fast");
     if (type === 'create') {
-      this.dataSprintUpdate = null;
-      this.formSprint.reset();
+       this.dataSprintUpdate = null;
+       this.formSprint.reset({
+        status: 'planned',
+        project_id: this.projectId
+    });        
     } else {
-      this.dataSprintUpdate = this.sprints.find(sprint => sprint.sprint_id === sprintId);
+      this.dataSprintUpdate = this.sprints.find(sprint => sprint.sprint_id === sprintId);   
       this.dataSprintUpdate.start_date = this.setFormatDate(this.dataSprintUpdate.start_date);
-      this.dataSprintUpdate.end_date = this.setFormatDate(this.dataSprintUpdate.end_date);
+      this.dataSprintUpdate.end_date = this.setFormatDate(this.dataSprintUpdate.end_date);     
       this.formSprint.patchValue(this.dataSprintUpdate);
     } 
   }
 
-  createSprint() {
+  createSprint() {  
     if (this.formSprint.valid) {
-      if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {
-
+      if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {    
         this.sprintService.createSprint(this.formSprint.value).subscribe({
           next: (response) => {
             this.toastService.toast('Sprint created successfully', 'success');
+            this.sprints.push(response.object);
           },
           error: (error) => {
             console.log(error);
           }
         })
-        this.showModalCreateSprint(0, 'create');
-        this.formSprint.reset();
+        this.showModalCreateSprint(0, 'create');   
+        this.formSprint.reset({
+          status: 'planned',
+          project_id: this.projectId
+      });     
       } else {
         this.toastService.toast('Start date must be less than end date', 'error');
       }
@@ -95,7 +102,7 @@ export class SprintComponent {
       this.formSprint.markAllAsTouched();
       this.formSprint.updateValueAndValidity();
 
-    }
+    } 
   }
 
   setFormatDate(date: string): string {
@@ -103,7 +110,42 @@ export class SprintComponent {
     return d.toISOString().split('T')[0];
   }
 
-  updateSprint(){ 
+  updateSprint(sprintId: number){ 
+    console.log(sprintId);
+    if (this.formSprint.valid) {
+      if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {    
+        const originalSprint = this.dataSprintUpdate;
+        const changes: any = {};
+
+        // Comparamos cada campo y agregamos solo los que han cambiado
+        Object.keys(this.formSprint.value).forEach(key => {
+          if (key !== 'project_id' && this.formSprint.value[key] !== originalSprint[key]) {
+            changes[key] = this.formSprint.value[key];
+          }
+        });
+
+        this.sprintService.updateSprint(sprintId, changes).subscribe({
+          next: (response) => {
+            this.toastService.toast('Sprint updated successfully', 'success'); 
+            this.sprints = this.sprints.map(sprint => sprint.sprint_id === sprintId ? response.object : sprint);
+          },
+          error: (error) => {
+            console.log(error);
+          }
+        })
+        this.showModalCreateSprint(0, 'create');   
+        this.formSprint.reset({
+          status: 'planned',
+          project_id: this.projectId
+      });     
+      } else {
+        this.toastService.toast('Start date must be less than end date', 'error');
+      }
+    } else {
+      this.formSprint.markAllAsTouched();
+      this.formSprint.updateValueAndValidity();
+
+    } 
 
   }
 

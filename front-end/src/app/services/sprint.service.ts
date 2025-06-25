@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ProjectService } from './project.service';
 import { catchError, Observable, throwError } from 'rxjs';
 import { SprintCreateDTO } from '../core/model/dto/sprint-create.dto';
+import { Sprint } from '../core/model/entity/sprint.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,20 @@ export class SprintService {
       )
     }
 
+    updateSprint(sprintId: number, sprint: Sprint): Observable<any> {
+      return this.http.patch<any>(this.urlBase + '/' + this.projectId + '/sprint/update/' + sprintId, sprint).pipe(
+        catchError(this.handleError)
+      )
+    }
+
     getSprints(): Observable<any> {
       return this.http.get<any>(this.urlBase + '/' + this.projectId + '/sprint/sprints').pipe(
+        catchError(this.handleError)
+      )
+    }
+
+    deleteSprint(sprintId: number): Observable<any> {
+      return this.http.delete<any>(this.urlBase + '/' + this.projectId + '/sprint/delete/' + sprintId).pipe(
         catchError(this.handleError)
       )
     }

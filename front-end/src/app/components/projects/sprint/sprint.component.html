@@ -85,7 +85,7 @@
                         }
                         <div class="mt-2 p-2"> 
                             @if (this.dataSprintUpdate == null) {                        
-                            <form [formGroup]="formSprint" (submit)="createSprint()">                         
+                            <form [formGroup]="formSprint" id="formSprint" (submit)="createSprint()">                         
                              
                                 <div class="space-y-4">
                                     <div>
@@ -130,8 +130,8 @@
                                     </div>
                             </form>
                         } @else { 
-                            <form [formGroup]="formSprint" (submit)="updateSprint()"> 
-                                
+                            <form [formGroup]="formSprint" (submit)="updateSprint(dataSprintUpdate.sprint_id)"> 
+                                {{dataSprintUpdate.sprint_id}}
                                 <div class="space-y-4">
                                     <div>
                                         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
