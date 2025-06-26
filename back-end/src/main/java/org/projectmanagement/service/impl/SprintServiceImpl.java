@@ -14,6 +14,8 @@ import org.projectmanagement.service.SprintService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -76,13 +78,37 @@ public class SprintServiceImpl implements SprintService {
 
     @Override
     public SprintResponseDto updateSprint(int id, Map<String, Object> updates) {
+        updates.forEach((key, value) -> {
+            System.out.println(key + ": " + value);
+        });
+
+
+
         Optional<Sprint> sprint = sprintRepository.findById(id);
         updates.forEach((key, value) -> {
             switch (key) {
                 case "name" -> sprint.get().setName((String) value);
                 case "goal" -> sprint.get().setGoal((String) value);
-                case "start_date" -> sprint.get().setStart_date((Date) value);
-                case "end_date" -> sprint.get().setEnd_date((Date) value);
+                case "start_date" -> {
+                    try{
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        java.util.Date parsedDate = dateFormat.parse((String) value);
+                        java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+                        sprint.get().setStart_date(sqlDate);
+                    } catch (ParseException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                case "end_date" ->
+                {  try{
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        java.util.Date parsedDate = dateFormat.parse((String) value);
+                        java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+                        sprint.get().setEnd_date(sqlDate);
+                    } catch (ParseException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
                 case "status" -> sprint.get().setStatus((SprintStatus.valueOf((String) value)));
                 case "estimated_velocity" -> sprint.get().setEstimated_velocity((Integer) value);
                 case "actual_velocity" -> sprint.get().setActual_velocity((Integer) value);

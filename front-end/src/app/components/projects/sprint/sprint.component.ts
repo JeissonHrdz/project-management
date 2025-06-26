@@ -111,7 +111,7 @@ export class SprintComponent {
   }
 
   updateSprint(sprintId: number){ 
-    console.log(sprintId);
+    console.log(this.formSprint.value);
     if (this.formSprint.valid) {
       if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {    
         const originalSprint = this.dataSprintUpdate;
@@ -123,7 +123,6 @@ export class SprintComponent {
             changes[key] = this.formSprint.value[key];
           }
         });
-
         this.sprintService.updateSprint(sprintId, changes).subscribe({
           next: (response) => {
             this.toastService.toast('Sprint updated successfully', 'success'); 
@@ -146,7 +145,23 @@ export class SprintComponent {
       this.formSprint.updateValueAndValidity();
 
     } 
+  }
 
+  modalConfirmDeleteSprint(sprintId: number){
+    $("#modal-delete-sprint").toggle("fast");
+   
+  }
+
+  deleteSprint(sprintId: number){
+    this.sprintService.deleteSprint(sprintId).subscribe({
+      next: (response) => {
+        this.toastService.toast('Sprint deleted successfully', 'success');
+        this.sprints = this.sprints.filter(sprint => sprint.sprint_id !== sprintId);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
    toggleMenu(menuId: string): void {

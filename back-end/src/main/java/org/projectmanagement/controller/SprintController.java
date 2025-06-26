@@ -73,6 +73,7 @@ public class SprintController {
             throw new AccessDeniedException("Access Denied");
         }
         try {
+
             SprintResponseDto updateSprint = sprintService.updateSprint(id, updates);
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Sprint updated successfully")
