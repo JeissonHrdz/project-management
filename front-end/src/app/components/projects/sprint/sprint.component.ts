@@ -8,13 +8,15 @@ import { ToastService } from '../../../services/toast.service';
 import { Sprint } from '../../../core/model/entity/sprint.model';
 import { takeUntil, Subject } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash } from '@ng-icons/heroicons/outline';
+import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash, heroXCircle, 
+  heroChevronUpDown,heroCheckCircle,heroExclamationTriangle, heroClipboardDocumentCheck } from '@ng-icons/heroicons/outline';
 import  $ from 'jquery';
 
 @Component({
   selector: 'app-sprint',
   imports: [CommonModule, ReactiveFormsModule, NgIcon],
-  providers: [provideIcons({heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash})],
+  providers: [provideIcons({heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash,
+     heroChevronUpDown,heroCheckCircle,heroExclamationTriangle,heroXCircle,heroClipboardDocumentCheck})],
   templateUrl: './sprint.component.html', 
   styleUrl: './sprint.component.css'
 })

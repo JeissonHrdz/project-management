@@ -2,7 +2,8 @@
     <div class="flex flex-row justify-between items-center w-full p-6 pr-10 mt-5">
         <h1 class="font-semibold text-[20px]">Sprints</h1>
         <button (click)="showModalCreateSprint(1,'create')"
-            class="bg-teal-500 text-white font-medium rounded-md px-3 py-2 text-[14px] cursor-pointer hover:bg-teal-600 transition-colors">
+            class=" bg-white text-neutral-500 border-1 shadow-sm rounded-md border-gray-300 font-medium px-2 py-2 text-[14px] cursor-pointer
+             hover:bg-neutral-100 transition-colors">
             Create Sprint
         </button>
     </div>
@@ -18,7 +19,12 @@
                         {{sprint.status.charAt(0).toUpperCase() + sprint.status.slice(1)}}
                     </span>
                 </h1>
-                <div class="flex flex-row">
+                <div class="flex flex-row justify-center">
+                    <button class="flex flex-row items-center bg-white text-neutral-500 border-1 shadow-sm rounded-md border-gray-300 font-medium px-2 py-2 
+                    text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors">
+                        <ng-icon class="mr-2" size="20" name="heroClipboardDocumentCheck"></ng-icon>
+                    Create Task
+                </button>
                     <span (click)="toggleMenu('menu-'+sprint.sprint_id); $event.stopPropagation()" class="cursor-pointer flex rounded-md group w-fit justify-items-center
                  hover:bg-teal-50transition-colors">
                         <ng-icon class="mr-2" color="#00BBA7" size="22" name="heroEllipsisHorizontal"></ng-icon>
@@ -42,63 +48,120 @@
                 </div>
             </div>
 
-            <table style="table-layout: auto;" class="w-full  border-1 border-neutral-200 bg-neutral-100 rounded-t-md 
+            <div class="w-full rounded-md">
+                <table style="table-layout: auto;" class="w-full   bg-neutral-100 rounded-t-md 
             text-neutral-500 font-bold">
-                <thead>
-                    <tr class="p-2 *:p-2 text-left border-b-1 *:border-r-1 *:border-neutral-200 border-neutral-200 bg-neutral-100 font-semibold text-[12px]">
-                        <th>
-                            <p>Task</p>
-                        </th>
-                        <th>
-                            <p>Description</p>
-                        </th>
-                        <th class="w-[100px]">
-                            <p>Status</p>
-                        </th>
-                        <th class="w-[100px]">
-                            <p>Type</p>
-                        </th>
-                        <th class="w-[80px]">
-                            <p>Priority</p>
-                        </th>
-                        <th class="w-[100px]">
-                            <p>End Date</p>
-                        </th>
-                        <th>
-                            <p>Actions</p>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="p-2 *:p-2 text-left border-b-1 *:border-r-1 *:border-neutral-200 border-neutral-200 bg-white font-medium text-[14px]">
-                        <td>
-                            <p>Create login</p>
-                        </td>
-                        <td class="w-fit">
-                            <p>dev login using nodejs</p>
-                        </td>
-                        <td class="flex justify-center">
-                            <p class="bg-orange-100 text-orange-500 px-4 py-1 rounded-md w-fit text-[12px] font-medium">
-                                Pending</p>
-                        </td>
-                        <td>
-                            <p>low</p>
-                        </td>
-                        <td>
-                            <p>50</p>
-                        </td>
-                        <td>
-                            <p>2025-08-26</p>
-                        </td>
-                        <td>
-                            <p>Actions</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    <thead>
+                        <tr class="p-2 *:p-2 text-left bg-neutral-100 font-semibold text-[12px]
+                      ">
+                            <th class="rounded-tl-md">
+                                <div class="flex flex-row">
+                                    <p>Task</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="17" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </th>  
+                            <th class="w-[120px]">
+                                <div class="flex flex-row">
+                                    <p>Type</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="17" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </th>
+                            <th class="w-[120px]">
+                                <div class="flex flex-row">
+                                    <p>End Date</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="17" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </th>
+                            <th class="w-[150px]">
+                                <div class="flex flex-row">
+                                    <p>Status</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="17" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </th>
+                            <th class="w-[120px]">
+                                <div class="flex flex-row">
+                                    <p>Priority</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="17" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </th>
+                            <th class="w-[150px]">
+                                <div class="flex flex-row">
+                                    <p>Assigned </p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="17" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </th>
 
+                            <th class="rounded-tr-md w-[50px]">
+                                <p></p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="p-2 *:p-3 text-left border-b-1  border-neutral-200 bg-white font-medium text-[14px]">
+                            <td>
+                                <p>Create login</p>
+                            </td>
+                            <td>
+                                <p>Feature</p>
+                            </td>
+                            <td>
+                                <p>2025-08-26</p>
+                            </td>
+                            <td class="">
+                                <p class="flex flex-row  bg-purple-100 text-purple-500 px-2 py-1 rounded-md w-fit text-[12px] font-semibold">
+                                    <ng-icon class="mr-1" size="18" name="heroExclamationTriangle" color="fef3c6"></ng-icon>
+                                    Pending
+                                </p>
+                                <!-- <p class="flex flex-row bg-green-100 text-green-500 px-2 py-1 rounded-md w-fit text-[12px] font-semibold">
+                                    <ng-icon class="mr-1" size="18" name="heroCheckCircle" color="fef3c6"></ng-icon>
+                                    Completed -->
+                                <!-- </p>
+                                <p class="flex flex-row bg-red-100 text-red-500 px-2 py-1 rounded-md w-fit text-[12px] font-semibold">
+                                    <ng-icon class="mr-1" size="18" name="heroXCircle" color="fef3c6"></ng-icon>
+                                    Blocked
+                                </p>
+                                <p class="flex flex-row bg-blue-100 text-blue-500 px-2 py-1 rounded-md w-fit text-[12px] font-semibold">
+                                    <ng-icon class="mr-1" size="18" name="heroClock" color="fef3c6"></ng-icon>
+                                    In Progress
+                                </p> -->
+                            </td>
+                            <td class="">
+                                <!-- <p class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded-md w-fit text-[12px] font-medium">
+                                    Medium</p>
+                                <p class="bg-red-100 text-red-600  px-2 py-1 rounded-md w-fit text-[12px] font-medium">
+                                    Critical</p>    
+                                <p class="bg-orange-100 text-orange-600 px-2 py-1 rounded-md w-fit text-[12px] font-medium">
+                                    High</p> -->
+                                <p class="bg-lime-100 text-lime-600 px-2 py-1 rounded-md w-fit text-[12px] font-medium">
+                                    Low</p>
+                            </td>
+                            <td>
+                                <div class="flex flex-row text-white font-normal">
+                                    <div class="flex items-center justify-center text-center w-[30px] relative custom-shadow h-[30px] 
+                            rounded-full bg-blue-300">
+                                        JP
+                                    </div>
+                                    <div class="flex items-center justify-center text-center w-[30px] relative -left-2 custom-shadow h-[30px]
+                             rounded-full bg-purple-300">
+                                        JH
+                                    </div>
+                                    <div class="flex items-center justify-center text-center w-[30px] relative -left-4 custom-shadow h-[30px] 
+                            rounded-full bg-red-300">
+                                        MS
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="flex items-center justify-center">
+                                <div class="flex items-center justify-center border-1 p-1 border-gray-200 rounded-md cursor-pointer">
+                                    <ng-icon  color="#0C0C0C" size="20" name="heroEllipsisHorizontal"></ng-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    }
+        }
     </div>
 </section>
 
