@@ -1,13 +1,14 @@
 <section class="select-none">
     <div class="flex flex-row justify-between items-center w-full p-6 pr-10 mt-5">
         <h1 class="font-semibold text-[20px]">Sprints</h1>
-        <button (click)="showModalCreateSprint(1,'create')"
-            class=" bg-white text-neutral-500 border-1 shadow-sm rounded-md border-gray-300 font-medium px-2 py-2 text-[14px] cursor-pointer
+        <button (click)="showModalCreateSprint(1,'create')" class=" flex flex-row items-center  
+         bg-white text-neutral-500 border-1 shadow-sm rounded-md border-gray-300 font-medium px-2 py-2 text-[14px] cursor-pointer
              hover:bg-neutral-100 transition-colors">
+            <ng-icon class="mr-2" size="20"  name="heroPlus"></ng-icon>
             Create Sprint
         </button>
     </div>
-    <div class="w-full px-6 overflow-y-auto h-[calc(92vh-200px)]">
+    <div class="w-full z-10 px-6 overflow-y-auto h-[calc(92vh-200px)]">
         @for (sprint of sprints; track $index){
         <div class="w-full bg-white p-6 mb-4 mt-4 custom-shadow rounded-md ">
             <div class="flex flex-row justify-between  items-center py-4 ">
@@ -19,31 +20,39 @@
                         {{sprint.status.charAt(0).toUpperCase() + sprint.status.slice(1)}}
                     </span>
                 </h1>
-                <div class="flex flex-row justify-center">
-                    <button class="flex flex-row items-center bg-white text-neutral-500 border-1 shadow-sm rounded-md border-gray-300 font-medium px-2 py-2 
+                <div class="flex flex-row  items-center justify-center">
+
+                    <button class="flex flex-row items-center bg-white text-neutral-500  border-1 border-r-0 shadow-sm rounded-l-md border-gray-300 font-medium px-2 py-2 
                     text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors">
                         <ng-icon class="mr-2" size="20" name="heroClipboardDocumentCheck"></ng-icon>
-                    Create Task
-                </button>
-                    <span (click)="toggleMenu('menu-'+sprint.sprint_id); $event.stopPropagation()" class="cursor-pointer flex rounded-md group w-fit justify-items-center
-                 hover:bg-teal-50transition-colors">
-                        <ng-icon class="mr-2" color="#00BBA7" size="22" name="heroEllipsisHorizontal"></ng-icon>
-                    </span>
-                    <div *ngIf="openedMenuId === 'menu-'+sprint.sprint_id" class="relative">
-                        <ul class=" right-7 mt-5 border-1 border-gray-200 absolute bg-white custom-shadow rounded-md p-3"
-                            id="menu-{{sprint.sprint_id}}">
+                        Create Task
+                    </button>
+                    <button class="flex flex-row items-center bg-white text-neutral-500 mr-4 border-1 shadow-sm rounded-r-md border-gray-300 font-medium px-2 py-2 
+                text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors">
+                        <span (click)="toggleMenu('menu-'+sprint.sprint_id); $event.stopPropagation()"
+                         class="cursor-pointer flex rounded-md group w-fit justify-items-centerhover:bg-teal-50transition-colors">
+                            <ng-icon class="" color="#0C0C0C" size="21" name="heroEllipsisHorizontal"></ng-icon>
+                        </span>
+
+                    </button>
+
+
+                    <div *ngIf="openedMenuId === 'menu-'+sprint.sprint_id" class="relative z-10">
+                        <ul class="menu-sprint right-4 w-[160px] mt-6 text-[14px] font-medium border-1 border-gray-200 absolute bg-white 
+                        shadow-sm rounded-md p-2"id="menu-{{sprint.sprint_id}}">
                             <li (click)="showModalCreateSprint(1,'edit',sprint.sprint_id)"
-                                class="p-3 flex flex-row hover:bg-neutral-100 cursor-pointer rounded-md">
+                                class="p-2 px-4 text-neutral-500 flex flex-row hover:bg-neutral-100 cursor-pointer rounded-md">
                                 <ng-icon class="mr-2" size="18" name="heroPencilSquare"></ng-icon>
                                 Edit
                             </li>
                             <li (click)="modalConfirmDeleteSprint(sprint.sprint_id)"
-                                class="p-3 flex hover:bg-neutral-100 text-red-500 cursor-pointer rounded-md">
+                                class="p-2 px-4 flex hover:bg-neutral-100 text-red-500 cursor-pointer rounded-md">
                                 <ng-icon class="mr-2" size="18" color="#fb2c36" name="heroTrash"></ng-icon>
                                 Delete
                             </li>
                         </ul>
                     </div>
+
 
                 </div>
             </div>
@@ -52,14 +61,14 @@
                 <table style="table-layout: auto;" class="w-full   bg-neutral-100 rounded-t-md 
             text-neutral-500 font-bold">
                     <thead>
-                        <tr class="p-2 *:p-2 text-left bg-neutral-100 font-semibold text-[12px]
+                        <tr class="p-2 *:py-3 *:p-2 text-left bg-neutral-100 font-semibold text-[12px]
                       ">
                             <th class="rounded-tl-md">
                                 <div class="flex flex-row">
                                     <p>Task</p>
                                     <ng-icon class="ml-2 cursor-pointer" size="17" name="heroChevronUpDown"></ng-icon>
                                 </div>
-                            </th>  
+                            </th>
                             <th class="w-[120px]">
                                 <div class="flex flex-row">
                                     <p>Type</p>
@@ -108,8 +117,10 @@
                                 <p>2025-08-26</p>
                             </td>
                             <td class="">
-                                <p class="flex flex-row  bg-purple-100 text-purple-500 px-2 py-1 rounded-md w-fit text-[12px] font-semibold">
-                                    <ng-icon class="mr-1" size="18" name="heroExclamationTriangle" color="fef3c6"></ng-icon>
+                                <p
+                                    class="flex flex-row  bg-purple-100 text-purple-500 px-2 py-1 rounded-md w-fit text-[12px] font-semibold">
+                                    <ng-icon class="mr-1" size="18" name="heroExclamationTriangle"
+                                        color="fef3c6"></ng-icon>
                                     Pending
                                 </p>
                                 <!-- <p class="flex flex-row bg-green-100 text-green-500 px-2 py-1 rounded-md w-fit text-[12px] font-semibold">
@@ -152,8 +163,9 @@
                                 </div>
                             </td>
                             <td class="flex items-center justify-center">
-                                <div class="flex items-center justify-center border-1 p-1 border-gray-200 rounded-md cursor-pointer">
-                                    <ng-icon  color="#0C0C0C" size="20" name="heroEllipsisHorizontal"></ng-icon>
+                                <div
+                                    class="flex items-center justify-center border-1 p-1 border-gray-200 rounded-md cursor-pointer">
+                                    <ng-icon color="#0C0C0C" size="20" name="heroEllipsisHorizontal"></ng-icon>
                                 </div>
                             </td>
                         </tr>

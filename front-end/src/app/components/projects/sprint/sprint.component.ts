@@ -9,14 +9,14 @@ import { Sprint } from '../../../core/model/entity/sprint.model';
 import { takeUntil, Subject } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash, heroXCircle, 
-  heroChevronUpDown,heroCheckCircle,heroExclamationTriangle, heroClipboardDocumentCheck } from '@ng-icons/heroicons/outline';
+  heroChevronUpDown,heroCheckCircle,heroExclamationTriangle, heroClipboardDocumentCheck, heroPlus } from '@ng-icons/heroicons/outline';
 import  $ from 'jquery';
 
 @Component({
   selector: 'app-sprint',
   imports: [CommonModule, ReactiveFormsModule, NgIcon],
   providers: [provideIcons({heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash,
-     heroChevronUpDown,heroCheckCircle,heroExclamationTriangle,heroXCircle,heroClipboardDocumentCheck})],
+     heroChevronUpDown,heroCheckCircle,heroExclamationTriangle,heroXCircle,heroClipboardDocumentCheck,heroPlus})],
   templateUrl: './sprint.component.html', 
   styleUrl: './sprint.component.css'
 })

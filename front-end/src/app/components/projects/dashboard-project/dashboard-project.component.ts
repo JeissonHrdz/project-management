@@ -58,6 +58,7 @@ export class DashboardProjectComponent {
 
 
   openItem(item: string, id?: string) {
+    $(".active").removeClass("active");
     $("#"+id).addClass("active");
     if (item == 'backlog') {
       this.router.navigate(['backlog'], {
@@ -68,12 +69,7 @@ export class DashboardProjectComponent {
       this.router.navigate(['sprints'], {
         relativeTo: this.route
       });
-    }
-    if (item == 'tasks') {
-      this.router.navigate(['tasks'], {
-        relativeTo: this.route
-      });
-    }
+    } 
   }
 
   ngOnDestroy() {
