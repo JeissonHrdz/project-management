@@ -1,7 +1,6 @@
 package org.projectmanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.projectmanagement.model.dto.project.ProjectReadDto;
 import org.projectmanagement.model.dto.sprint.SprintCreateDto;
 import org.projectmanagement.model.dto.sprint.SprintReadDto;
 import org.projectmanagement.model.dto.sprint.SprintResponseDto;
@@ -13,7 +12,6 @@ import org.projectmanagement.repository.SprintRepository;
 import org.projectmanagement.service.SprintService;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;

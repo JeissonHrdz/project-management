@@ -3,13 +3,9 @@ package org.projectmanagement.model.entity;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
-
-import java.sql.SQLType;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;

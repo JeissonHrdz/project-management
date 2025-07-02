@@ -2,11 +2,8 @@ package org.projectmanagement.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.bouncycastle.util.Times;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.io.Serial;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;

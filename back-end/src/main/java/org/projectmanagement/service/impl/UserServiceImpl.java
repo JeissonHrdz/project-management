@@ -3,12 +3,10 @@ package org.projectmanagement.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.projectmanagement.model.dto.user.UserRegisterDto;
 import org.projectmanagement.model.dto.user.UserResponseDto;
-import org.projectmanagement.model.entity.Role;
 import org.projectmanagement.model.entity.User;
 import org.projectmanagement.repository.RoleRepository;
 import org.projectmanagement.repository.UserRepository;
 import org.projectmanagement.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

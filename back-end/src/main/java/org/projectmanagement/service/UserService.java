@@ -3,7 +3,6 @@ package org.projectmanagement.service;
 import org.projectmanagement.model.dto.user.UserRegisterDto;
 import org.projectmanagement.model.dto.user.UserResponseDto;
 import org.projectmanagement.model.entity.User;
-import org.springframework.stereotype.Service;
 
 
 public interface UserService {

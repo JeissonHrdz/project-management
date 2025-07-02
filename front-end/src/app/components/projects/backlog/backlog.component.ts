@@ -243,7 +243,11 @@ export class BacklogComponent {
     this.closeMenu();
   }
 
-  showModalEditStory(storyId: number) {
+  showModalFormStory() {
+    $("#modal-create-story").toggle('fast');
+  }
+
+  showModalEditStory(storyId: number) { 
 
     $("#modal-edit-story").toggle('fast');
     this.storyIdToDelete.set(storyId);

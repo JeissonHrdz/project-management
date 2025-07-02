@@ -8,8 +8,6 @@ import org.projectmanagement.model.entity.Project;
 import org.projectmanagement.model.mapper.ProjectMapper;
 import org.projectmanagement.repository.ProjectRepository;
 import org.projectmanagement.service.ProjectService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +26,6 @@ public class ProjectServiceImpl  implements ProjectService {
     @Autowired
     private final ProjectMapper projectMapper;
 
-    private static final Logger log = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
     @Override
     public ProjectResponseDto createProject(ProjectCreateDto projectCreateDto) {

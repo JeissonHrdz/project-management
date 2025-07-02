@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final RoleService roleService;
+   // private final RoleService roleService;
     private final UserRepository userRepository;
     private final UserService userService;
 

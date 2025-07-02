@@ -1,6 +1,5 @@
 package org.projectmanagement.service;
 
-import org.projectmanagement.model.entity.User;
 
 public interface  RoleService {
 

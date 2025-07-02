@@ -1,12 +1,7 @@
 package org.projectmanagement.model.entity;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Null;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-import org.projectmanagement.model.enums.TaskStatus;
-import org.projectmanagement.model.enums.TaskType;
+
 
 import java.sql.Timestamp;
 

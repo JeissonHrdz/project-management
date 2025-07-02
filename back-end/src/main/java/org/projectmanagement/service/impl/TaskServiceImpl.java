@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.projectmanagement.model.dto.task.TaskCreateDto;
 import org.projectmanagement.model.dto.task.TaskReadDto;
 import org.projectmanagement.model.dto.task.TaskResponseDto;
-import org.projectmanagement.model.entity.Project;
 import org.projectmanagement.model.entity.Sprint;
 import org.projectmanagement.model.entity.Task;
 import org.projectmanagement.model.enums.TaskPriority;
@@ -16,8 +15,6 @@ import org.projectmanagement.repository.SprintRepository;
 import org.projectmanagement.repository.TaskRepository;
 import org.projectmanagement.service.TaskService;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
