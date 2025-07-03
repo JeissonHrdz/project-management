@@ -1,6 +1,5 @@
 package org.projectmanagement.repository;
 
-import org.projectmanagement.model.dto.project.ProjectReadDto;
 import org.projectmanagement.model.entity.Project;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

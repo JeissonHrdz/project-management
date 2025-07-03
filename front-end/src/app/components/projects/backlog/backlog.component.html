@@ -1,66 +1,73 @@
-<section class="select-none border-t-2 mt-2 mx-4 border-gray-200 border-dashed">  
+<section class="select-none border-t-2 mt-2 mx-4 border-gray-200 border-dashed">
     <div class="w-full flex flex-row p-1">
         <div class="flex flex-row w-fit ">
-            <div class="p-1 w-[260px] pr-4 pt-4 h-fit bg-white   rounded-[10px]  ">
-                <div class="flex flex-row pb-4 justify-items-center mb-2 border-b-2 border-gray-200 border-dashed justify-between w-full">
+            <div class="p-1 w-[260px] pr-4  pt-4 h-fit bg-white   rounded-[10px]  ">
+                <div
+                    class="flex flex-row pb-4  justify-items-center mb-2 border-b-2 border-gray-200 border-dashed justify-between w-full">
                     <p class="font-semibold p-2 text-[16px]">Epics</p>
                     <button (click)="showFormEpic()" class="w-fit h-fit flex justify-between justify-items-center   px-3 py-2 text-[14px]
                     font-medium cursor-pointer bg-white  text-neutral-500 border-1 border-neutral-300 rounded-[10px] 
                      hover:bg-neutral-100 shadow-sm transition-colors">
-                     <ng-icon class="mr-2 " size="20" name="heroPlus" ></ng-icon>
-                        New Epic 
+                        <ng-icon class="mr-2 " size="20" name="heroPlus"></ng-icon>
+                        New Epic
                     </button>
-                </div>    
-              
-                <ul class=" list-none text-[14px] mt-2 font-medium w-full">
+                </div>
+
+                <ul
+                    class=" list-none text-[14px] mt-2 font-medium w-full border-b-2 mr-2 border-gray-200 border-dashed">
                     @for(epics of epics; track $index){
-                    <li (click)="showStoriesByEpicSelected(epics.item_id)" class="epic-item-{{epics.item_id}} m-1 p-3 rounded-[10px] 
-                    cursor-pointer hover:*:block  hover:bg-teal-500/10 transition-colors ">{{epics.title}}
-                        <span class="float-right transition duration-300 ease-in-out hidden">
+                    <li (click)="showStoriesByEpicSelected(epics.item_id)" class="epic-item-{{epics.item_id}} m-1 py-3 pl-4 px-2 rounded-[10px] 
+                    cursor-pointer hover:*:block  hover:bg-neutral-100 transition-colors ">{{epics.title}}
+                        <span (click)="$event.stopPropagation()" class="float-right transition duration-300 ease-in-out hidden">
                             <ng-icon (click)="modalConfirmDeleteEpic(epics.item_id)" class="float-right trash-icon"
                                 size="20" name="heroTrash"></ng-icon>
-                            <ng-icon (click)="showFormEditEpic(epics.item_id)" class="float-right mr-2 edit-icon" size="20"
-                                color="" name="heroPencilSquare"></ng-icon>
+                            <ng-icon (click)="showFormEditEpic(epics.item_id)" class="float-right mr-2 edit-icon"
+                                size="20" color="" name="heroPencilSquare"></ng-icon>
                         </span>
                     </li>
                     <li>
                         <div class="mt-2 w-full rounded-[10px] hidden edit-epic-{{epics.item_id}}">
                             <form [formGroup]="formEpicUpdate" (submit)="updateItemBacklog(epics.item_id, 'EPIC')">
-                                <input formControlName="title" type="text" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-[10px] border-1
-                                        border-gray-200  focus:border-teal-400  text-[14px]" placeholder="Title" id="title"
+                                <input formControlName="title" type="text" class="font-medium outline-0 m-1 p-2 w-full bg-white 
+                                 placeholder:text-gray-500 rounded-[10px] border-1
+                                        border-gray-200 shadow-sm  hover:bg-gray-100 hover:border-gray-100  transition-colors hover:shadow-none
+                                         focus:border-purple-500  text-[14px]" placeholder="Title" id="title"
                                     value="{{epics.title}}">
                                 <input formControlName="description" type="text" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-[10px] border-1
-                                        border-gray-200  focus:border-teal-400  text-[14px]" placeholder="Description"
-                                    id="description" value="{{epics.description}}">
-                                <button type="submit" class="p-2 w-full m-1 bg-teal-500 cursor-pointer text-white
-                                    rounded-[10px] hover:bg-teal-600 transition-colors">Update</button>
+                                        border-gray-200 shadow-sm  hover:bg-gray-100 hover:border-gray-100  transition-colors hover:shadow-none
+                                         focus:border-purple-500  text-[14px]"
+                                    placeholder="Description" id="description" value="{{epics.description}}">
+                                <button type="submit" class="p-2 w-full m-1 border-1 border-gray-300 shadow-sm bg-white cursor-pointer text-neutral-500
+                                    rounded-[10px] hover:bg-neutral-100 transition-colors">Update</button>
                             </form>
                         </div>
                     </li>
-    
+
                     }
                 </ul>
-    
-                <div class="mt-4 hidden" id="form-epic">
-                    <form [formGroup]="formEpic" (submit)="createBacklogItem('EPIC')">
+
+                <div class="mt-4 hidden  w-full  p-1" id="form-epic">
+                    <form class="w-full" [formGroup]="formEpic" (submit)="createBacklogItem('EPIC')">
                         <input formControlName="title" id="title"
-                            [ngClass]="{'is-invalid': hasErrors('title', 'required', 'Epic')}" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-[10px] border-1
-                                        border-gray-200 focus:border-blue-400  text-[14px]" type="text" name="title"
-                            placeholder="Title" id="">
+                            [ngClass]="{'is-invalid': hasErrors('title', 'required', 'Epic')}" class="font-medium outline-0 mb-2  p-2 w-full bg-white  placeholder:text-gray-500 rounded-[10px] border-1
+                                        border-gray-200 focus:border-blue-400 shadow-sm text-[14px]" type="text"
+                            name="title" placeholder="Title" id="">
                         <input formControlName="description" id="description"
-                            [ngClass]="{'is-invalid': hasErrors('description', 'required', 'Epic')}" class="font-medium outline-0 m-1 p-2 w-full bg-white  placeholder:text-gray-500 rounded-[10px] border-1
-                                        border-gray-200  focus:border-blue-400  text-[14px]" type="text" name="description"
-                            placeholder="Description" id="">
-                        <button type="submit" class="w-full   mt-2 p-2 text-[14px] font-medium cursor-pointer
-                          bg-teal-500 text-white   rounded-[10px]  hover:bg-teal-600 htransition-colors">
+                            [ngClass]="{'is-invalid': hasErrors('description', 'required', 'Epic')}" class="font-medium outline-0 mb-2  p-2 w-full bg-white  placeholder:text-gray-500 rounded-[10px] border-1
+                                        border-gray-200  focus:border-blue-400 shadow-sm text-[14px]" type="text"
+                            name="description" placeholder="Description" id="">
+                        <button type="submit"
+                            class="w-full   mt-2 p-2 text-[14px] font-medium cursor-pointer
+                          bg-white text-neutral-500 shadow-sm border-1 border-neutral-300  rounded-[10px]  hover:bg-neutral-100 htransition-colors">
                             Save
                         </button>
                     </form>
-                </div>    
-            </div>          
+                </div>
+            </div>
         </div>
 
-        <div class="rounded-t-md h-[calc(100vh-120px)] mt-3 w-full rounded-lg border-l-1 border-gray-200  bg-white pl-4 ">
+        <div
+            class="rounded-t-md h-[calc(100vh-120px)] mt-3 w-full rounded-lg border-l-1 border-gray-200  bg-white pl-4 ">
             <div class="flex flex-row items-center pb-4 justify-between">
                 <p class="font-bold text-[16px] p-2">Stories</p>
                 <button (click)="showModalFormStory()" class="flex flex-row items-center bg-purple-500 text-white   rounded-[10px] font-medium px-3 py-2 
@@ -69,77 +76,90 @@
                     Add Story
                 </button>
             </div>
-            <div class="overflow-y-auto">   
-            <table style="table-layout: auto;" class="w-full   bg-neutral-100 rounded-t-md 
+            <div class="overflow-y-auto">
+                <table style="table-layout: auto;" class="w-full   bg-neutral-100 rounded-md 
                 text-neutral-500 font-bold">
-                <thead>
-                    <tr class="w-full p-2 *:py-3 *:p-2 text-left bg-neutral-100 font-semibold text-[12px]">
-                        <td class="rounded-tl-md">
-                            <p>Title</p>
-                        </td>
-                        <td>
-                            <p>Description</p>
-                        </td>
-                        <td>
-                            <p>Epic</p>
-                        </td>
-                        <td class="rounded-tr-md">
-                            <p>Priority</p>
-                        </td>
-                        <td class="flex justify-center">
-                            <p>Actions</p>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
+                    <thead>
+                        <tr class="w-full p-2 *:py-3 *:p-2 text-left bg-neutral-100 font-semibold text-[12px]">
+                            <td class="rounded-l-[10px]">
+                                <div class="flex flex-row">
+                                    <p>Title</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="18" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex flex-row">
+                                    <p>Description</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="18" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex flex-row">
+                                    <p>Epic</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="18" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex flex-row">
+                                    <p>Priority</p>
+                                    <ng-icon class="ml-2 cursor-pointer" size="18" name="heroChevronUpDown"></ng-icon>
+                                </div>
+                            </td>
+                            <td class="flex justify-center rounded-r-[10px] w-[50px]">
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    @for (story of stories; track $index){
-                    <tr class="p-2 *:p-3 text-left border-b-1  border-neutral-200 bg-white font-medium text-[14px]">
-                        <td>
-                            <p class="font-semibold">{{story.title}}</p>
-                        </td>
-                        <td>
-                            <p>{{story.description}}</p>
-                        </td>
-                        <td>
-                            <p class="text-[12px] w-fit font-medium bg-amber-100 px-2 p-1 rounded-[10px] text-amber-500">
-                                {{getEpicName(story.epic_id)}}
-                            </p>
-                        </td>
-                        <td class="">
-                            <p>{{story.priority}}</p>
-                        </td>
-                        <td class="flex justify-center">
-                            <span (click)="toggleMenu('menu-'+story.item_id); $event.stopPropagation()" class="cursor-pointer flex rounded-[10px] group w-fit justify-items-center
+                        @for (story of stories; track $index){
+                        <tr
+                            class="p-2 *:p-3 text-left border-b-1 hover:bg-neutral-100 border-neutral-200 bg-white font-medium text-[14px]">
+                            <td>
+                                <p class="font-semibold">{{story.title}}</p>
+                            </td>
+                            <td>
+                                <p>{{story.description}}</p>
+                            </td>
+                            <td>
+                                <p
+                                    class="text-[12px] w-fit font-medium bg-amber-100 px-2 p-1 rounded-[10px] text-amber-500">
+                                    {{getEpicName(story.epic_id)}}
+                                </p>
+                            </td>
+                            <td class="">
+                                <p>{{story.priority}}</p>
+                            </td>
+                            <td class="flex justify-center">
+                                <span (click)="toggleMenu('menu-'+story.item_id); $event.stopPropagation()" class="cursor-pointer flex rounded-[10px] group w-fit justify-items-center
                                         hover:bg-teal-50 ">
-                                <ng-icon color="#0C0C0C" size="24" name="heroEllipsisHorizontal"></ng-icon>
-                            </span>
-                            <div *ngIf="openedMenuId === 'menu-'+story.item_id">
-                                <ul class="menu-sprint right-22 w-[160px] mt-6 text-[14px] font-medium border-1 border-gray-200 absolute bg-white 
+                                    <ng-icon color="#0C0C0C" size="24" name="heroEllipsisHorizontal"></ng-icon>
+                                </span>
+                                <div *ngIf="openedMenuId === 'menu-'+story.item_id">
+                                    <ul class="menu-sprint right-22 w-[160px] mt-6 text-[14px] font-medium border-1 border-gray-200 absolute bg-white 
                         shadow-sm rounded-[10px] p-2" id="menu-{{story.item_id}}">
-                                    <li (click)="showModalEditStory(story.item_id)"
-                                        class="p-2 flex flex-row hover:bg-neutral-100 cursor-pointer rounded-[10px]">
-                                        <ng-icon class="mr-2" size="18" name="heroPencilSquare"></ng-icon>
-                                        Edit
-                                    </li>
-                                    <li (click)="deleteItemBacklog(story.item_id, 'USER_STORY')"
-                                        class="p-2 flex hover:bg-neutral-100 text-red-500 cursor-pointer rounded-[10px]">
-                                        <ng-icon class="mr-2" size="18" color="#fb2c36" name="heroTrash"></ng-icon>
-                                        Delete
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                                        <li (click)="showModalEditStory(story.item_id)"
+                                            class="p-2 flex flex-row hover:bg-neutral-100 cursor-pointer rounded-[10px]">
+                                            <ng-icon class="mr-2" size="18" name="heroPencilSquare"></ng-icon>
+                                            Edit
+                                        </li>
+                                        <li (click)="deleteItemBacklog(story.item_id, 'USER_STORY')"
+                                            class="p-2 flex hover:bg-neutral-100 text-red-500 cursor-pointer rounded-[10px]">
+                                            <ng-icon class="mr-2" size="18" color="#fb2c36" name="heroTrash"></ng-icon>
+                                            Delete
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
 
-                    }
+                        }
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             </div>
-        </div>   
+        </div>
 
-   
+
     </div>
 </section>
 
@@ -238,7 +258,8 @@
                                             [ngClass]="{'is-invalid': hasErrors('priority', 'required','Story')}">
                                     </div>
                                     <div class="mt-4 w-full flex flex-row gap-2">
-                                        <button type="button" (click)="showModalFormStory()" class="w-full items-center bg-white text-neutral-500 border-1 border-gray-300 shadow-sm  rounded-[10px] 
+                                        <button type="button" (click)="showModalFormStory()"
+                                            class="w-full items-center bg-white text-neutral-500 border-1 border-gray-300 shadow-sm  rounded-[10px] 
                                         font-medium px-3 py-2 text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors">
                                             Cancel
                                         </button>

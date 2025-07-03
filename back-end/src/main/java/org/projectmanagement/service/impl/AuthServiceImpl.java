@@ -3,12 +3,9 @@ package org.projectmanagement.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.projectmanagement.model.dto.auth.AuthResponseDto;
 import org.projectmanagement.model.dto.user.UserLoginDto;
-import org.projectmanagement.model.entity.User;
 import org.projectmanagement.repository.UserRepository;
 import org.projectmanagement.service.AuthService;
 import org.projectmanagement.service.JwtService;
-import org.projectmanagement.service.RoleService;
-import org.projectmanagement.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +21,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
    // private final RoleService roleService;
     private final UserRepository userRepository;
-    private final UserService userService;
+  //  private final UserService userService;
 
     @Override
     public AuthResponseDto login(UserLoginDto request) throws AccessDeniedException {
@@ -36,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
         String user_id =  userRepository.findByUsername(request.username()).orElseThrow().getUser_id();
         String token = jwtService.getToken(user, user_id);
         System.out.println("token: " + token);
-        User user1 = userService.findUser(jwtService.getUserNameFromToken(token));
+       // User user1 = userService.findUser(jwtService.getUserNameFromToken(token));
         return  AuthResponseDto.builder()
                 .token(token)
                 .build();

@@ -1,6 +1,4 @@
 package org.projectmanagement.repository;
-
-import org.projectmanagement.model.entity.Project;
 import org.projectmanagement.model.entity.Sprint;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

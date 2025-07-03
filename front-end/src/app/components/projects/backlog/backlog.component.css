@@ -10,14 +10,13 @@
 }
 
 .edit-icon:hover{
-    color: #00BBA7;
+    color: #9810FA
 }
 
 .active{
     
-    color: #00BBA7;
-    font-weight: bold;
+    background-color: #f8efff;  
     transition: all .1s ease-in-out;
-    border: 1px solid #00BBA7;
+    color: #9810FA;
 
 }

@@ -1,7 +1,7 @@
 package org.projectmanagement.repository;
 
 import org.projectmanagement.model.entity.Backlog;
-import org.projectmanagement.model.entity.Task;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

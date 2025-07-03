@@ -1,7 +1,7 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare } from '@ng-icons/heroicons/outline';
+import { heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare, heroChevronUpDown } from '@ng-icons/heroicons/outline';
 import { heroTrashSolid } from '@ng-icons/heroicons/solid';
 import $ from 'jquery';
 import { BacklogService } from '../../../services/backlog.service';
@@ -14,7 +14,7 @@ import { ProjectService } from '../../../services/project.service';
 @Component({
   selector: 'app-backlog',
   imports: [NgIcon, ReactiveFormsModule, CommonModule],
-  providers: [provideIcons({ heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare, heroTrashSolid })],
+  providers: [provideIcons({ heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare, heroTrashSolid, heroChevronUpDown })],
   templateUrl: './backlog.component.html',
   styleUrl: './backlog.component.css'
 })
