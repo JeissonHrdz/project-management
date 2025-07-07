@@ -23,7 +23,7 @@
                 </h1>
                 <div class="flex flex-row  items-center justify-center">
 
-                    <button class="flex flex-row items-center bg-white text-neutral-500  border-1 border-r-0 shadow-sm rounded-l-[10px] border-gray-300 font-medium px-2 py-2 
+                    <button (click)="openModalCreateTask()" class="flex flex-row items-center bg-white text-neutral-500  border-1 border-r-0 shadow-sm rounded-l-[10px] border-gray-300 font-medium px-2 py-2 
                     text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors">
                         <ng-icon class="mr-2" size="20" name="heroClipboardDocumentCheck"></ng-icon>
                         Create Task
@@ -362,6 +362,8 @@
         </div>
     </div>
 </div>
+
+<router-outlet></router-outlet>
 
 
 

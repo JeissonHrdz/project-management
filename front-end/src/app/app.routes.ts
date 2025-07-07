@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard, authGuardLogin } from './core/auth/guards/auth-gurard';
 import { BacklogComponent } from './components/projects/backlog/backlog.component';
 import { SprintComponent } from './components/projects/sprint/sprint.component';
+import { CreateTaskComponent } from './components/projects/sprint/task/create-task/create-task.component';
 
 export const routes: Routes = [
     {
@@ -30,7 +31,14 @@ export const routes: Routes = [
                     {
                         path: 'sprints',
                         component: SprintComponent,
-                        canActivate: [authGuard]
+                        canActivate: [authGuard],
+                        children: [
+                            {
+                                path: 'task',
+                                component: CreateTaskComponent,
+                                canActivate: [authGuard]
+                            }
+                        ]
                     }
                   
                 ]

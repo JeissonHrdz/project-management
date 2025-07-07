@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, inject, HostListener } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, HostListener, ComponentFactoryResolver } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,9 +12,11 @@ import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash, heroXCi
   heroChevronUpDown,heroCheckCircle,heroExclamationTriangle, heroClipboardDocumentCheck, heroPlus } from '@ng-icons/heroicons/outline';
 import  $ from 'jquery';
 
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-sprint',
-  imports: [CommonModule, ReactiveFormsModule, NgIcon],
+  imports: [CommonModule, ReactiveFormsModule, NgIcon,RouterOutlet],
   providers: [provideIcons({heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash,
      heroChevronUpDown,heroCheckCircle,heroExclamationTriangle,heroXCircle,heroClipboardDocumentCheck,heroPlus})],
   templateUrl: './sprint.component.html', 
@@ -22,11 +24,14 @@ import  $ from 'jquery';
 })
 export class SprintComponent {
   @ViewChild('modalCreateSprint') modalCreateSprint!: ElementRef;
+  @ViewChild('createTask', {read: RouterOutlet}) createTask!: RouterOutlet;
 
   formSprint: FormGroup;
   private projectId = inject(ProjectService)._projectId();
   private sprintService = inject(SprintService);
   private toastService = inject(ToastService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   sprints: Sprint[] = [];
   dataSprintUpdate: Sprint | any;
@@ -167,6 +172,12 @@ export class SprintComponent {
         console.log(error);
       }
     })
+  }
+
+  openModalCreateTask(){
+    this.router.navigate(['task'], {
+      relativeTo: this.route
+    });
   }
 
    toggleMenu(menuId: string): void {
