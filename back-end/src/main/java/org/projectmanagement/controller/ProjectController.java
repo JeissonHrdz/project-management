@@ -26,9 +26,7 @@ import java.util.Map;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final UserService userService;
     private final RoleService roleService;
-    private static final Logger log = LoggerFactory.getLogger(ProjectController.class);
 
 
     @PostMapping(value = "create")

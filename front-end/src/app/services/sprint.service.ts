@@ -28,8 +28,8 @@ export class SprintService {
       )
     }
 
-    getSprints(): Observable<any> {
-      return this.http.get<any>(this.urlBase + '/' + this.projectId + '/sprint/sprints').pipe(
+    getSprints( projectId: number): Observable<any> {   
+      return this.http.get<any>(this.urlBase + '/' + projectId + '/sprint/sprints').pipe(
         catchError(this.handleError)
       )
     }

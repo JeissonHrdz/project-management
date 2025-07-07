@@ -36,6 +36,7 @@ export class MainMenuComponent {
   }
 
   gotoProject(projectId: number) {
+    console.log(projectId);
     this.projectService._projectId.set(projectId);
     localStorage.setItem('PPIN', projectId.toString());
     this.router.navigate(['app/project/dashboard']);

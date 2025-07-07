@@ -20,8 +20,6 @@ export class ProjectService {
       catchError(this.handleError)
     )
   }
- 
-
 
   getAllProjects(scrum_master_id: string ): Observable<any> {
     return this.http.get<any>(this.urlBase + '/projects', { params: { scrum_master_id: scrum_master_id } }).pipe(    
@@ -29,9 +27,8 @@ export class ProjectService {
     )
   }
 
-  getProjectById(projectId: number): Observable<any> {
-    this._projectId.set(projectId);   
-    return this.http.get<any>(this.urlBase + '/' + projectId).pipe(  
+  getProjectById(projectId: number): Observable<any> {  
+      return this.http.get<any>(this.urlBase + '/' + projectId).pipe(  
       catchError(this.handleError)
     )
   }

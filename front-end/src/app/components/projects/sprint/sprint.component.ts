@@ -50,8 +50,11 @@ export class SprintComponent {
     this.getSprints();
   }
 
-  getSprints() {
-    this.sprintService.getSprints().pipe(
+  getSprints() {   
+    if (this.projectId == 0) {
+      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
+    } 
+    this.sprintService.getSprints(this.projectId).pipe(
       takeUntil(this.destroy$)
     ).subscribe(data => {
       this.sprints = data.object;

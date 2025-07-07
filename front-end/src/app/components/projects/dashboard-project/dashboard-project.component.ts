@@ -44,7 +44,8 @@ export class DashboardProjectComponent {
     this.projectId = this.projectService._projectId() ?? 0;
     if (this.projectId == 0) {
       this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
-    }
+    }  
+    
     this.projectService.getProjectById(this.projectId).pipe(
       takeUntil(this.destroy$))
       .subscribe(project => {
