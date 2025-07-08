@@ -31,6 +31,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseDto createTask(TaskCreateDto taskCreateDto) {
+  
         Task task = Task.builder()
                 .title(taskCreateDto.title())
                 .description(taskCreateDto.description())
@@ -41,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
                 .priority(taskCreateDto.priority())
                 .type(taskCreateDto.type())
                 .story_points(taskCreateDto.story_points())
-                .estimate_hours(taskCreateDto.estimate_hours())
+                .estimate_hours(taskCreateDto.estimated_hours())
                 .blockers(taskCreateDto.blockers())
                 .start_date(taskCreateDto.start_date())
                 .end_date(taskCreateDto.end_date())
@@ -53,8 +54,9 @@ public class TaskServiceImpl implements TaskService {
                 savedTask.getTitle(),
                 savedTask.getDescription(),
                 savedTask.getStatus(),
-                savedTask.getPriority(),
+                savedTask.getPriority(), 
                 savedTask.getType(),
+                savedTask.getEstimate_hours(),
                 savedTask.getStory_points(),
                 savedTask.getStart_date(),
                 savedTask.getEnd_date()

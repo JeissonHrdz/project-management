@@ -3,6 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import $ from 'jquery';
+import { BacklogItem } from '../../../../../core/model/entity/backlog-item.model';
+import { BacklogService } from '../../../../../services/backlog.service';
+import { Subject, takeUntil } from 'rxjs';
+import { TaskService } from '../../../../../services/task.service';
+import { ToastService } from '../../../../../services/toast.service';
 
 @Component({
   selector: 'app-create-task',
@@ -11,31 +16,48 @@ import $ from 'jquery';
   styleUrl: './create-task.component.css'
 })
 export class CreateTaskComponent {
+  private destroy$ = new Subject<void>();
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private backlogService = inject(BacklogService);
+  private taskService = inject(TaskService);
+  private projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
+  private toastService = inject(ToastService);
 
   formTask: FormGroup;
-  backlogItems: any[] = [];
+  backlogItems: BacklogItem[] = [];
+  epics: BacklogItem[] = [];
 
   ngOnInit(): void {
     $("#modal-create-task").toggle('fast');
+    this.getBacklogItems();    
   }
 
   constructor(private formBuilder: FormBuilder) {
     this.formTask = this.formBuilder.group({
       title: ['', Validators.required],
-      backlog_item: ['', Validators.required],
-      priority: ['', Validators.required],
-      type: ['', Validators.required],
       description: ['', Validators.required],
+      project_id: [this.projectId, Validators.required],
+      sprint_id: [1, Validators.required],
+      backlog_item_id: ['', Validators.required],
+      priority: ['', Validators.required],
+      type: ['', Validators.required],      
+      estimated_hours: [Validators.required],
       start_date: ['', Validators.required],
       end_date: ['', Validators.required],
-      estimated_hours: ['', Validators.required],
-      status: ['', Validators.required],
-      project_id: ['', Validators.required],
-      sprint_id: ['', Validators.required]
+      status: ['pending', Validators.required],
     });
   }
+
+  getBacklogItems() {
+    this.backlogService.getStories(this.projectId).pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      this.backlogItems = data.object;
+    });
+    this.backlogService.getEpics(this.projectId).pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      this.epics = data.object;
+    });
+  }
+
 
   closeModal() {
     $("#modal-create-task").toggle('fast',()=>{
@@ -49,9 +71,22 @@ export class CreateTaskComponent {
     return control.hasError(validation) && (control.dirty || control.touched);
   }
 
-  createTask() {
-    if (this.formTask.valid) {
-      console.log(this.formTask.value);
+  createTask() {  
+    if (this.formTask.valid) {     
+      this.taskService.createTask(this.formTask.value).pipe(takeUntil(this.destroy$)).subscribe({
+        next: (data) => {
+          this.toastService.toast('Task created successfully', 'success');
+          this.closeModal();
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

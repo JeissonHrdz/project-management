@@ -31,33 +31,29 @@
                                     </div>
 
                                     <div class="space-y-2 border-t-2 border-gray-300 border-dashed pt-4 mt-4 ">
-                                        <div class="flex flex-col  mb-4">   
+                                        <div class="flex flex-col  mb-4">
                                             <p class="text-sm font-bold text-gray-800">Select User Story</p>
-                                            <p class="text-xs text-gray-500">Select the user story to which the task belongs</p>
+                                            <p class="text-xs text-gray-500">Select the user story to which the task
+                                                belongs</p>
                                         </div>
-                                        <div class="grid grid-cols-2 gap-4">
+                                        <div class="grid grid-cols-1">
                                             <div>
-                                                <label for="epic"
-                                                    class="block mb-1 text-sm font-medium text-gray-800">Epic</label>
-                                                <select formControlName="epic" class="shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
-                                                border-gray-200 text-[14px]"
-                                                    [ngClass]="{'is-invalid': hasErrors('epic', 'required','Task')}">
-                                                    <option value="">Select Epic </option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label for="backlog_item"
-                                                    class="block mb-1 text-sm font-medium text-gray-800">Backlog
-                                                    Item</label>
-                                                <select formControlName="backlog_item" class="shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
+                                                <select formControlName="backlog_item_id" class="shadow-sm cursor-pointer font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
                                             border-gray-200 text-[14px]"
-                                                    [ngClass]="{'is-invalid': hasErrors('backlog_item', 'required','Task')}">
-                                                    <option value="">Select Backlog Item</option>
-                                                    @for (backlogItem of backlogItems; track $index){
-                                                    <option value="{{ backlogItem.backlog_item_id }}">{{
-                                                        backlogItem.name }}
-                                                    </option>
+                                                    [ngClass]="{'is-invalid': hasErrors('backlog_item_id', 'required','Task')}">
+                                                    <option value="" selected disabled>Choose</option>
+                                                    @for (epic of epics; track $index){
+                                                    <optgroup [label]="'EPIC: ' + epic.title">
+                                                        @for (backlogItem of backlogItems; track $index){
+                                                            @if (backlogItem.epic_id === epic.item_id){      
+                                                            <option [value]="backlogItem.item_id">
+                                                                {{ backlogItem.title }}
+                                                            </option>
+                                                            }
+                                                        }
+                                                    </optgroup>
                                                     }
+
                                                 </select>
                                             </div>
                                         </div>
@@ -69,16 +65,16 @@
                                                 <p class="text-sm font-bold text-gray-800">Priority</p>
                                                 <p class="text-xs text-gray-500">Select the priority of the task</p>
                                             </div>
-                                            <div>                                                
+                                            <div>
                                                 <select formControlName="priority" class="cursor-pointer shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]"
                                                     [ngClass]="{'is-invalid': hasErrors('priority', 'required','Task')}">
-                                                <option value="" selected disabled>Choose</option>
-                                                <option value="low">Low</option>
-                                                <option value="medium">Medium</option>
-                                                <option value="high">High</option>
-                                                <option value="critical">Critical</option>
-                                            </select>
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="low">Low</option>
+                                                    <option value="medium">Medium</option>
+                                                    <option value="high">High</option>
+                                                    <option value="critical">Critical</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="grid grid-cols-2 gap-4 items-center">
@@ -87,57 +83,56 @@
                                                 <p class="text-xs text-gray-500">Select the type of the task</p>
                                             </div>
                                             <div>
-                                            <select formControlName="type" class="cursor-pointer shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
+                                                <select formControlName="type" class="cursor-pointer shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
                                     border-gray-200 text-[14px]"
-                                                [ngClass]="{'is-invalid': hasErrors('type', 'required','Task')}">
-                                                <option value="" selected disabled>Choose</option>
-                                                <option value="refactor">Refactor</option>
-                                                <option value="chore">Chore</option>
-                                                <option value="bug">Bug</option>
-                                                <option value="feature">Feature</option>
-                                                <option value="research">Research</option>
-                                            </select>
-                                        </div> 
-                                        </div> 
+                                                    [ngClass]="{'is-invalid': hasErrors('type', 'required','Task')}">
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="refactor">Refactor</option>
+                                                    <option value="chore">Chore</option>
+                                                    <option value="bug">Bug</option>
+                                                    <option value="feature">Feature</option>
+                                                    <option value="research">Research</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
 
-                               
 
-                                    <div
-                                        class=" border-t-2 border-gray-300 border-dashed pt-4 mt-4   ">  
+
+                                    <div class=" border-t-2 border-gray-300 border-dashed pt-4 mt-4   ">
                                         <div class="mb-4">
                                             <p class="text-sm font-bold text-gray-800"> Duration </p>
                                             <p class="text-xs text-gray-500"> Setup the date and hours of the task </p>
-                                        </div>   
-                                        <div class="grid grid-cols-2 gap-4">                            
-                                        <div> 
-                                            <label for="start_date"
-                                                class="block mb-1 text-sm font-medium text-gray-800">Start
-                                                Date</label>
-                                            <input formControlName="start_date" type="date" class="shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label for="start_date"
+                                                    class="block mb-1 text-sm font-medium text-gray-800">Start
+                                                    Date</label>
+                                                <input formControlName="start_date" type="date" class="shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
                                             border-gray-200 text-[14px]"
-                                                [ngClass]="{'is-invalid': hasErrors('start_date', 'required','Task')}"
+                                                    [ngClass]="{'is-invalid': hasErrors('start_date', 'required','Task')}"
+                                                    required>
+                                            </div>
+                                            <div>
+                                                <label for="end_date"
+                                                    class="block mb-1 text-sm font-medium text-gray-800">End
+                                                    Date</label>
+                                                <input formControlName="end_date" type="date" class="shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
+                                            border-gray-200 text-[14px]"
+                                                    [ngClass]="{'is-invalid': hasErrors('end_date', 'required','Task')}"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <label for="estimated_hours"
+                                                class="block mb-1 text-sm font-medium text-gray-800">Estimated
+                                                Hours</label>
+                                            <input formControlName="estimated_hours" type="number" class="shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
+                                            border-gray-200 text-[14px]"
+                                                [ngClass]="{'is-invalid': hasErrors('estimated_hours', 'required','Task')}"
                                                 required>
                                         </div>
-                                        <div>
-                                            <label for="end_date"
-                                                class="block mb-1 text-sm font-medium text-gray-800">End
-                                                Date</label>
-                                            <input formControlName="end_date" type="date" class="shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
-                                            border-gray-200 text-[14px]"
-                                                [ngClass]="{'is-invalid': hasErrors('end_date', 'required','Task')}"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="mt-2">
-                                        <label for="estimated_hours"
-                                            class="block mb-1 text-sm font-medium text-gray-800">Estimated
-                                            Hours</label>
-                                        <input formControlName="estimated_hours" type="number" class="shadow-sm font-medium outline-0 p-2 w-full  placeholder:text-gray-500 rounded-[10px] border-1
-                                            border-gray-200 text-[14px]"
-                                            [ngClass]="{'is-invalid': hasErrors('estimated_hours', 'required','Task')}"
-                                            required>
-                                    </div>
                                     </div>
 
                                 </div>

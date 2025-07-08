@@ -13,6 +13,7 @@ public record TaskResponseDto(
     TaskStatus status,
     TaskPriority priority,
     TaskType type,
+    Double estimate_hours,
     Integer story_points,
     Timestamp start_date,
     Timestamp end_date

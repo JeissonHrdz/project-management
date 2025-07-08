@@ -17,7 +17,7 @@ public record TaskCreateDto(
     TaskType type,
     Integer story_points,
     String blockers,
-    Double estimate_hours,
+    Double estimated_hours,
     Timestamp start_date,
     Timestamp end_date
 ) {
