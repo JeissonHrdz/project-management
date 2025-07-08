@@ -6,7 +6,7 @@ import { ProjectService } from '../../../services/project.service';
 import { SprintService } from '../../../services/sprint.service';
 import { ToastService } from '../../../services/toast.service';
 import { Sprint } from '../../../core/model/entity/sprint.model';
-import { takeUntil, Subject } from 'rxjs';
+import { takeUntil, Subject, Observable } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash, heroXCircle, 
   heroChevronUpDown,heroCheckCircle,heroExclamationTriangle, heroClipboardDocumentCheck, heroPlus } from '@ng-icons/heroicons/outline';
@@ -14,6 +14,8 @@ import  $ from 'jquery';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
+import { TaskService } from '../../../services/task.service';
+import { Task } from '../../../core/model/entity/task';
 @Component({
   selector: 'app-sprint',
   imports: [CommonModule, ReactiveFormsModule, NgIcon,RouterOutlet],
@@ -29,14 +31,16 @@ export class SprintComponent {
   formSprint: FormGroup;
   private projectId = inject(ProjectService)._projectId();
   private sprintService = inject(SprintService);
+  private taskService = inject(TaskService);
   private toastService = inject(ToastService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
+
   sprints: Sprint[] = [];
   dataSprintUpdate: Sprint | any;
   openedMenuId: string | null = null;
- 
+  tasks:Task[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -62,9 +66,27 @@ export class SprintComponent {
     this.sprintService.getSprints(this.projectId).pipe(
       takeUntil(this.destroy$)
     ).subscribe(data => {
-      this.sprints = data.object;
+      this.sprints = data.object;  
+      this.sprints.forEach(sprint => {
+        this.getTasksBySprint(sprint.sprint_id);      
+      });
     })
   }
+
+  getTasksBySprint(sprint_id: number)  {
+   this.taskService.getTasksBySprint(sprint_id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {     
+     
+      this.tasks =  this.tasks.concat(data.object);
+      console.log(this.tasks);
+    })   
+  }
+
+  dateFormatter(date: string): string {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  } 
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -174,9 +196,13 @@ export class SprintComponent {
     })
   }
 
-  openModalCreateTask(){
+  openModalCreateTask( sprintId: number){
     this.router.navigate(['task'], {
-      relativeTo: this.route
+      relativeTo: this.route,
+      queryParams: {
+        sprint_id: sprintId
+      },
+      skipLocationChange: true
     });
   }
 

@@ -24,12 +24,15 @@ export class CreateTaskComponent {
   private projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
   private toastService = inject(ToastService);
 
+
   formTask: FormGroup;
   backlogItems: BacklogItem[] = [];
   epics: BacklogItem[] = [];
 
   ngOnInit(): void {
+   
     $("#modal-create-task").toggle('fast');
+    
     this.getBacklogItems();    
   }
 
@@ -38,11 +41,11 @@ export class CreateTaskComponent {
       title: ['', Validators.required],
       description: ['', Validators.required],
       project_id: [this.projectId, Validators.required],
-      sprint_id: [1, Validators.required],
+      sprint_id: [this.route.snapshot.queryParams['sprint_id'], Validators.required],
       backlog_item_id: ['', Validators.required],
       priority: ['', Validators.required],
       type: ['', Validators.required],      
-      estimated_hours: [Validators.required],
+      estimated_hours: ['',Validators.required],
       start_date: ['', Validators.required],
       end_date: ['', Validators.required],
       status: ['pending', Validators.required],
@@ -72,6 +75,7 @@ export class CreateTaskComponent {
   }
 
   createTask() {  
+    console.log(this.formTask.value);
     if (this.formTask.valid) {     
       this.taskService.createTask(this.formTask.value).pipe(takeUntil(this.destroy$)).subscribe({
         next: (data) => {
@@ -82,6 +86,9 @@ export class CreateTaskComponent {
           console.log(error);
         }
       });
+    } else {
+      this.formTask.markAllAsTouched();
+      this.formTask.updateValueAndValidity();
     }
   }
 

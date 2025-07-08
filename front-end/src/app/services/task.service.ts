@@ -19,6 +19,12 @@ export class TaskService {
     return this.http.post<any>(this.urlBase + '/' + this.projectId + '/sprint/' + task.sprint_id + '/task/create', task).pipe(
       catchError(this.handleError)
     )
+
+  }
+  getTasksBySprint(sprint_id: number): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/tasks').pipe(
+      catchError(this.handleError)
+    )
   }
 
 
