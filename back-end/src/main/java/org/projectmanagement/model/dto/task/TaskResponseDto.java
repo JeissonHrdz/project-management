@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 
 public record TaskResponseDto(
     Integer task_id,
+    Integer sprint_id,
     String title,
     String description,
     TaskStatus status,

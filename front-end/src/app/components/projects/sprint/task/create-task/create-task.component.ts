@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { BacklogService } from '../../../../../services/backlog.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TaskService } from '../../../../../services/task.service';
 import { ToastService } from '../../../../../services/toast.service';
+import { EventEmitter } from 'node:stream';
+import { Task } from '../../../../../core/model/entity/task';
 
 @Component({
   selector: 'app-create-task',
@@ -28,6 +30,7 @@ export class CreateTaskComponent {
   formTask: FormGroup;
   backlogItems: BacklogItem[] = [];
   epics: BacklogItem[] = [];
+ 
 
   ngOnInit(): void {
    
@@ -79,6 +82,7 @@ export class CreateTaskComponent {
     if (this.formTask.valid) {     
       this.taskService.createTask(this.formTask.value).pipe(takeUntil(this.destroy$)).subscribe({
         next: (data) => {
+          sessionStorage.setItem('task-created', JSON.stringify(data.object));
           this.toastService.toast('Task created successfully', 'success');
           this.closeModal();
         },

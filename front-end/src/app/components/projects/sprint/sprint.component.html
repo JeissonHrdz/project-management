@@ -122,35 +122,67 @@
                                 <p>{{dateFormatter(task.end_date)}}</p>
                             </td>
                             <td class="">
-                                <p
+                                @switch(task.status){
+                                    @case('pending'){
+                                        <p
                                     class="flex flex-row  bg-purple-100 text-purple-500 px-2 py-1 rounded-[10px] w-fit text-[12px] font-semibold">
                                     <ng-icon class="mr-1" size="18" name="heroExclamationTriangle"
                                         color="fef3c6"></ng-icon>
-                                    {{task.status}}
-                                </p>
-                                <!-- <p class="flex flex-row bg-green-100 text-green-500 px-2 py-1 rounded-[10px] w-fit text-[12px] font-semibold">
-                                    <ng-icon class="mr-1" size="18" name="heroCheckCircle" color="fef3c6"></ng-icon>
-                                    Completed -->
-                                <!-- </p>
-                                <p class="flex flex-row bg-red-100 text-red-500 px-2 py-1 rounded-[10px] w-fit text-[12px] font-semibold">
-                                    <ng-icon class="mr-1" size="18" name="heroXCircle" color="fef3c6"></ng-icon>
-                                    Blocked
-                                </p>
-                                <p class="flex flex-row bg-blue-100 text-blue-500 px-2 py-1 rounded-[10px] w-fit text-[12px] font-semibold">
-                                    <ng-icon class="mr-1" size="18" name="heroClock" color="fef3c6"></ng-icon>
-                                    In Progress
-                                </p> -->
+                                    {{task.status.replace('pending', 'Pending') }}
+                                    </p>
+                                    }
+                                    @case('in_progress'){
+                                        <p
+                                    class="flex flex-row  bg-blue-100 text-blue-500 px-2 py-1 rounded-[10px] w-fit text-[12px] font-semibold">
+                                    <ng-icon class="mr-1" size="18" name="heroClock"
+                                        color="fef3c6"></ng-icon>
+                                    {{task.status.replace('in_progress', 'In Progress') }}
+                                    </p>
+                                    }
+                                    @case('completed'){
+                                        <p
+                                    class="flex flex-row  bg-green-100 text-green-500 px-2 py-1 rounded-[10px] w-fit text-[12px] font-semibold">
+                                    <ng-icon class="mr-1" size="18" name="heroCheckCircle"
+                                        color="fef3c6"></ng-icon>
+                                    {{task.status.replace('completed', 'Completed') }}
+                                    </p>
+                                    }
+                                    @case('blocked'){
+                                        <p
+                                    class="flex flex-row  bg-red-100 text-red-500 px-2 py-1 rounded-[10px] w-fit text-[12px] font-semibold">
+                                    <ng-icon class="mr-1" size="18" name="heroXCircle"
+                                        color="fef3c6"></ng-icon>
+                                    {{task.status.replace('blocked', 'Blocked') }}
+                                    </p>
+                                    }
+                                    }
+                                
+                                
+                             
                             </td>
                             <td class="">
-                                <!-- <p class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded-[10px] w-fit text-[12px] font-medium">
-                                    Medium</p>
-                                <p class="bg-red-100 text-red-600  px-2 py-1 rounded-[10px] w-fit text-[12px] font-medium">
-                                    Critical</p>    
-                                <p class="bg-orange-100 text-orange-600 px-2 py-1 rounded-[10px] w-fit text-[12px] font-medium">
-                                    High</p> -->
+                                @switch(task.priority){
+                                    @case('low'){                              
                                 <p
                                     class="bg-lime-100 text-lime-600 px-2 py-1 rounded-[10px] w-fit text-[12px] font-medium">
                                     Low</p>
+                                    }
+                                    @case('medium'){
+                                <p
+                                    class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded-[10px] w-fit text-[12px] font-medium">
+                                    Medium</p>
+                                    }
+                                    @case('high'){
+                                <p
+                                    class="bg-orange-100 text-orange-600 px-2 py-1 rounded-[10px] w-fit text-[12px] font-medium">
+                                    High</p>
+                                    }
+                                    @case('critical'){
+                                <p
+                                    class="bg-red-100 text-red-600 px-2 py-1 rounded-[10px] w-fit text-[12px] font-medium">
+                                    Critical</p>
+                                    }
+                                    }
                             </td>
                             <td>
                                 <div class="flex flex-row text-white font-normal">

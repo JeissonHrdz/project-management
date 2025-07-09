@@ -60,6 +60,15 @@ export class SprintComponent {
   }
 
   getSprints() {   
+
+    if(this.taskService.taskCreated$ !== null){
+    this.taskService.taskCreated$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
+       this.tasks.push(data);
+      console.log(this.tasks);
+    })
+  }
     if (this.projectId == 0) {
       this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
     } 
@@ -71,6 +80,7 @@ export class SprintComponent {
         this.getTasksBySprint(sprint.sprint_id);      
       });
     })
+
   }
 
   getTasksBySprint(sprint_id: number)  {

@@ -51,6 +51,7 @@ public class TaskServiceImpl implements TaskService {
 
         return new TaskResponseDto(
                 savedTask.getTask_id(),
+                savedTask.getSprint_id().getSprint_id(),
                 savedTask.getTitle(),
                 savedTask.getDescription(),
                 savedTask.getStatus(),
