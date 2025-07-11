@@ -1,0 +1,161 @@
+<div class="relative z-30 hidden " id="modal-task-detail" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+    <div class="fixed inset-0 z-10 w-screen p-1 overflow-y-auto">
+        <div class="flex min-h-full w-full flex-row-reverse   sm:p-0">
+            <div class="modal-container  relative float-right transform overflow-hidden rounded-lg bg-white  text-left shadow-xl transition-all sm:my-1 
+                sm:w-[0px] sm:max-w-[450px] ">
+                <div class="sm:flex sm:items-end">
+                    <div class=" text-center sm:mt-0 sm:text-left w-full">
+                        <div class=" flex flex-row justify-between items-center border-b-1 p-4 border-gray-200">
+                            <h3 class=" text-lg font-medium leading-6 text-gray-900" id="modal-title">Task Detail                                                            </h3>
+                             <button (click)="closeModal()" class=" cursor-pointer hover:bg-gray-200 transition-colors  rounded-[10px]">
+                                <ng-icon name="heroXMark" size="20" color="#0C0C0C"></ng-icon> 
+                             </button>
+                        </div>     
+                        <div class="p-4">
+                            <div class="mb-4">
+                                <p (click)="toggleEditField('title')" class="title-span font-bold text-neutral-800  text-[18px]" > Soy un titulo</p>
+                                <div class="title-select flex-row hidden" >
+                                    <input type="text" class=" w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                     border-gray-200 text-[14px]">
+                                    <button (click)="toggleEditField('title')" class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                     text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                 </div> 
+                                <p class="text-neutral-500 text-[14px]" > Hola soy una linda descripción</p>
+                            </div>
+                           
+                            <div class="border-y-1 text-[14px]  border-gray-300 border-dashed w-full">
+                                <table class="w-full">
+                                    <tr>
+                                        <td class="font-semibold p-4">Assigned</td>
+                                        <td class="w-[220px]">JP</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold p-4">User Story</td> 
+                                        <td>This is a user story </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold p-4">Status</td>
+                                        <td>
+                                            <span (click)="toggleEditField('status')" class="status-span inline-flex justify-center w-auto  bg-amber-100 text-amber-500 px-2 py-1 rounded-[10px] text-[14px] ">
+                                                In Progress
+                                            </span>
+                                            <div class="status-select flex-row hidden" >
+                                                <select  class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                 border-gray-200 text-[14px]">                                                   
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="low">In Progress</option>
+                                                    <option value="medium">Pending</option>
+                                                    <option value="high">Completed</option>
+                                                    <option value="critical">Blocked</option> 
+                                                </select>
+                                                <button (click)="toggleEditField('status')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                 text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold p-4">Priority</td>
+                                        <td>
+                                             <span (click)="toggleEditField('priority')" class="priority-span cursor-pointer bg-yellow-100 text-yellow-600 px-2 py-1 rounded-[10px] w-fit text-[14px] "> Medium</span>
+                                             <div class="priority-select flex-row hidden" >
+                                                <select class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                 border-gray-200 text-[14px]">
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="low">Low</option>
+                                                    <option value="medium">Medium</option>
+                                                    <option value="high">High</option>
+                                                    <option value="critical">Critical</option> 
+                                                </select> 
+                                                <button (click)="toggleEditField('priority')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                 text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                             </div> 
+                                             
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold p-4">Type</td> 
+                                        <td>
+                                             <span (click)="toggleEditField('type')" class="type-span cursor-pointer  px-2 py-1  w-fit text-[14px] "> Requirement</span>
+                                             <div class="type-select flex-row hidden" >
+                                                <select class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                 border-gray-200 text-[14px]">
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="requirement">Requirement</option>
+                                                    <option value="bug">Bug</option>
+                                                    <option value="task">Task</option> 
+                                                </select> 
+                                                <button (click)="toggleEditField('type')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                 text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                             </div> 
+                                             
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold p-4">Start Date</td>
+                                        <td>
+                                             <span (click)="toggleEditField('start-date')" class="start-date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
+                                                 18 Agosto 2025
+                                                </span>
+                                             <div class="start-date-select flex-row hidden" >
+                                                <input type="date" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                 border-gray-200 text-[14px]">
+                                                <button (click)="toggleEditField('start-date')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                 text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                             </div> 
+                                             
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold p-4">End Date</td>
+                                        <td>
+                                             <span (click)="toggleEditField('end-date')" class="end-date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
+                                                 18 Agosto 2025
+                                                </span>
+                                             <div class="end-date-select flex-row hidden" >
+                                                <input type="date" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                 border-gray-200 text-[14px]">
+                                                <button (click)="toggleEditField('end-date')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                 text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                             </div> 
+                                             
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold p-4">Estimated Hours</td>
+                                        <td>
+                                             <span (click)="toggleEditField('estimated-hours')" class="estimated-hours-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] "> 50</span>
+                                             <div class="estimated-hours-select flex-row hidden" >
+                                                <input type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                 border-gray-200 text-[14px]">
+                                                <button (click)="toggleEditField('estimated-hours')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                 text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                             </div> 
+                                             
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold p-4">Actual Hours</td> 
+                                        <td>
+                                             <span (click)="toggleEditField('actual-hours')" class="actual-hours-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] "> 0</span>
+                                             <div class="actual-hours-select flex-row hidden" >
+                                                <input type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                 border-gray-200 text-[14px]">
+                                                <button (click)="toggleEditField('actual-hours')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                 text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                             </div> 
+                                             
+                                        </td>
+                                    </tr>
+                                </table>                                
+                            </div>
+
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

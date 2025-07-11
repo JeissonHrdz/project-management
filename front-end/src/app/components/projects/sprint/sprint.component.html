@@ -155,8 +155,7 @@
                                     {{task.status.replace('blocked', 'Blocked') }}
                                     </p>
                                     }
-                                    }
-                                
+                                    }                              
                                 
                              
                             </td>
@@ -201,7 +200,7 @@
                                 </div>
                             </td>
                             <td class="flex items-center justify-center">
-                                <div
+                                <div (click)="openModalTaskDetail(1)"
                                     class="flex items-center justify-center border-1 p-1 border-gray-200 rounded-[10px] cursor-pointer">
                                     <ng-icon color="#0C0C0C" size="20" name="heroEllipsisHorizontal"></ng-icon>
                                 </div>

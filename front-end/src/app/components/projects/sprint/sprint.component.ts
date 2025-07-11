@@ -216,6 +216,16 @@ export class SprintComponent {
     });
   }
 
+  openModalTaskDetail(taskId: number){
+    this.router.navigate(['task-detail'], {
+      relativeTo: this.route,
+      queryParams: {
+        task_id: taskId
+      },
+      skipLocationChange: true
+    });
+  }
+
    toggleMenu(menuId: string): void {
      this.openedMenuId = this.openedMenuId === `menu-${menuId}` ? null : `${menuId}`;
    }

@@ -3,6 +3,7 @@ import { authGuard, authGuardLogin } from './core/auth/guards/auth-gurard';
 import { BacklogComponent } from './components/projects/backlog/backlog.component';
 import { SprintComponent } from './components/projects/sprint/sprint.component';
 import { CreateTaskComponent } from './components/projects/sprint/task/create-task/create-task.component';
+import { TaskDetailComponent } from './components/projects/sprint/task/task-detail/task-detail.component';
 
 export const routes: Routes = [
     {
@@ -36,6 +37,11 @@ export const routes: Routes = [
                             {
                                 path: 'task',
                                 component: CreateTaskComponent,
+                                canActivate: [authGuard]
+                            },
+                            {
+                                path: 'task-detail',
+                                component: TaskDetailComponent,
                                 canActivate: [authGuard]
                             }
                         ]
