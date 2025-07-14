@@ -2,13 +2,16 @@ import { Component, inject } from '@angular/core';
 import $ from 'jquery';
 import { TaskService } from '../../../../../services/task.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgIcon,provideIcons } from '@ng-icons/core';
-import { heroXMark,  } from '@ng-icons/heroicons/outline';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { heroXMark, } from '@ng-icons/heroicons/outline';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Task } from '../../../../../core/model/entity/task';
 
 @Component({
   selector: 'app-task-detail',
-  imports: [ NgIcon],
-  providers: [provideIcons({heroXMark})],
+  imports: [NgIcon],
+  providers: [provideIcons({ heroXMark })],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })
@@ -17,6 +20,9 @@ export class TaskDetailComponent {
   private taskService = inject(TaskService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private destroy$ = new Subject<void>();
+
+  task: Task = {} as Task;
 
   ngOnInit(): void {
     this.getTaskDetail();
@@ -24,14 +30,15 @@ export class TaskDetailComponent {
     $(".modal-container").animate({ width: '450px' }, 150);
   }
 
-  toggleEditField(field: 'status' | 'priority' | 'type' | 'estimated-hours' | 'start-date' | 'end-date' | 'actual-hours' | 'title') {
+  toggleEditField(field: 'status' | 'priority' | 'type' | 'estimated-hours' | 'start-date'
+    | 'end-date' | 'actual-hours' | 'title' | 'description') {
     $(`.${field}-select`).toggle();
     $(`.${field}-span`).toggle();
   }
 
   closeModal() {
     $(".modal-container").animate({ width: '0px' }, 150, () => {
-      $("#modal-task-detail").toggle("fast", () =>{
+      $("#modal-task-detail").toggle("fast", () => {
         this.router.navigate(['../'], { relativeTo: this.route });
       });
     });
@@ -39,7 +46,19 @@ export class TaskDetailComponent {
   }
 
   getTaskDetail() {
-    const taskId = this.route.snapshot.queryParamMap.get('task_id');
+    const taskId = Number(this.route.snapshot.queryParamMap.get('task_id'));
+    const sprintId = Number(this.route.snapshot.queryParamMap.get('sprint_id'));
+    this.taskService.getTaskById(taskId, sprintId).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.task = response.object;
+        console.log(this.task);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
 
   }
 }

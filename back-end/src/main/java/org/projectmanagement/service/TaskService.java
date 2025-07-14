@@ -14,6 +14,8 @@ public interface TaskService {
 
     List<TaskReadDto> getTaskBySprintId(Integer sprint_id);
 
+    TaskReadDto getTaskById(Integer task_id);
+
     TaskResponseDto updateTask(int id, Map<String, Object> updates);
 
     void deleteTask(Integer task_id);

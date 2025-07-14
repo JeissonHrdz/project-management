@@ -34,6 +34,12 @@ export class TaskService {
     )
   }
 
+  getTaskById(task_id: number, sprint_id: number): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/' + task_id).pipe(
+      catchError(this.handleError)
+    )
+  } 
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

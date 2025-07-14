@@ -45,8 +45,7 @@ public class TaskController {
     }
 
     @GetMapping(value = "tasks")
-    public ResponseEntity<?> getTasks(@PathVariable Integer sprint_id) {
-        System.out.println("sprint_id: " + sprint_id);
+    public ResponseEntity<?> getTasks(@PathVariable Integer sprint_id) {     
         if (!roleService.hasPermission("tasks", "read")) {
             throw new AccessDeniedException("Access Denied");
         }
@@ -55,6 +54,27 @@ public class TaskController {
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Tasks retrieved successfully")
                     .object(getTasks)
+                    .build(),
+                    HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+       @GetMapping(value = "/{task_id}")
+    public ResponseEntity<?> getTask(@PathVariable Integer task_id) {     
+        if (!roleService.hasPermission("tasks", "read")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        try { 
+            TaskReadDto getTask = taskService.getTaskById(task_id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Task retrieved successfully")
+                    .object(getTask)
                     .build(),
                     HttpStatus.OK);
         } catch (DataAccessException e) {

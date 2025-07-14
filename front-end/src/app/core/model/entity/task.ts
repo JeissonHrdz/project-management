@@ -6,11 +6,11 @@ export interface Task {
     description: string;
     project_id: number;
     sprint_id: number;
-    backlog_item: number;
+    backlog_item_id: number;
     priority: string;
     type: string;
     story_points: number;
-    estimated_hours: number;
+    estimate_hours: number;
     actual_hours: number;
     blockers: string;
     start_date: string;

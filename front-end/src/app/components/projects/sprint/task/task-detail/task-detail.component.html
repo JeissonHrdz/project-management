@@ -14,14 +14,23 @@
                         </div>     
                         <div class="p-4">
                             <div class="mb-4">
-                                <p (click)="toggleEditField('title')" class="title-span font-bold text-neutral-800  text-[18px]" > Soy un titulo</p>
+                                <p (click)="toggleEditField('title')" class="title-span font-bold text-neutral-800  text-[18px]" >
+                                     {{task.title}}</p>
                                 <div class="title-select flex-row hidden" >
                                     <input type="text" class=" w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                      border-gray-200 text-[14px]">
                                     <button (click)="toggleEditField('title')" class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                      text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                  </div> 
-                                <p class="text-neutral-500 text-[14px]" > Hola soy una linda descripción</p>
+                                <p (click)="toggleEditField('description')" class="description-span text-neutral-500 text-[14px]" >
+                                     {{task.description}}</p>
+                                <div class="description-select flex-row hidden" >
+                                    <input type="text" class=" w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                    border-gray-200 text-[14px]">
+                                    <button (click)="toggleEditField('description')" class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                     text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                 </div>
+                               
                             </div>
                            
                             <div class="border-y-1 text-[14px]  border-gray-300 border-dashed w-full">
@@ -32,13 +41,13 @@
                                     </tr>
                                     <tr>
                                         <td class="font-semibold p-4">User Story</td> 
-                                        <td>This is a user story </td>
+                                        <td>{{task.backlog_item_id }}</td>
                                     </tr>
                                     <tr>
                                         <td class="font-semibold p-4">Status</td>
                                         <td>
                                             <span (click)="toggleEditField('status')" class="status-span inline-flex justify-center w-auto  bg-amber-100 text-amber-500 px-2 py-1 rounded-[10px] text-[14px] ">
-                                                In Progress
+                                                {{task.status}}
                                             </span>
                                             <div class="status-select flex-row hidden" >
                                                 <select  class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
@@ -57,7 +66,10 @@
                                     <tr>
                                         <td class="font-semibold p-4">Priority</td>
                                         <td>
-                                             <span (click)="toggleEditField('priority')" class="priority-span cursor-pointer bg-yellow-100 text-yellow-600 px-2 py-1 rounded-[10px] w-fit text-[14px] "> Medium</span>
+                                             <span (click)="toggleEditField('priority')" class="priority-span cursor-pointer bg-yellow-100
+                                              text-yellow-600 px-2 py-1 rounded-[10px] w-fit text-[14px] ">
+                                                {{task.priority}}
+                                             </span>
                                              <div class="priority-select flex-row hidden" >
                                                 <select class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
@@ -76,7 +88,8 @@
                                     <tr>
                                         <td class="font-semibold p-4">Type</td> 
                                         <td>
-                                             <span (click)="toggleEditField('type')" class="type-span cursor-pointer  px-2 py-1  w-fit text-[14px] "> Requirement</span>
+                                             <span (click)="toggleEditField('type')" class="type-span cursor-pointer  px-2 py-1
+                                               w-fit text-[14px] "> {{task.type}}</span>
                                              <div class="type-select flex-row hidden" >
                                                 <select class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
@@ -95,7 +108,7 @@
                                         <td class="font-semibold p-4">Start Date</td>
                                         <td>
                                              <span (click)="toggleEditField('start-date')" class="start-date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
-                                                 18 Agosto 2025
+                                                 {{task.start_date}}
                                                 </span>
                                              <div class="start-date-select flex-row hidden" >
                                                 <input type="date" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
@@ -110,7 +123,7 @@
                                         <td class="font-semibold p-4">End Date</td>
                                         <td>
                                              <span (click)="toggleEditField('end-date')" class="end-date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
-                                                 18 Agosto 2025
+                                                 {{task.end_date}}
                                                 </span>
                                              <div class="end-date-select flex-row hidden" >
                                                 <input type="date" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
@@ -124,7 +137,8 @@
                                     <tr>
                                         <td class="font-semibold p-4">Estimated Hours</td>
                                         <td>
-                                             <span (click)="toggleEditField('estimated-hours')" class="estimated-hours-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] "> 50</span>
+                                             <span (click)="toggleEditField('estimated-hours')" class="estimated-hours-span cursor-pointer 
+                                              px-2 py-1 rounded-[10px] w-fit text-[14px] "> {{task.estimate_hours}}</span>
                                              <div class="estimated-hours-select flex-row hidden" >
                                                 <input type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
@@ -137,7 +151,8 @@
                                     <tr>
                                         <td class="font-semibold p-4">Actual Hours</td> 
                                         <td>
-                                             <span (click)="toggleEditField('actual-hours')" class="actual-hours-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] "> 0</span>
+                                             <span (click)="toggleEditField('actual-hours')" class="actual-hours-span cursor-pointer  px-2 
+                                             py-1 rounded-[10px] w-fit text-[14px] "> {{task.actual_hours}}</span>
                                              <div class="actual-hours-select flex-row hidden" >
                                                 <input type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">

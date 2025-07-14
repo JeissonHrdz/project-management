@@ -216,11 +216,13 @@ export class SprintComponent {
     });
   }
 
-  openModalTaskDetail(taskId: number){
+  openModalTaskDetail(taskId: number,sprintId: number){
+    alert(taskId + "| " + sprintId);
     this.router.navigate(['task-detail'], {
       relativeTo: this.route,
       queryParams: {
-        task_id: taskId
+        task_id: taskId,
+        sprint_id: sprintId
       },
       skipLocationChange: true
     });

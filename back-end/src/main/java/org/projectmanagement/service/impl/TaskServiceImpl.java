@@ -90,6 +90,30 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public TaskReadDto getTaskById(Integer task_id) { 
+        Optional<Task> task = taskRepository.findById(task_id);
+        if(task.isEmpty()) return null;
+        return new TaskReadDto(
+                task.get().getTask_id(),
+                task.get().getTitle(),
+                task.get().getDescription(),
+                task.get().getBacklog_item_id(),
+                task.get().getProject_id().getProject_id(),
+                task.get().getSprint_id().getSprint_id(),
+                task.get().getStatus(),
+                task.get().getPriority(),
+                task.get().getType(),
+                task.get().getStory_points(),
+                task.get().getEstimate_hours(),
+                task.get().getActual_hours(),
+                task.get().getBlockers(),
+                task.get().getStart_date(),
+                task.get().getEnd_date()
+        );
+       
+    }
+
+    @Override
     public TaskResponseDto updateTask(int id, Map<String, Object> updates) {
         Optional<Task> task = taskRepository.findById(id);
         updates.forEach((key, value) -> {
