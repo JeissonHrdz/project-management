@@ -7,10 +7,11 @@ import { heroXMark, } from '@ng-icons/heroicons/outline';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Task } from '../../../../../core/model/entity/task';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-task-detail',
-  imports: [NgIcon],
+  imports: [NgIcon, FormsModule],
   providers: [provideIcons({ heroXMark })],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
@@ -34,6 +35,33 @@ export class TaskDetailComponent {
     | 'end-date' | 'actual-hours' | 'title' | 'description') {
     $(`.${field}-select`).toggle();
     $(`.${field}-span`).toggle();
+    this.setInputValue(field, $(`.${field}-span`).text());
+  }
+
+  setInputValue(field: 'status' | 'priority' | 'type' | 'estimated-hours' | 'start-date'
+    | 'end-date' | 'actual-hours' | 'title' | 'description', value: string) {
+    if(field === 'status' || field === 'priority' || field === 'type') { 
+      $(`#${field}-input option[value='${value}']`).prop("selected", true);
+    }else{
+      $(`.${field}-input`).val(value);
+    }
+  }
+
+  dateFormat(date: string) {
+    return new Date(date).toDateString();
+  }
+
+  dateFormatInput(date: string) {
+    const [month, day, year] = new Date(date).toLocaleDateString().split('/').map(Number);  
+    let monthFormatted = month+'';
+    let dayFormatted = day+'';
+    if(month < 10) {
+      monthFormatted = '0' + month;
+    }
+    if(day < 10) {
+      dayFormatted = '0' + day;
+    } 
+    return `${year}-${monthFormatted}-${dayFormatted}`; 
   }
 
   closeModal() {
