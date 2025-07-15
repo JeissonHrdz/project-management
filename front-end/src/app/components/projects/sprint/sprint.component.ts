@@ -217,7 +217,7 @@ export class SprintComponent {
   }
 
   openModalTaskDetail(taskId: number,sprintId: number){
-    alert(taskId + "| " + sprintId);
+
     this.router.navigate(['task-detail'], {
       relativeTo: this.route,
       queryParams: {

@@ -52,16 +52,14 @@ export class TaskDetailComponent {
   }
 
   dateFormatInput(date: string) {
-    const [month, day, year] = new Date(date).toLocaleDateString().split('/').map(Number);  
-    let monthFormatted = month+'';
-    let dayFormatted = day+'';
-    if(month < 10) {
-      monthFormatted = '0' + month;
-    }
-    if(day < 10) {
-      dayFormatted = '0' + day;
-    } 
-    return `${year}-${monthFormatted}-${dayFormatted}`; 
+    const d = new Date(date);
+    let monthFormatted = (d.getMonth()+1)+'';
+    let dayFormatted = d.getDate()+'';
+    let yearFormatted = d.getFullYear()+'';         
+
+    monthFormatted = Number(monthFormatted) < 10 ? '0' + Number(monthFormatted) : monthFormatted;
+    dayFormatted = Number(dayFormatted) < 10 ? '0' + Number(dayFormatted) : dayFormatted;
+    return `${yearFormatted}-${monthFormatted}-${dayFormatted}`; 
   }
 
   closeModal() {

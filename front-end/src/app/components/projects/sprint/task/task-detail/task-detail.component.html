@@ -165,7 +165,7 @@
                                              <span (click)="toggleEditField('estimated-hours')" class="estimated-hours-span cursor-pointer 
                                               px-2 py-1 rounded-[10px] w-fit text-[14px] "> {{task.estimate_hours}}</span>
                                              <div class="estimated-hours-select flex-row hidden" >
-                                                <input type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                <input  value="{{task.estimate_hours}}" type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
                                                 <button (click)="toggleEditField('estimated-hours')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
@@ -176,10 +176,17 @@
                                     <tr>
                                         <td class="font-semibold p-4">Actual Hours</td> 
                                         <td>
-                                             <span (click)="toggleEditField('actual-hours')" class="actual-hours-span cursor-pointer  px-2 
-                                             py-1 rounded-[10px] w-fit text-[14px] "> {{task.actual_hours}}</span>
+                                             <span (click)="toggleEditField('actual-hours')" class="cursor-pointer actual-hours-span px-2 
+                                             py-1 rounded-[10px] w-fit text-[14px] "> 
+                                             @if(task.actual_hours !== null) {
+                                              {{task.actual_hours}}
+                                             }
+                                             @else {
+                                              0
+                                             }
+                                            </span>
                                              <div class="actual-hours-select flex-row hidden" >
-                                                <input type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                <input value="{{task.actual_hours}}" type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
                                                 <button (click)="toggleEditField('actual-hours')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
