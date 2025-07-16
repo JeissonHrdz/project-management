@@ -88,7 +88,12 @@ public class TaskController {
 
     @PatchMapping(value = "/update/{id}")
     public ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody Map<String, Object> updates) {
-        if (!roleService.hasPermission("tasks", "update")) {
+
+        updates.forEach((key, value) -> {          
+              System.err.println(key + " : " + value);            
+        });
+
+        if(!roleService.hasPermission("tasks", "update")) {
             throw new AccessDeniedException("Access Denied");
         }
         try {

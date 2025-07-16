@@ -6,6 +6,7 @@ import org.projectmanagement.model.dto.backlog.BacklogCreateHistoryDto;
 import org.projectmanagement.model.dto.backlog.BacklogReadItemDto;
 import org.projectmanagement.model.dto.backlog.BacklogResponseDto;
 import org.projectmanagement.model.entity.Backlog;
+import org.projectmanagement.model.entity.Task;
 import org.projectmanagement.model.mapper.BacklogMapper;
 import org.projectmanagement.repository.BacklogRepository;
 import org.projectmanagement.repository.ProjectRepository;
@@ -153,8 +154,25 @@ public class BacklogServiceImpl  implements BacklogService {
             )).toList();
             return backlogReadItemDtos;
         }
+    }
 
+    @Override
+    public BacklogReadItemDto getItemById(Integer id){
+    Optional<Backlog> backlog = backlogRepository.findById(id);
+        if(backlog.isEmpty()) return null;
 
+        return new BacklogReadItemDto(
+            backlog.get().getItem_id(),
+            backlog.get().getTitle(),
+            backlog.get().getDescription(),
+            backlog.get().getAcceptance_criteria(),
+            backlog.get().getPriority(),
+            backlog.get().getStory_points(),
+            backlog.get().getEpic().getItem_id(),
+            backlog.get().getType(),
+            backlog.get().getProject_id().getProject_id(),
+            backlog.get().getCreated_at()
+        );
     }
 
     @Override

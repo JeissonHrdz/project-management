@@ -14,6 +14,7 @@ public interface BacklogService {
     BacklogResponseDto createStory(BacklogCreateHistoryDto backlogCreateHistoryDto);
     BacklogResponseDto updateItem(int id, Map<String, Object> updates);
     List<BacklogReadItemDto> getItemsByProjectId(Integer project_id, String type);
+    BacklogReadItemDto getItemById(Integer id);
     void deleteItem(Integer item_id);
     int deleteItemByEpicId(Integer epic_id);
 }

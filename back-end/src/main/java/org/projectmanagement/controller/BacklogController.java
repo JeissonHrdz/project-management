@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("project/{project_id}/backlog")
@@ -81,6 +84,27 @@ public class BacklogController {
                     .build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    
+    @GetMapping("item/{id}")
+    public ResponseEntity<?> getBacklogItemById(@PathVariable int id) {
+        if(!roleService.hasPermission("backlog", "read")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        try {
+        BacklogReadItemDto backlogReadItemDto = backlogService.getItemById(id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Backlog items fetched successfully")
+                    .object(backlogReadItemDto)
+                    .build(), HttpStatus.OK);
+        } catch (AccessDeniedException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+  
 
 
     @PatchMapping("update/{id}")

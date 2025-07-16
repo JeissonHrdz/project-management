@@ -115,7 +115,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseDto updateTask(int id, Map<String, Object> updates) {
-        Optional<Task> task = taskRepository.findById(id);
+       
+        System.out.println("updates: " + updates + " id: " + id);
+        Optional<Task> task = taskRepository.findById(id);      
         updates.forEach((key, value) -> {
             switch (key) {
                 case "title" -> task.get().setTitle((String) value);

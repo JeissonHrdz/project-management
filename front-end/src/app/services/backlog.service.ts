@@ -41,6 +41,12 @@ export class BacklogService {
     )
   }
 
+  getBacklogItemById(itemId: number): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/' + this.projectId + '/backlog/item/' + itemId).pipe(
+      catchError(this.handleError)
+    )
+  }
+
   updateItem(item: BacklogItem, itemId: number, projectId: number): Observable<any> {  
     return this.http.patch<any>(this.urlBase + '/' + projectId + '/backlog/update/' + itemId, item).pipe(
       catchError(this.handleError)

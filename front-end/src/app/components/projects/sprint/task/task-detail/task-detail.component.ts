@@ -8,6 +8,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Task } from '../../../../../core/model/entity/task';
 import { FormsModule } from '@angular/forms';
+import { BacklogService } from '../../../../../services/backlog.service';
+import { BacklogItem } from '../../../../../core/model/entity/backlog-item.model';
 
 @Component({
   selector: 'app-task-detail',
@@ -19,11 +21,13 @@ import { FormsModule } from '@angular/forms';
 export class TaskDetailComponent {
 
   private taskService = inject(TaskService);
+  private backlogService = inject(BacklogService); 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private destroy$ = new Subject<void>();
 
   task: Task = {} as Task;
+  backlogItem: BacklogItem = {} as BacklogItem;
 
   ngOnInit(): void {
     this.getTaskDetail();
@@ -68,7 +72,20 @@ export class TaskDetailComponent {
         this.router.navigate(['../'], { relativeTo: this.route });
       });
     });
+  }
 
+  getBacklogItem( backlogItemId: number) {
+
+    this.backlogService.getBacklogItemById(backlogItemId).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.backlogItem = response.object; 
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
   getTaskDetail() {
@@ -79,12 +96,34 @@ export class TaskDetailComponent {
     ).subscribe({
       next: (response) => {
         this.task = response.object;
-        console.log(this.task);
+        this.getBacklogItem(this.task.backlog_item_id);
       },
       error: (error) => {
         console.log(error);
       }
     })
-
   }
+
+  updateTask(taskId: number, inputName: 'status' | 'priority' | 'type' | 'estimated-hours' | 'start-date' | 
+    'end-date' | 'actual-hours' | 'title' | 'description') {
+    const data = {
+      [inputName]: $(`#task-${inputName}-input`).val()
+    };
+    this.taskService.updateTask(taskId, this.task.sprint_id, data).pipe( 
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.toggleEditField(inputName);
+        this.task = response.object;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+   
+    
+    
+  }
+
+
 }

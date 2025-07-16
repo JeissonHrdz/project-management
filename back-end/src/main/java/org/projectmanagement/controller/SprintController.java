@@ -69,6 +69,8 @@ public class SprintController {
 
     @PatchMapping(value = "/update/{id}")
     public ResponseEntity<?> updateSprint(@PathVariable int id, @RequestBody Map<String, Object> updates) {
+       
+
         if (!roleService.hasPermission("sprints", "update")) {
             throw new AccessDeniedException("Access Denied");
         }

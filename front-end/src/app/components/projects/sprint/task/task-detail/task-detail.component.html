@@ -13,13 +13,14 @@
                              </button>
                         </div>     
                         <div class="p-4">
+                            
                             <div class="mb-4">
                                 <p (click)="toggleEditField('title')" class="title-span font-bold text-neutral-800  text-[18px]" >
                                      {{task.title}}</p>
                                 <div class="title-select flex-row hidden" >
-                                    <input type="text" class="title-input w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                    <input type="text" name="title" id="task-title-input" class="title-input w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                      border-gray-200 text-[14px]">
-                                    <button (click)="toggleEditField('title')" class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                    <button (click)="updateTask(task.task_id, 'title')" class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                      text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                  </div> 
                                 <p (click)="toggleEditField('description')" class="description-span text-neutral-500 text-[14px]" >
@@ -41,7 +42,7 @@
                                     </tr>
                                     <tr>
                                         <td class="font-semibold p-4">User Story</td> 
-                                        <td>{{task.backlog_item_id }}</td>
+                                        <td>{{backlogItem.title }}</td>
                                     </tr>
                                     <tr>
                                         <td class="font-semibold p-4">Status</td>
