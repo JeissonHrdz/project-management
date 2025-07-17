@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, inject, HostListener, ComponentFactoryResolver } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, HostListener, ComponentFactoryResolver, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -6,7 +6,7 @@ import { ProjectService } from '../../../services/project.service';
 import { SprintService } from '../../../services/sprint.service';
 import { ToastService } from '../../../services/toast.service';
 import { Sprint } from '../../../core/model/entity/sprint.model';
-import { takeUntil, Subject, Observable } from 'rxjs';
+import { takeUntil, Subject, Observable, forkJoin, switchMap, of, tap, map } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash, heroXCircle, 
   heroChevronUpDown,heroCheckCircle,heroExclamationTriangle, heroClipboardDocumentCheck, heroPlus } from '@ng-icons/heroicons/outline';
@@ -36,6 +36,9 @@ export class SprintComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
+  readonly tasksS = signal<Task[]>([]);
+  readonly sprintsS = signal<Sprint[]>([]);
+
 
   sprints: Sprint[] = [];
   dataSprintUpdate: Sprint | any;
@@ -59,29 +62,41 @@ export class SprintComponent {
     this.getSprints();
   }
 
+
   getSprints() {   
 
-    if(this.taskService.taskCreated$ !== null){
-    this.taskService.taskCreated$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
-       this.tasks.push(data);
-      console.log(this.tasks);
-    })
-  }
     if (this.projectId == 0) {
-      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
-    } 
+      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');   } 
+
+    if(this.taskService.taskCreated$ !== null){
+
+      this.taskService.taskCreated$.pipe(
+        takeUntil(this.destroy$),
+        tap((task) => {
+          this.tasks.push(task);
+        })
+      ).subscribe();
+    }
+    
     this.sprintService.getSprints(this.projectId).pipe(
+      map(res => res.object),
+      switchMap((sprints) => {      
+        this.sprints = sprints;    
+        const validSprints = sprints.filter((sprint:Sprint) => !!sprint.sprint_id);
+        const tasksBySprint$ : Observable<Task[]>[] = validSprints.map((sprint:Sprint) => 
+          this.getTasksBySprint(sprint.sprint_id)
+        );
+
+        return forkJoin(tasksBySprint$);
+      }),
       takeUntil(this.destroy$)
-    ).subscribe(data => {
-      this.sprints = data.object;  
-      this.sprints.forEach(sprint => {
-        this.getTasksBySprint(sprint.sprint_id);      
-      });
-    })
+    ).subscribe((allSprintTasks: Task[][]) => {
+      this.tasks.push(...allSprintTasks.flat());
+    });
 
   }
+
+
 
   getTasksBySprint(sprint_id: number)  {
    this.taskService.getTasksBySprint(sprint_id).pipe(
@@ -153,13 +168,12 @@ export class SprintComponent {
   }
 
   updateSprint(sprintId: number){ 
-    console.log(this.formSprint.value);
+
     if (this.formSprint.valid) {
       if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {    
         const originalSprint = this.dataSprintUpdate;
         const changes: any = {};
-
-        // Comparamos cada campo y agregamos solo los que han cambiado
+     
         Object.keys(this.formSprint.value).forEach(key => {
           if (key !== 'project_id' && this.formSprint.value[key] !== originalSprint[key]) {
             changes[key] = this.formSprint.value[key];
@@ -188,10 +202,8 @@ export class SprintComponent {
 
     } 
   }
-
   modalConfirmDeleteSprint(sprintId: number){
-    $("#modal-delete-sprint").toggle("fast");
-   
+    $("#modal-delete-sprint").toggle("fast");   
   }
 
   deleteSprint(sprintId: number){

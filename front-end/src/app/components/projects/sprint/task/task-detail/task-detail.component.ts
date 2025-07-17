@@ -10,10 +10,11 @@ import { Task } from '../../../../../core/model/entity/task';
 import { FormsModule } from '@angular/forms';
 import { BacklogService } from '../../../../../services/backlog.service';
 import { BacklogItem } from '../../../../../core/model/entity/backlog-item.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-task-detail',
-  imports: [NgIcon, FormsModule],
+  imports: [NgIcon, FormsModule,CommonModule],
   providers: [provideIcons({ heroXMark })],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
@@ -35,15 +36,15 @@ export class TaskDetailComponent {
     $(".modal-container").animate({ width: '450px' }, 150);
   }
 
-  toggleEditField(field: 'status' | 'priority' | 'type' | 'estimated-hours' | 'start-date'
-    | 'end-date' | 'actual-hours' | 'title' | 'description') {
+  toggleEditField(field: 'status' | 'priority' | 'type' | 'estimated_hours' | 'start_date'
+    | 'end_date' | 'actual_hours' | 'title' | 'description') {
     $(`.${field}-select`).toggle();
     $(`.${field}-span`).toggle();
     this.setInputValue(field, $(`.${field}-span`).text());
   }
 
-  setInputValue(field: 'status' | 'priority' | 'type' | 'estimated-hours' | 'start-date'
-    | 'end-date' | 'actual-hours' | 'title' | 'description', value: string) {
+  setInputValue(field: 'status' | 'priority' | 'type' | 'estimated_hours' | 'start_date'
+    | 'end_date' | 'actual_hours' | 'title' | 'description', value: string) {
     if(field === 'status' || field === 'priority' || field === 'type') { 
       $(`#${field}-input option[value='${value}']`).prop("selected", true);
     }else{
@@ -104,8 +105,8 @@ export class TaskDetailComponent {
     })
   }
 
-  updateTask(taskId: number, inputName: 'status' | 'priority' | 'type' | 'estimated-hours' | 'start-date' | 
-    'end-date' | 'actual-hours' | 'title' | 'description') {
+  updateTask(taskId: number, inputName: 'status' | 'priority' | 'type' | 'estimated_hours' | 'start_date' | 
+    'end_date' | 'actual_hours' | 'title' | 'description') {
     const data = {
       [inputName]: $(`#task-${inputName}-input`).val()
     };
@@ -113,7 +114,7 @@ export class TaskDetailComponent {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
-        this.toggleEditField(inputName);
+        this.toggleEditField(inputName); 
         this.task = response.object;
       },
       error: (error) => {

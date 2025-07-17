@@ -128,11 +128,11 @@ public class TaskServiceImpl implements TaskService {
                 case "priority" -> task.get().setPriority(TaskPriority.valueOf((String) value));
                 case "type" -> task.get().setType(TaskType.valueOf((String) value));
                 case "story_points" -> task.get().setStory_points((Integer) value);
-                case "estimate_hours" -> task.get().setEstimate_hours((Double) value);
-                case "actual_hours" -> task.get().setActual_hours((Double) value);
+                case "estimated_hours" -> task.get().setEstimate_hours(Double.parseDouble(value.toString()));
+                case "actual_hours" -> task.get().setActual_hours(Double.parseDouble(value.toString()));
                 case "blockers" -> task.get().setBlockers((String) value);
-                case "start_date" -> task.get().setStart_date((Timestamp) value);
-                case "end_date" -> task.get().setEnd_date((Timestamp) value);
+                case "start_date" -> task.get().setStart_date(Timestamp.valueOf(value.toString()+" 00:00:00"));
+                case "end_date" -> task.get().setEnd_date(Timestamp.valueOf(value.toString()+" 00:00:00"));
                 default -> throw new IllegalArgumentException("Invalid key: " + key);
             }
         });

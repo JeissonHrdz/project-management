@@ -26,9 +26,9 @@
                                 <p (click)="toggleEditField('description')" class="description-span text-neutral-500 text-[14px]" >
                                      {{task.description}}</p>
                                 <div class="description-select flex-row hidden" >
-                                    <input type="text" class="description-input w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                    <input type="text" name="description" id="task-description-input" class="description-input w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                     border-gray-200 text-[14px]">
-                                    <button (click)="toggleEditField('description')" class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                    <button (click)="updateTask(task.task_id, 'description')" class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                      text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                  </div>
                                
@@ -51,23 +51,12 @@
                                                 {{task.status}}
                                             </span>
                                             <div class="status-select flex-row hidden" >
-                                                <select  class="status-input w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                <select name="status" id="task-status-input" class="status-input w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">                                                    
-                                                    <option value="{{task.status}}" selected>{{task.status}}</option>     
-                                                    @if(task.status !== 'in_progress') {                                                
-                                                    <option value="in_progress">In Progress</option>
-                                                    }
-                                                    @if(task.status !== 'pending') {                                                
-                                                    <option value="pending">Pending</option>
-                                                    }
-                                                    @if(task.status !== 'completed') {                                                
-                                                    <option value="completed">Completed</option>
-                                                    }
-                                                    @if(task.status !== 'blocked') {                                                
-                                                    <option value="blocked">Blocked</option> 
-                                                    } 
+                                                    <option [value]="status" *ngFor="let status of ['in_progress', 'pending', 'completed', 'blocked']"
+                                                     [selected]="task.status === status">{{status}}</option>     
                                                 </select>
-                                                <button (click)="toggleEditField('status')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                <button (click)="updateTask(task.task_id, 'status')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                             </div>
                                         </td>
@@ -79,24 +68,13 @@
                                               text-yellow-600 px-2 py-1 rounded-[10px] w-fit text-[14px] ">
                                                 {{task.priority}}
                                              </span>
-                                             <div class="priority-select flex-row hidden" >
-                                                <select id="priority-input" class="w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
-                                                 border-gray-200 text-[14px]">
-                                                    <option value="{{task.priority}}" selected>{{task.priority}}</option>  
-                                                    @if(task.priority !== 'low') {                                                    
-                                                    <option value="low">Low</option>
-                                                    }
-                                                    @if(task.priority !== 'medium') {                                                    
-                                                    <option value="medium">Medium</option>  
-                                                    }
-                                                    @if(task.priority !== 'high') {                                                    
-                                                    <option value="high">High</option>
-                                                    }
-                                                    @if(task.priority !== 'critical') {                                                    
-                                                    <option value="critical">Critical</option> 
-                                                    } 
+                                             <div class="priority-select flex-row hidden" > 
+                                                <select name="priority" id="task-priority-input" class="w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                 border-gray-200 text-[14px]"> 
+                                                    <option [value]="priority" *ngFor="let priority of ['low', 'medium', 'high', 'critical']" 
+                                                    [selected]="task.priority === priority">{{priority}}</option>  
                                                 </select> 
-                                                <button (click)="toggleEditField('priority')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                <button (click)="updateTask(task.task_id, 'priority')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                              </div> 
                                              
@@ -108,23 +86,12 @@
                                              <span (click)="toggleEditField('type')" class="type-span cursor-pointer  px-2 py-1
                                                w-fit text-[14px] "> {{task.type}}</span>
                                              <div class="type-select flex-row hidden" >
-                                                <select id="type-input" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                <select name="type" id="task-type-input" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
-                                                 <option value="{{task.type}}" selected>{{task.type}}</option>      
-                                                    @if(task.type !== 'chore') {                                                
-                                                    <option value="chore">Chore</option>
-                                                    }
-                                                    @if(task.type !== 'requirement') {                                                
-                                                    <option value="requirement">Requirement</option>
-                                                    }
-                                                    @if(task.type !== 'bug') {                                                
-                                                    <option value="bug">Bug</option>
-                                                    }
-                                                    @if(task.type !== 'task') {                                                
-                                                    <option value="task">Task</option> 
-                                                    } 
+                                                    <option [value]="type" *ngFor="let type of ['chore', 'refactor', 'bug', 'feature', 'research']"
+                                                     [selected]="task.type === type">{{ type }}</option>
                                                 </select> 
-                                                <button (click)="toggleEditField('type')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                <button (click)="updateTask(task.task_id, 'type')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                              </div> 
                                              
@@ -133,13 +100,13 @@
                                     <tr>
                                         <td class="font-semibold p-4">Start Date</td>
                                         <td>
-                                             <span (click)="toggleEditField('start-date')" class="start-date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
+                                             <span (click)="toggleEditField('start_date')" class="start_date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
                                                  {{dateFormat(task.start_date)}}
                                                 </span>
-                                             <div class="start-date-select flex-row hidden" >
-                                                <input type="date" value="{{dateFormatInput(task.start_date)}}" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                             <div class="start_date-select flex-row hidden" >
+                                                <input type="date" name="start_date" id="task-start_date-input" value="{{dateFormatInput(task.start_date)}}" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
-                                                <button (click)="toggleEditField('start-date')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                <button (click)="updateTask(task.task_id, 'start_date')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                              </div> 
                                              
@@ -148,13 +115,13 @@
                                     <tr>
                                         <td class="font-semibold p-4">End Date</td>
                                         <td>
-                                             <span (click)="toggleEditField('end-date')" class="end-date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
+                                             <span (click)="toggleEditField('end_date')" class="end_date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
                                                  {{dateFormat(task.end_date)}}
                                                 </span>
-                                             <div class="end-date-select flex-row hidden" >
-                                                <input type="date" value="{{dateFormatInput(task.end_date)}}" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                             <div class="end_date-select flex-row hidden" >
+                                                <input name="end_date" id="task-end_date-input" type="date" value="{{dateFormatInput(task.end_date)}}" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
-                                                <button (click)="toggleEditField('end-date')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                <button (click)="updateTask(task.task_id, 'end_date')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                              </div> 
                                              
@@ -163,12 +130,12 @@
                                     <tr>
                                         <td class="font-semibold p-4">Estimated Hours</td>
                                         <td>
-                                             <span (click)="toggleEditField('estimated-hours')" class="estimated-hours-span cursor-pointer 
+                                             <span (click)="toggleEditField('estimated_hours')" class="estimated_hours-span cursor-pointer 
                                               px-2 py-1 rounded-[10px] w-fit text-[14px] "> {{task.estimate_hours}}</span>
-                                             <div class="estimated-hours-select flex-row hidden" >
-                                                <input  value="{{task.estimate_hours}}" type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                             <div class="estimated_hours-select flex-row hidden" >
+                                                <input name="estimated_hours" id="task-estimated_hours-input" value="{{task.estimate_hours}}" type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
-                                                <button (click)="toggleEditField('estimated-hours')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                <button (click)="updateTask(task.task_id, 'estimated_hours')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                              </div> 
                                              
@@ -177,7 +144,7 @@
                                     <tr>
                                         <td class="font-semibold p-4">Actual Hours</td> 
                                         <td>
-                                             <span (click)="toggleEditField('actual-hours')" class="cursor-pointer actual-hours-span px-2 
+                                             <span (click)="toggleEditField('actual_hours')" class="cursor-pointer actual_hours-span px-2 
                                              py-1 rounded-[10px] w-fit text-[14px] "> 
                                              @if(task.actual_hours !== null) {
                                               {{task.actual_hours}}
@@ -186,10 +153,10 @@
                                               0
                                              }
                                             </span>
-                                             <div class="actual-hours-select flex-row hidden" >
-                                                <input value="{{task.actual_hours}}" type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                             <div class="actual_hours-select flex-row hidden" >
+                                                <input name="actual_hours" id="task-actual_hours-input" value="{{task.actual_hours}}" type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
-                                                <button (click)="toggleEditField('actual-hours')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                <button (click)="updateTask(task.task_id, 'actual_hours')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                              </div> 
                                              
