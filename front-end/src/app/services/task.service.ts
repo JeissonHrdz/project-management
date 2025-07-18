@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environment/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ProjectService } from './project.service';
@@ -14,6 +14,8 @@ export class TaskService {
   private urlBase: string = environment.baseUrl + '/project';
   private http = inject(HttpClient);
   private projectId = inject(ProjectService)._projectId();
+  tasks = signal<Task[]>([]);
+  taskSelected = signal<Task>({} as Task);
 
   private taskCreated = new BehaviorSubject<Task>({} as Task);
   taskCreated$ = this.taskCreated.asObservable();

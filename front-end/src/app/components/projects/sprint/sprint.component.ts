@@ -1,4 +1,5 @@
-import { Component, ViewChild, ElementRef, inject, HostListener, ComponentFactoryResolver, signal } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, HostListener, signal, effect } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -6,7 +7,7 @@ import { ProjectService } from '../../../services/project.service';
 import { SprintService } from '../../../services/sprint.service';
 import { ToastService } from '../../../services/toast.service';
 import { Sprint } from '../../../core/model/entity/sprint.model';
-import { takeUntil, Subject, Observable, forkJoin, switchMap, of, tap, map } from 'rxjs';
+import { takeUntil, Subject, Observable, forkJoin, switchMap, tap, map, of } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash, heroXCircle, 
   heroChevronUpDown,heroCheckCircle,heroExclamationTriangle, heroClipboardDocumentCheck, heroPlus } from '@ng-icons/heroicons/outline';
@@ -29,21 +30,20 @@ export class SprintComponent {
   @ViewChild('createTask', {read: RouterOutlet}) createTask!: RouterOutlet;
 
   formSprint: FormGroup;
-  private projectId = inject(ProjectService)._projectId();
+ 
+  private projectService = inject(ProjectService);
   private sprintService = inject(SprintService);
   private taskService = inject(TaskService);
   private toastService = inject(ToastService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
-  readonly tasksS = signal<Task[]>([]);
-  readonly sprintsS = signal<Sprint[]>([]);
-
+  private projectId = this.projectService._projectId(); 
 
   sprints: Sprint[] = [];
   dataSprintUpdate: Sprint | any;
   openedMenuId: string | null = null;
-  tasks:Task[] = [];
+  tasks: Task[] = [];
+  
 
   private destroy$ = new Subject<void>();
 
@@ -58,53 +58,45 @@ export class SprintComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.getSprints();
+  //Effect para actualizar la lista de tareas cuando se crean nuevas tareas
+ readonly tasksEffect = effect(() => {
+  this.tasks = this.taskService.tasks();
+});
+
+  ngOnInit(): void {    
+    this.getSprints();  
   }
 
 
-  getSprints() {   
-
-    if (this.projectId == 0) {
-      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');   } 
-
-    if(this.taskService.taskCreated$ !== null){
-
-      this.taskService.taskCreated$.pipe(
-        takeUntil(this.destroy$),
-        tap((task) => {
-          this.tasks.push(task);
-        })
-      ).subscribe();
-    }
-    
+  //Funcion para obtener los sprints Y sus tareas
+  getSprints() {        
+  if (this.projectId == 0) {
+      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');  
+     }      
     this.sprintService.getSprints(this.projectId).pipe(
       map(res => res.object),
       switchMap((sprints) => {      
         this.sprints = sprints;    
-        const validSprints = sprints.filter((sprint:Sprint) => !!sprint.sprint_id);
-        const tasksBySprint$ : Observable<Task[]>[] = validSprints.map((sprint:Sprint) => 
-          this.getTasksBySprint(sprint.sprint_id)
-        );
-
-        return forkJoin(tasksBySprint$);
+        const validSprints = sprints.filter((sprint:Sprint) => !!sprint.sprint_id); //Filtrar los sprints validos
+        const tasksBySprint$ : Observable<Task[]>[] = validSprints.map((sprint:Sprint) =>  //Obtener las tareas de cada sprint
+         this.taskService.tasks().length > 0 ? of([]) : this.getTasksBySprint(sprint.sprint_id)
+        );        
+        return forkJoin(tasksBySprint$); //Unir todas las tareas de los sprints
       }),
       takeUntil(this.destroy$)
-    ).subscribe((allSprintTasks: Task[][]) => {
-      this.tasks.push(...allSprintTasks.flat());
-    });
+    ).subscribe((allSprintTasks: Task[][]) => {      //Actualizar la lista de tareas
+      this.tasks = this.taskService.tasks();
+      });
 
   }
 
-
-
+  //Funcion para obtener las tareas de un sprint
   getTasksBySprint(sprint_id: number)  {
    this.taskService.getTasksBySprint(sprint_id).pipe(
       takeUntil(this.destroy$)
-    ).subscribe(data => {     
-     
-      this.tasks =  this.tasks.concat(data.object);
-      console.log(this.tasks);
+    ).subscribe(data => {    
+      this.taskService.tasks.update((tasks) => [...tasks, ...data.object]);    
+      this.tasks = this.taskService.tasks();
     })   
   }
 
@@ -191,7 +183,7 @@ export class SprintComponent {
         this.showModalCreateSprint(0, 'create');   
         this.formSprint.reset({
           status: 'planned',
-          project_id: this.projectId
+          project_id: this.projectId      
       });     
       } else {
         this.toastService.toast('Start date must be less than end date', 'error');
@@ -229,7 +221,7 @@ export class SprintComponent {
   }
 
   openModalTaskDetail(taskId: number,sprintId: number){
-
+    this.taskService.taskSelected.set(this.taskService.tasks().find(task => task.task_id === taskId) ?? {} as Task); 
     this.router.navigate(['task-detail'], {
       relativeTo: this.route,
       queryParams: {

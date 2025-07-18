@@ -82,7 +82,7 @@ export class CreateTaskComponent {
     if (this.formTask.valid) {     
       this.taskService.createTask(this.formTask.value).pipe(takeUntil(this.destroy$)).subscribe({
         next: (data) => {
-          sessionStorage.setItem('task-created', JSON.stringify(data.object));
+          this.taskService.tasks.update((tasks:Task[]) => [...tasks, data.object]);
           this.toastService.toast('Task created successfully', 'success');
           this.closeModal();
         },

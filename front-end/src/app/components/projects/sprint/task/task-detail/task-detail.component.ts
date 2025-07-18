@@ -90,19 +90,8 @@ export class TaskDetailComponent {
   }
 
   getTaskDetail() {
-    const taskId = Number(this.route.snapshot.queryParamMap.get('task_id'));
-    const sprintId = Number(this.route.snapshot.queryParamMap.get('sprint_id'));
-    this.taskService.getTaskById(taskId, sprintId).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (response) => {
-        this.task = response.object;
-        this.getBacklogItem(this.task.backlog_item_id);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
+    this.task = this.taskService.taskSelected();
+    this.getBacklogItem(this.task.backlog_item_id);    
   }
 
   updateTask(taskId: number, inputName: 'status' | 'priority' | 'type' | 'estimated_hours' | 'start_date' | 
@@ -116,6 +105,8 @@ export class TaskDetailComponent {
       next: (response) => {
         this.toggleEditField(inputName); 
         this.task = response.object;
+        this.taskService.tasks.update((tasks) => tasks.map(task => task.task_id === taskId ? response.object : task));
+        this.taskService.taskSelected.set(this.task);
       },
       error: (error) => {
         console.log(error);
