@@ -2,8 +2,9 @@
     <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
     <div class="fixed inset-0 z-10 w-screen p-1 overflow-y-auto">
         <div class="flex min-h-full w-full flex-row-reverse   sm:p-0">
-            <div class="modal-container  relative float-right transform overflow-hidden rounded-lg bg-white  text-left shadow-xl transition-all sm:my-1 
-                sm:w-[0px] sm:max-w-[450px] ">
+            <div class="modal-container  relative float-right transform overflow-hidden rounded-lg bg-white 
+             text-left shadow-xl transition-all sm:my-1 
+                sm:w-[0px] sm:max-w-fit ">
                 <div class="sm:flex sm:items-end">
                     <div class=" text-center sm:mt-0 sm:text-left w-full">
                         <div class=" flex flex-row justify-between items-center border-b-1 p-4 border-gray-200">
@@ -12,9 +13,9 @@
                                 <ng-icon name="heroXMark" size="20" color="#0C0C0C"></ng-icon> 
                              </button>
                         </div>     
-                        <div class="p-4">
+                        <div class="p-2">
                             
-                            <div class="mb-4">
+                            <div class="my-2 px-4">
                                 <p (click)="toggleEditField('title')" class="title-span font-bold text-neutral-800  text-[18px]" >
                                      {{task.title}}</p>
                                 <div class="title-select flex-row hidden" >
@@ -34,27 +35,51 @@
                                
                             </div>
                            
-                            <div class="border-y-1 text-[14px]  border-gray-300 border-dashed w-full">
+                            <div class="border-y-1 text-[14px] p-2 border-gray-300 border-dashed w-full">
                                 <table class="w-full">
                                     <tr>
-                                        <td class="font-semibold p-4">Assigned</td>
+                                        <td class="font-semibold p-2 w-[160px]">Assigned</td>
                                         <td class="w-[220px]">JP</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-4">User Story</td> 
+                                        <td class="font-semibold p-2 w-[160px]">User Story</td> 
                                         <td>{{backlogItem.title }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-4">Status</td>
-                                        <td>
-                                            <span (click)="toggleEditField('status')" class="status-span inline-flex justify-center w-auto  bg-amber-100 text-amber-500 px-2 py-1 rounded-[10px] text-[14px] ">
-                                                {{task.status}}
-                                            </span>
+                                        <td class="font-semibold p-2">Status</td>
+                                        <td class="font-medium cursor-pointer">
+                                            @switch(task.status){
+                                                @case('in_progress'){
+                                                    <span (click)="toggleEditField('status')" class="status-span inline-flex justify-center w-auto 
+                                                     bg-blue-100 text-blue-500 px-2 py-1 rounded-[10px] text-[12px] ">
+                                                        In Progress
+                                                    </span>
+                                                }
+                                                @case('pending'){
+                                                    <span (click)="toggleEditField('status')" class="status-span inline-flex justify-center w-auto 
+                                                     bg-purple-100 text-purple-500 px-2 py-1 rounded-[10px] text-[12px] ">
+                                                        Pending
+                                                    </span>
+                                                }
+                                                @case('completed'){
+                                                    <span (click)="toggleEditField('status')" class="status-span inline-flex justify-center w-auto 
+                                                     bg-green-100 text-green-500 px-2 py-1 rounded-[10px] text-[12px] ">
+                                                        Completed          
+                                                    </span>
+                                                }
+                                                @case('blocked'){
+                                                    <span (click)="toggleEditField('status')" class="status-span inline-flex justify-center w-auto 
+                                                     bg-red-100 text-red-500 px-2 py-1 rounded-[10px] text-[12px] ">
+                                                        Blocked  
+                                                    </span>
+                                                }
+                                            }
+                                          
                                             <div class="status-select flex-row hidden" >
                                                 <select name="status" id="task-status-input" class="status-input w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">                                                    
                                                     <option [value]="status" *ngFor="let status of ['in_progress', 'pending', 'completed', 'blocked']"
-                                                     [selected]="task.status === status">{{status}}</option>     
+                                                     [selected]="task.status === status">{{status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ") }}</option>     
                                                 </select>
                                                 <button (click)="updateTask(task.task_id, 'status')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
@@ -62,17 +87,40 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-4">Priority</td>
-                                        <td>
-                                             <span (click)="toggleEditField('priority')" class="priority-span cursor-pointer bg-yellow-100
-                                              text-yellow-600 px-2 py-1 rounded-[10px] w-fit text-[14px] ">
-                                                {{task.priority}}
-                                             </span>
+                                        <td class="font-semibold p-2">Priority</td>
+                                        <td class="font-medium cursor-pointer text-[12px]">
+                                            @switch(task.priority){
+                                                @case('low'){
+                                                    <span (click)="toggleEditField('priority')" class="priority-span cursor-pointer bg-lime-100
+                                                     text-lime-600 px-2 py-1 rounded-[10px] w-fit ">
+                                                        Low
+                                                     </span>
+                                                }
+                                                @case('medium'){
+                                                    <span (click)="toggleEditField('priority')" class="priority-span cursor-pointer bg-yellow-100
+                                                     text-yellow-600 px-2 py-1 rounded-[10px] w-fit ">
+                                                        Medium
+                                                     </span>
+                                                }
+                                                @case('high'){
+                                                    <span (click)="toggleEditField('priority')" class="priority-span cursor-pointer bg-orange-100
+                                                     text-orange-600 px-2 py-1 rounded-[10px] w-fit ">
+                                                        High
+                                                     </span>
+                                                }
+                                                @case('critical'){
+                                                    <span (click)="toggleEditField('priority')" class="priority-span cursor-pointer bg-red-100
+                                                     text-red-600 px-2 py-1 rounded-[10px] w-fit ">
+                                                        Critical
+                                                     </span>
+                                                }
+                                            }
+                                         
                                              <div class="priority-select flex-row hidden" > 
                                                 <select name="priority" id="task-priority-input" class="w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]"> 
                                                     <option [value]="priority" *ngFor="let priority of ['low', 'medium', 'high', 'critical']" 
-                                                    [selected]="task.priority === priority">{{priority}}</option>  
+                                                    [selected]="task.priority === priority">{{priority.charAt(0).toUpperCase() + priority.slice(1)}}</option>  
                                                 </select> 
                                                 <button (click)="updateTask(task.task_id, 'priority')" class="cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
@@ -81,9 +129,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-4">Type</td> 
+                                        <td class="font-semibold p-2">Type</td> 
                                         <td>
-                                             <span (click)="toggleEditField('type')" class="type-span cursor-pointer  px-2 py-1
+                                             <span (click)="toggleEditField('type')" class="type-span cursor-pointer py-1
                                                w-fit text-[14px] "> {{task.type}}</span>
                                              <div class="type-select flex-row hidden" >
                                                 <select name="type" id="task-type-input" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
@@ -98,9 +146,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-4">Start Date</td>
+                                        <td class="font-semibold p-2">Start Date</td>
                                         <td>
-                                             <span (click)="toggleEditField('start_date')" class="start_date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
+                                             <span (click)="toggleEditField('start_date')" class="start_date-span cursor-pointer py-1 rounded-[10px] w-fit text-[14px] ">
                                                  {{dateFormat(task.start_date)}}
                                                 </span>
                                              <div class="start_date-select flex-row hidden" >
@@ -113,9 +161,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-4">End Date</td>
+                                        <td class="font-semibold p-2">End Date</td>
                                         <td>
-                                             <span (click)="toggleEditField('end_date')" class="end_date-span cursor-pointer  px-2 py-1 rounded-[10px] w-fit text-[14px] ">
+                                             <span (click)="toggleEditField('end_date')" class="end_date-span cursor-pointer py-1 rounded-[10px] w-fit text-[14px] ">
                                                  {{dateFormat(task.end_date)}}
                                                 </span>
                                              <div class="end_date-select flex-row hidden" >
@@ -128,10 +176,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-4">Estimated Hours</td>
+                                        <td class="font-semibold p-2">Estimated Hours</td>
                                         <td>
                                              <span (click)="toggleEditField('estimated_hours')" class="estimated_hours-span cursor-pointer 
-                                              px-2 py-1 rounded-[10px] w-fit text-[14px] "> {{task.estimate_hours}}</span>
+                                            py-1 rounded-[10px] w-fit text-[14px] "> {{task.estimate_hours}}</span>
                                              <div class="estimated_hours-select flex-row hidden" >
                                                 <input name="estimated_hours" id="task-estimated_hours-input" value="{{task.estimate_hours}}" type="number" class=" w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
@@ -142,9 +190,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-4">Actual Hours</td> 
+                                        <td class="font-semibold p-2">Actual Hours</td> 
                                         <td>
-                                             <span (click)="toggleEditField('actual_hours')" class="cursor-pointer actual_hours-span px-2 
+                                             <span (click)="toggleEditField('actual_hours')" class="cursor-pointer actual_hours-span 
                                              py-1 rounded-[10px] w-fit text-[14px] "> 
                                              @if(task.actual_hours !== null) {
                                               {{task.actual_hours}}
@@ -163,6 +211,10 @@
                                         </td>
                                     </tr>
                                 </table>                                
+                            </div>
+                            <div class="flex items-end flex-row absolute bottom-2 w-[96%]">
+                                <button (click)="deleteTask(task.task_id)" class="w-full  cursor-pointer  rounded-[10px] bg-red-500 text-white  font-medium px-2 py-2
+                                                 text-[14px] hover:bg-red-600 hover:text-white transition-colors">Delete Task</button>
                             </div>
 
                             

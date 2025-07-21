@@ -57,6 +57,12 @@ export class TaskService {
     )
   }
 
+  deleteTask(task_id: number, sprint_id: number): Observable<any> {
+    return this.http.delete<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/delete/' + task_id).pipe(
+      catchError(this.handleError)
+    )
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

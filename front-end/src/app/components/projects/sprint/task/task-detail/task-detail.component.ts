@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { BacklogService } from '../../../../../services/backlog.service';
 import { BacklogItem } from '../../../../../core/model/entity/backlog-item.model';
 import { CommonModule } from '@angular/common';
+import { ToastService } from '../../../../../services/toast.service';
 
 @Component({
   selector: 'app-task-detail',
@@ -25,6 +26,7 @@ export class TaskDetailComponent {
   private backlogService = inject(BacklogService); 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private toastService = inject(ToastService);
   private destroy$ = new Subject<void>();
 
   task: Task = {} as Task;
@@ -107,14 +109,29 @@ export class TaskDetailComponent {
         this.task = response.object;
         this.taskService.tasks.update((tasks) => tasks.map(task => task.task_id === taskId ? response.object : task));
         this.taskService.taskSelected.set(this.task);
+        this.toastService.toast('Task updated successfully', 'success');
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    }) 
+    
+  }
+
+  deleteTask(taskId: number) {
+    this.taskService.deleteTask(taskId, this.task.sprint_id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.taskService.tasks.update((tasks) => tasks.filter(task => task.task_id !== taskId));
+        this.taskService.taskSelected.set({} as Task);
+        this.toastService.toast('Task deleted successfully', 'success');
+        this.closeModal();
       },
       error: (error) => {
         console.log(error);
       }
     })
-   
-    
-    
   }
 
 

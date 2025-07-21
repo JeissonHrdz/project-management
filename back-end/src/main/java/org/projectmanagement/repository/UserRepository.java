@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -16,5 +17,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query("SELECT s.user_id FROM User s WHERE s.username = :username")
     String findId(String username);
+
 
 }
