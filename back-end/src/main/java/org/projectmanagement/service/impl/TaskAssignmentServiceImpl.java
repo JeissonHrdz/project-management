@@ -20,9 +20,9 @@ public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
 
     @Override
     public TaskAssignmentResponseDto assignTaskToUser(TaskAssignmentCreateDto taskAssignmentCreateDto) {
-       /* TaskAssignments taskAssignments =  TaskAssignments.builder()
+        TaskAssignments taskAssignments =  TaskAssignments.builder()
                 .task(taskRepository.findById(taskAssignmentCreateDto.task_id()).get())
-                .user(userRepository.findId(taskAssignmentCreateDto.user_id()))
+                .user(userRepository.findUserByEmail(taskAssignmentCreateDto.email()))
                 .assignment_type(taskAssignmentCreateDto.assignment_type())
                 .build();
         TaskAssignments savedTaskAssignments = taskAssignmentRepository.save(taskAssignments);
@@ -33,7 +33,6 @@ public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
                 savedTaskAssignments.getUser().getUser_id(),
                 savedTaskAssignments.getAssignment_type(),
                 savedTaskAssignments.getAssigned_at()
-        );*/
-    return null;
+        );
     }
 }

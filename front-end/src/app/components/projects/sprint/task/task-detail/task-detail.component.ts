@@ -134,5 +134,9 @@ export class TaskDetailComponent {
     })
   }
 
+  showBoxTaskAssigment() {
+    $(".box-task-assigment").animate({ height: "toggle" }, "fast");
+  }
+
 
 }

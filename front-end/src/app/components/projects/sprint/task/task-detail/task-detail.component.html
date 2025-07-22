@@ -37,10 +37,20 @@
                            
                             <div class="border-y-1 text-[14px] p-2 border-gray-300 border-dashed w-full">
                                 <table class="w-full">
-                                    <tr>
+                                    <tr >
                                         <td class="font-semibold p-2 w-[160px]">Assigned</td>
-                                        <td class="w-[220px]">JP</td>
+                                        <td (click)="showBoxTaskAssigment()" class=" cursor-pointer w-[220px]">JP</td>                                    
                                     </tr>
+
+                                </table>
+                                <div (click)="$event.stopPropagation()" class="box-task-assigment  hidden flex-col w-full h-[110px] bg-white shadow-sm rounded-[10px] 
+                                border-1 border-gray-200 p-2">
+                                     <input type="text" name="assigned" placeholder="Search User" id="task-assigned-input" class="assigned-input w-full 
+                                     cursor-pointer bg-gray-200 font-medium outline-0 p-2  placeholder:text-gray-500 rounded-[10px] border-1
+                                     border-gray-200 text-[14px]">
+                                     <p class="text-neutral-500 mt-4 px-2">Not assigned</p>
+                                </div>
+                                <table>                                  
                                     <tr>
                                         <td class="font-semibold p-2 w-[160px]">User Story</td> 
                                         <td>{{backlogItem.title }}</td>
