@@ -17,8 +17,8 @@ public class TaskAssignments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "asignment_id")
-    private int asignment_id;
+    @Column(name = "assignment_id")
+    private int assignment_id;
 
     @ManyToOne
     @JoinColumn(name = "task_id")

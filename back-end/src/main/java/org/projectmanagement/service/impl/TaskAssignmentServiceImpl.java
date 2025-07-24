@@ -22,7 +22,7 @@ public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
     public TaskAssignmentResponseDto assignTaskToUser(TaskAssignmentCreateDto taskAssignmentCreateDto) {
         TaskAssignments taskAssignments =  TaskAssignments.builder()
                 .task(taskRepository.findById(taskAssignmentCreateDto.task_id()).get())
-                .user(userRepository.findUserByEmail(taskAssignmentCreateDto.email()))
+                .user(userRepository.findById(userRepository.findIdUserByEmail(taskAssignmentCreateDto.email())).get())
                 .assignment_type(taskAssignmentCreateDto.assignment_type())
                 .build();
         TaskAssignments savedTaskAssignments = taskAssignmentRepository.save(taskAssignments);

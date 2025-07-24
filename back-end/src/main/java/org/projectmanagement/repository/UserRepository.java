@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends CrudRepository<User, String> {
     Optional<User> findByUsername(String username);
 
     @Query("SELECT s FROM User s WHERE s.username = :username")
@@ -19,11 +19,11 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Query("SELECT s.user_id FROM User s WHERE s.username = :username")
     String findId(String username);
 
-    @Query("SELECT s.email FROM User s WHERE s.email LIKE %:email")
+    @Query("SELECT s.email FROM User s WHERE s.email LIKE %:email%")
     List<String> findEmail(String email);
 
     @Query("SELECT s.user_id FROM User s WHERE s.email = :email")
-    User findUserByEmail(String email);
+    String  findIdUserByEmail(String email);
 
 
 }

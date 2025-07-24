@@ -63,6 +63,14 @@ export class TaskService {
     )
   }
 
+  updateTaskAssigment(task_id: number, sprint_id: number, 
+    data: {task_id: number, assignment_type: string, email: string}): Observable<any> {
+    
+    return this.http.post<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/' + task_id + '/assign', data).pipe(
+      catchError(this.handleError),     
+    )
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

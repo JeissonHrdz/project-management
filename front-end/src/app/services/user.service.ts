@@ -1,0 +1,31 @@
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../environment/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  private urlBase: string = environment.baseUrl + '/users';
+  private http = inject(HttpClient);
+
+
+  getEmailUser(email: string ): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/find-email', { params: { email: email } }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      console.error('Se ha producido un error ', error.error);
+    }
+    else {
+      console.error('Backend retornó el código de estado ', error.status, error.error);
+    }
+    return throwError(() => new Error('Algo falló. Por favor intente nuevamente.'));
+  }
+
+  constructor() { }
+}

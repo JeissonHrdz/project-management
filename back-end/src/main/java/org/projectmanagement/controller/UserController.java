@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.projectmanagement.model.payload.ResponseMessage;
 import org.projectmanagement.service.RoleService;
 import org.projectmanagement.service.UserService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -24,7 +25,8 @@ public class UserController {
     private final RoleService roleService;
 
     @RequestMapping("/find-email")
-    public ResponseEntity<?> registerUser(@RequestBody String email) {
+    public ResponseEntity<?> registerUser(@Param("email") String email) {
+
         if (!roleService.hasPermission("users", "read")) {
             throw new AccessDeniedException("You do not have permission to access this resource");
         }

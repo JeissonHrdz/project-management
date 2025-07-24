@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import $ from 'jquery';
 import { TaskService } from '../../../../../services/task.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { BacklogService } from '../../../../../services/backlog.service';
 import { BacklogItem } from '../../../../../core/model/entity/backlog-item.model';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../../../../services/toast.service';
+import { UserService } from '../../../../../services/user.service';
 
 @Component({
   selector: 'app-task-detail',
@@ -28,6 +29,10 @@ export class TaskDetailComponent {
   private router = inject(Router);
   private toastService = inject(ToastService);
   private destroy$ = new Subject<void>();
+  private userService = inject(UserService);
+
+  emailFinded = signal<string[]>([]);
+  mailSelected = signal<string>('');
 
   task: Task = {} as Task;
   backlogItem: BacklogItem = {} as BacklogItem;
@@ -133,6 +138,40 @@ export class TaskDetailComponent {
       }
     })
   }
+
+  getEmailsUsers() {
+    this.userService.getEmailUser($("#task-assigment-input").val() as string).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.emailFinded.set(response.object);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
+  assignUserToTask() {
+    const data = {
+      task_id: this.task.task_id,
+      assignment_type: 'assign',
+      email: this.mailSelected()
+    };
+    this.taskService.updateTaskAssigment(this.task.task_id, this.task.sprint_id, data).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.toastService.toast('Task assigned successfully', 'success');
+
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
+  
 
   showBoxTaskAssigment() {
     $(".box-task-assigment").animate({ height: "toggle" }, "fast");
