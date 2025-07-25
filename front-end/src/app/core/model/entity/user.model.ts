@@ -5,8 +5,8 @@ export interface User {
     username: string;
     email: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     role_id: number;
     is_scrum_master: boolean;
     is_product_owner: boolean;

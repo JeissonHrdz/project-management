@@ -17,6 +17,12 @@ export class UserService {
     );
   }
 
+  getUsersByTaskAssigned(task_id: number): Observable<any> {
+    return this.http.get<any>(this.urlBase +  '/users-task', { params: { task_id: task_id } }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       console.error('Se ha producido un error ', error.error);

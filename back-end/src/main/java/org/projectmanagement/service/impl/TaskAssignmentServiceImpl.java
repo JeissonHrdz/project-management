@@ -10,6 +10,9 @@ import org.projectmanagement.repository.UserRepository;
 import org.projectmanagement.service.TaskAssignmentsService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
@@ -34,5 +37,20 @@ public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
                 savedTaskAssignments.getAssignment_type(),
                 savedTaskAssignments.getAssigned_at()
         );
+    }
+
+    @Override
+    public List<TaskAssignmentResponseDto> geTaskAssignmentsByTaskId(Integer task_id) {
+        List<TaskAssignments> taskAssignments = taskAssignmentRepository.findTaskAssignments(task_id);
+               if(taskAssignments.isEmpty()) return List.of();
+
+               List<TaskAssignmentResponseDto> taskAssignments1 = taskAssignments.stream()
+                       .map( taskAssignment -> new TaskAssignmentResponseDto(
+                               taskAssignment.getTask().getTask_id(),
+                               taskAssignment.getUser().getUser_id(),
+                               taskAssignment.getAssignment_type(),
+                               taskAssignment.getAssigned_at()
+                       )).collect(Collectors.toList());
+        return taskAssignments1;
     }
 }

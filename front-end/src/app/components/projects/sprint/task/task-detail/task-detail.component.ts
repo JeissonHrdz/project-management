@@ -13,6 +13,7 @@ import { BacklogItem } from '../../../../../core/model/entity/backlog-item.model
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../../../../services/toast.service';
 import { UserService } from '../../../../../services/user.service';
+import { User } from '../../../../../core/model/entity/user.model';
 
 @Component({
   selector: 'app-task-detail',
@@ -33,6 +34,7 @@ export class TaskDetailComponent {
 
   emailFinded = signal<string[]>([]);
   mailSelected = signal<string>('');
+  usersAssigned = signal<User[]>([]);
 
   task: Task = {} as Task;
   backlogItem: BacklogItem = {} as BacklogItem;
@@ -98,7 +100,23 @@ export class TaskDetailComponent {
 
   getTaskDetail() {
     this.task = this.taskService.taskSelected();
-    this.getBacklogItem(this.task.backlog_item_id);    
+    this.getBacklogItem(this.task.backlog_item_id);  
+    this.getUsersByTaskAssigned();  
+  }
+
+
+  getUsersByTaskAssigned() {
+    this.userService.getUsersByTaskAssigned(this.task.task_id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.usersAssigned.set(response.object);
+        console.log(this.usersAssigned());
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
   updateTask(taskId: number, inputName: 'status' | 'priority' | 'type' | 'estimated_hours' | 'start_date' | 

@@ -1,6 +1,8 @@
 package org.projectmanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.projectmanagement.model.dto.task_assignment.TaskAssignmentResponseDto;
+import org.projectmanagement.model.dto.user.UserReadDto;
 import org.projectmanagement.model.dto.user.UserRegisterDto;
 import org.projectmanagement.model.dto.user.UserResponseDto;
 import org.projectmanagement.model.entity.User;
@@ -10,8 +12,10 @@ import org.projectmanagement.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
+    private final TaskAssignmentServiceImpl taskAssignmentService;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -55,6 +60,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public String findUserId(String username) {
         return "";
+    }
+
+    @Override
+    public List<UserReadDto> findAllUsersAssignedTasks(Integer task_id) {
+    List<TaskAssignmentResponseDto> taskAssignments = taskAssignmentService.geTaskAssignmentsByTaskId(task_id);
+    List<User> users = new ArrayList<>();
+    for (TaskAssignmentResponseDto taskAssignment : taskAssignments) {
+        users.add(userRepository.findById(taskAssignment.user_id()).get());
+    }
+
+    List<UserReadDto> userReadDtos = users.stream()
+            .map(user -> new UserReadDto(
+                    user.getUser_id(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getFirst_name(),
+                    user.getLast_name(),
+                    user.getRole_id().getRole_id(),
+                    user.getIs_scrum_master(),
+                    user.getIs_product_owner()
+            )).collect(Collectors.toList());
+
+    return userReadDtos;
+
     }
 
     @Override

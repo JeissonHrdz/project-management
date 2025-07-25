@@ -1,6 +1,7 @@
 package org.projectmanagement.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.projectmanagement.model.dto.user.UserReadDto;
 import org.projectmanagement.model.payload.ResponseMessage;
 import org.projectmanagement.service.RoleService;
 import org.projectmanagement.service.UserService;
@@ -26,7 +27,6 @@ public class UserController {
 
     @RequestMapping("/find-email")
     public ResponseEntity<?> registerUser(@Param("email") String email) {
-
         if (!roleService.hasPermission("users", "read")) {
             throw new AccessDeniedException("You do not have permission to access this resource");
         }
@@ -45,7 +45,28 @@ public class UserController {
                     HttpStatus.BAD_REQUEST
             );
         }
+    }
 
-
+    @RequestMapping("/users-task")
+    public ResponseEntity<?> getAllUsersByTaskAssignment( @Param("task_id") Integer task_id) {
+        if (!roleService.hasPermission("users", "read")) {
+            throw new AccessDeniedException("You do not have permission to access this resource");
+        }
+        try {
+            List<UserReadDto> users = userService.findAllUsersAssignedTasks(task_id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Users retrieved successfully")
+                    .object(users)
+                    .build(),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
     }
 }
+
