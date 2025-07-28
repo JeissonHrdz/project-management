@@ -44,25 +44,25 @@
                                 <table class="w-full">
                                     <tr>
                                         <td class="font-semibold p-2 w-[160px]">Assigned</td>
-                                        <td (click)="showBoxTaskAssigment()" class=" cursor-pointer w-[220px]">
+                                        <td class=" cursor-pointer">
                                             <div class="flex flex-row text-white font-normal">
                                                 @if(usersAssigned().length === 0){
                                                 <span>No assigned</span>
                                                 } @else {
                                                 @for (user of usersAssigned(); track $index){
-                                                @if($index === 0){
-                                                <div class="flex items-center justify-center text-center  w-[30px] 
-                                                relative custom-shadow h-[30px] rounded-full bg-blue-300">
-                                                    {{user.first_name.charAt(0)}} {{user.last_name.charAt(0)}}
-                                                </div>
-                                                } @else{
-                                                <div class="flex items-center justify-center text-center -left-2 w-[30px] 
-                                                relative custom-shadow h-[30px] rounded-full bg-purple-300">
+                                                <div
+                                                    class="flex items-center justify-center text-center mr-1 w-[30px] 
+                                                relative h-[30px] rounded-full bg-{{userAssignedIconColor[$index]}}-300 ">
                                                     {{user.first_name.charAt(0)}} {{user.last_name.charAt(0)}}
                                                 </div>
                                                 }
                                                 }
-                                                }
+                                                <div (click)="showBoxTaskAssigment()"
+                                                    class="hover:bg-gray-200 flex items-center justify-center text-center mr-1 w-[30px] 
+                                                relative h-[30px] rounded-full bg-white border-1 border-gray-300 cursor-pointer">
+                                                    <ng-icon name="heroPlus" size="20" color="gray"></ng-icon>
+                                                </div>
+
                                             </div>
                                         </td>
 
@@ -76,12 +76,27 @@
                                      border-gray-200 text-[14px]">
                                     <p *ngIf="usersAssigned().length === 0" class="text-neutral-500 mt-4 px-2">Not
                                         assigned</p>
-                                        @for (user of usersAssigned(); track $index){ 
-                                        <p class="cursor-pointer bg-blue-100 text-blue-500 hover:bg-blue-200 hover:text-blue-600
-                                      mt-2 p-2 rounded-[10px] ">{{user.first_name}} {{user.last_name}}</p>
-                                        }
-                                 
-                                
+                                    @for (user of usersAssigned(); track $index){
+                                    <div class="flex items-center justify-between mt-1 rounded-[10px] p-2 hover:bg-gray-200 cursor-pointer">
+                                        <div class="flex items-center w-full">
+                                        <div class="flex text-[16px] text-white items-center justify-center text-center mr-1 w-[40px] 
+                                        relative h-[40px] rounded-full bg-{{userAssignedIconColor[$index]}}-300 ">
+                                            {{user.first_name.charAt(0)}} {{user.last_name.charAt(0)}}
+                                        </div>
+                                        <div class="flex ml-2 flex-col">
+                                            <p class="cursor-pointer font-medium text-[14px] text-neutral-800
+                                                ">{{user.first_name}} {{user.last_name}}</p>
+                                             <p class="cursor-pointer text-[12px] text-neutral-600
+                                                ">{{user.email}}</p>   
+                                        </div>
+                                        </div>
+                                        <button class="float-end cursor-pointer rounded-[10px] font-medium px-2 py-2 text-[14px]  transition-colors">
+                                        <ng-icon name="heroXMark" size="20" color="gray"></ng-icon>
+                                        </button>
+                                    </div>  
+                                    }
+
+
                                     <p *ngFor="let email of emailFinded()"
                                         (click)="mailSelected.set(email); emailFinded.set([]);" class="hover:bg-neutral-200 cursor-pointer text-neutral-600
                                       mt-2 p-2 rounded-[10px] ">

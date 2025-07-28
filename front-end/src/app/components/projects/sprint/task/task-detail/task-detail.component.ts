@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { TaskService } from '../../../../../services/task.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroXMark, } from '@ng-icons/heroicons/outline';
+import { heroXMark, heroPlus } from '@ng-icons/heroicons/outline';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Task } from '../../../../../core/model/entity/task';
@@ -15,10 +15,11 @@ import { ToastService } from '../../../../../services/toast.service';
 import { UserService } from '../../../../../services/user.service';
 import { User } from '../../../../../core/model/entity/user.model';
 
+
 @Component({
   selector: 'app-task-detail',
   imports: [NgIcon, FormsModule,CommonModule],
-  providers: [provideIcons({ heroXMark })],
+  providers: [provideIcons({ heroXMark, heroPlus})],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })
@@ -38,6 +39,14 @@ export class TaskDetailComponent {
 
   task: Task = {} as Task;
   backlogItem: BacklogItem = {} as BacklogItem;
+
+  userAssignedIconColor: string[] = [
+     "red", 
+     "blue",
+     "purple",
+     "green",
+     "orange"
+  ];
 
   ngOnInit(): void {
     this.getTaskDetail();
@@ -161,8 +170,10 @@ export class TaskDetailComponent {
     this.userService.getEmailUser($("#task-assigment-input").val() as string).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
-      next: (response) => {
-        this.emailFinded.set(response.object);
+      next: (response) => {       
+        this.emailFinded.set(response.object.filter(
+          (email: string) => !this.usersAssigned()
+          .some((user: User) => user.email === email))); // El some se usa para verificar si el email ya esta en usersAssigned
       },
       error: (error) => {
         console.log(error);
