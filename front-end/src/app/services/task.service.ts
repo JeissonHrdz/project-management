@@ -64,11 +64,16 @@ export class TaskService {
   }
 
   updateTaskAssigment(task_id: number, sprint_id: number, 
-    data: {task_id: number, assignment_type: string, email: string}): Observable<any> {
-    
+    data: {task_id: number, assignment_type: string, email: string}): Observable<any> {    
     return this.http.post<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/' + task_id + '/assign', data).pipe(
       catchError(this.handleError),     
     )
+  }
+
+  updateTaskUnassign(task_id: number, user_id: string, sprint_id: number): Observable<any> {  
+    return this.http.delete<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/' + task_id + '/unassign',
+       {params: { user_id: user_id}})
+      .pipe(catchError(this.handleError))
   }
 
 

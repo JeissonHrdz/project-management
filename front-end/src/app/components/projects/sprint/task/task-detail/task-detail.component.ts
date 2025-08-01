@@ -200,6 +200,20 @@ export class TaskDetailComponent {
     })
   }
 
+  unassignUserToTask(user_id: string) {
+
+    this.taskService.updateTaskUnassign(this.task.task_id, user_id, this.task.sprint_id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.toastService.toast('Task unassigned successfully', 'success');
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
   
 
   showBoxTaskAssigment() {

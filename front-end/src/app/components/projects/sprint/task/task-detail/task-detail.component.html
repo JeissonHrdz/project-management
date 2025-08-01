@@ -90,7 +90,7 @@
                                                 ">{{user.email}}</p>   
                                         </div>
                                         </div>
-                                        <button class="float-end cursor-pointer rounded-[10px] font-medium px-2 py-2 text-[14px]  transition-colors">
+                                        <button (click)="unassignUserToTask(user.user_id)" class="float-end cursor-pointer rounded-[10px] font-medium px-2 py-2 text-[14px]  transition-colors">
                                         <ng-icon name="heroXMark" size="20" color="gray"></ng-icon>
                                         </button>
                                     </div>  

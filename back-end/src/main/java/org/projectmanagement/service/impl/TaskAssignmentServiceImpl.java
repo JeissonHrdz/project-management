@@ -53,4 +53,10 @@ public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
                        )).collect(Collectors.toList());
         return taskAssignments1;
     }
+
+    @Override
+    public void unassignTaskToUser(Integer task_id, String user_id) {
+
+        taskAssignmentRepository.unassignTaskToUser(task_id, userRepository.findIdUserByEmail(user_id));
+    }
 }
