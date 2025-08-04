@@ -9,11 +9,13 @@ import org.projectmanagement.repository.TaskRepository;
 import org.projectmanagement.repository.UserRepository;
 import org.projectmanagement.service.TaskAssignmentsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
 
@@ -56,7 +58,6 @@ public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
 
     @Override
     public void unassignTaskToUser(Integer task_id, String user_id) {
-
-        taskAssignmentRepository.unassignTaskToUser(task_id, userRepository.findIdUserByEmail(user_id));
+        taskAssignmentRepository.unassignTaskToUser(task_id, user_id);
     }
 }

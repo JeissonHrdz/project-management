@@ -191,6 +191,8 @@ export class TaskDetailComponent {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
+        this.usersAssigned.update((users) => [...users, response.object]);
+        this.getUsersByTaskAssigned();
         this.toastService.toast('Task assigned successfully', 'success');
 
       },
@@ -206,6 +208,7 @@ export class TaskDetailComponent {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
+        this.usersAssigned.update((users) => users.filter(user => user.user_id !== user_id));
         this.toastService.toast('Task unassigned successfully', 'success');
       },
       error: (error) => {

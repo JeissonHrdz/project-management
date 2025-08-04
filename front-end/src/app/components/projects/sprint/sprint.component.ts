@@ -17,6 +17,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { TaskService } from '../../../services/task.service';
 import { Task } from '../../../core/model/entity/task';
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../core/model/entity/user.model';
 @Component({
   selector: 'app-sprint',
   imports: [CommonModule, ReactiveFormsModule, NgIcon,RouterOutlet],
@@ -35,6 +37,7 @@ export class SprintComponent {
   private sprintService = inject(SprintService);
   private taskService = inject(TaskService);
   private toastService = inject(ToastService);
+  private userService = inject(UserService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private projectId = this.projectService._projectId(); 
@@ -42,6 +45,7 @@ export class SprintComponent {
   sprints: Sprint[] = [];
   dataSprintUpdate: Sprint | any;
   openedMenuId: string | null = null;
+  usersAssigned: User[] = [];
   tasks: Task[] = [];
   
 
@@ -97,7 +101,21 @@ export class SprintComponent {
     ).subscribe(data => {    
       this.taskService.tasks.update((tasks) => [...tasks, ...data.object]);    
       this.tasks = this.taskService.tasks();
+  
     })   
+  }
+
+  getUsersByTaskAssigned(taskId: number) {
+    this.userService.getUsersByTaskAssigned(taskId).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.usersAssigned.push(...response.object);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
   dateFormatter(date: string): string {

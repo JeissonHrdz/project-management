@@ -26,7 +26,7 @@ public class TaskAssignmentController {
 
     @RequestMapping("/assign")
     public ResponseEntity<?> assignTaskToUser(@RequestBody TaskAssignmentCreateDto taskAssignmentCreateDto) {
-        if (!roleService.hasPermission("sprints", "create")) {
+        if (!roleService.hasPermission("tasks", "create")) {
             throw new AccessDeniedException("Access Denied");
         }
         try{
@@ -46,8 +46,7 @@ public class TaskAssignmentController {
 
     @DeleteMapping("/unassign")
     public ResponseEntity<?> unassignTaskToUser(@PathVariable Integer task_id, @Param("user_id") String user_id) {
-        System.out.println("///////////////////////////////// user_id: " + user_id + " task_id: " + task_id);
-        if (!roleService.hasPermission("sprints", "create")) {
+        if (!roleService.hasPermission("tasks", "create")) {
             throw new AccessDeniedException("Access Denied");
         }
         try{
@@ -55,7 +54,7 @@ public class TaskAssignmentController {
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Task unassigned successfully")
                     .build(),
-                    HttpStatus.CREATED);
+                    HttpStatus.OK);
         } catch (DataAccessException e) {
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message(e.getMessage())
