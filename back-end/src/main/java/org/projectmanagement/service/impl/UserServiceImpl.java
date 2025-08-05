@@ -64,11 +64,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserReadDto> findAllUsersAssignedTasks(Integer task_id) {
-    List<TaskAssignmentResponseDto> taskAssignments = taskAssignmentService.geTaskAssignmentsByTaskId(task_id);
-    List<User> users = new ArrayList<>();
-    for (TaskAssignmentResponseDto taskAssignment : taskAssignments) {
+      List<TaskAssignmentResponseDto> taskAssignments = taskAssignmentService.geTaskAssignmentsByTaskId(task_id);
+      List<User> users = new ArrayList<>();
+
+       for (TaskAssignmentResponseDto taskAssignment : taskAssignments) {
         users.add(userRepository.findById(taskAssignment.user_id()).get());
-    }
+          }
 
     List<UserReadDto> userReadDtos = users.stream()
             .map(user -> new UserReadDto(

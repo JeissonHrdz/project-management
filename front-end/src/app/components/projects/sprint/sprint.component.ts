@@ -9,9 +9,11 @@ import { ToastService } from '../../../services/toast.service';
 import { Sprint } from '../../../core/model/entity/sprint.model';
 import { takeUntil, Subject, Observable, forkJoin, switchMap, tap, map, of } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash, heroXCircle, 
-  heroChevronUpDown,heroCheckCircle,heroExclamationTriangle, heroClipboardDocumentCheck, heroPlus } from '@ng-icons/heroicons/outline';
-import  $ from 'jquery';
+import {
+  heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash, heroXCircle,
+  heroChevronUpDown, heroCheckCircle, heroExclamationTriangle, heroClipboardDocumentCheck, heroPlus
+} from '@ng-icons/heroicons/outline';
+import $ from 'jquery';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
@@ -21,18 +23,20 @@ import { UserService } from '../../../services/user.service';
 import { User } from '../../../core/model/entity/user.model';
 @Component({
   selector: 'app-sprint',
-  imports: [CommonModule, ReactiveFormsModule, NgIcon,RouterOutlet],
-  providers: [provideIcons({heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash,
-     heroChevronUpDown,heroCheckCircle,heroExclamationTriangle,heroXCircle,heroClipboardDocumentCheck,heroPlus})],
-  templateUrl: './sprint.component.html', 
+  imports: [CommonModule, ReactiveFormsModule, NgIcon, RouterOutlet],
+  providers: [provideIcons({
+    heroClock, heroEllipsisHorizontal, heroPencilSquare, heroTrash,
+    heroChevronUpDown, heroCheckCircle, heroExclamationTriangle, heroXCircle, heroClipboardDocumentCheck, heroPlus
+  })],
+  templateUrl: './sprint.component.html',
   styleUrl: './sprint.component.css'
 })
 export class SprintComponent {
   @ViewChild('modalCreateSprint') modalCreateSprint!: ElementRef;
-  @ViewChild('createTask', {read: RouterOutlet}) createTask!: RouterOutlet;
+  @ViewChild('createTask', { read: RouterOutlet }) createTask!: RouterOutlet;
 
   formSprint: FormGroup;
- 
+
   private projectService = inject(ProjectService);
   private sprintService = inject(SprintService);
   private taskService = inject(TaskService);
@@ -40,14 +44,15 @@ export class SprintComponent {
   private userService = inject(UserService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private projectId = this.projectService._projectId(); 
+  private projectId = this.projectService._projectId();
 
   sprints: Sprint[] = [];
   dataSprintUpdate: Sprint | any;
   openedMenuId: string | null = null;
-  usersAssigned: User[] = [];
+  userAssignedByTask: { [task_id: number]: User[] } = {};
   tasks: Task[] = [];
-  
+  tasksAssignedBySprint: { [sprint_id: number]:any[] } = {};
+
 
   private destroy$ = new Subject<void>();
 
@@ -63,65 +68,70 @@ export class SprintComponent {
   }
 
   //Effect para actualizar la lista de tareas cuando se crean nuevas tareas
- readonly tasksEffect = effect(() => {
-  this.tasks = this.taskService.tasks();
-});
+  readonly tasksEffect = effect(() => {
+    this.tasks = this.taskService.tasks();
+  });
 
-  ngOnInit(): void {    
-    this.getSprints();  
+  ngOnInit(): void {
+    this.getSprints();
   }
 
 
   //Funcion para obtener los sprints Y sus tareas
-  getSprints() {        
-  if (this.projectId == 0) {
-      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');  
-     }      
-    this.sprintService.getSprints(this.projectId).pipe(
-      map(res => res.object),
-      switchMap((sprints) => {      
-        this.sprints = sprints;    
-        const validSprints = sprints.filter((sprint:Sprint) => !!sprint.sprint_id); //Filtrar los sprints validos
-        const tasksBySprint$ : Observable<Task[]>[] = validSprints.map((sprint:Sprint) =>  //Obtener las tareas de cada sprint
-         this.taskService.tasks().length > 0 ? of([]) : this.getTasksBySprint(sprint.sprint_id)
-        );        
-        return forkJoin(tasksBySprint$); //Unir todas las tareas de los sprints
-      }),
-      takeUntil(this.destroy$)
-    ).subscribe((allSprintTasks: Task[][]) => {      //Actualizar la lista de tareas
-      this.tasks = this.taskService.tasks();
-      });
-
+  getSprints() {
+    if (this.projectId == 0) {
+      this.projectId = parseInt(localStorage.getItem('PPIN') ?? '0');
+    }
+    this.taskService.tasks.set([]);
+    this.sprintService.getSprints(this.projectId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.sprints = response.object;
+          this.sprints.forEach(sprint => {
+            this.getTasksBySprint(sprint.sprint_id);
+          });
+        },
+        error: (error) => {
+          console.log(error);
+        }
+    });  
   }
 
   //Funcion para obtener las tareas de un sprint
-  getTasksBySprint(sprint_id: number)  {
-   this.taskService.getTasksBySprint(sprint_id).pipe(
+  getTasksBySprint(sprint_id: number) {
+    this.taskService.getTasksBySprint(sprint_id).pipe(
       takeUntil(this.destroy$)
-    ).subscribe(data => {    
-      this.taskService.tasks.update((tasks) => [...tasks, ...data.object]);    
-      this.tasks = this.taskService.tasks();
-  
-    })   
+    ).subscribe(data => {
+      this.taskService.tasks.update((tasks) => [...tasks, ...data.object]);
+      this.tasks = this.taskService.tasks();  
+      this.tasksAssignedBySprint[sprint_id] = data.object;   
+      this.getUsersByTaskAssigned(sprint_id);
+
+    })
   }
 
-  getUsersByTaskAssigned(taskId: number) {
-    this.userService.getUsersByTaskAssigned(taskId).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (response) => {
-        this.usersAssigned.push(...response.object);
-      },
-      error: (error) => {
-        console.log(error);
-      }
+  getUsersByTaskAssigned(sprint_id: number) {
+    const tasksAssigned = this.tasksAssignedBySprint[sprint_id];
+    tasksAssigned.forEach(task => {
+      this.userService.getUsersByTaskAssigned(task.task_id).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: (response) => {
+          this.userAssignedByTask[task.task_id] = response.object;
+          console.log(this.userAssignedByTask);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
     })
   }
 
   dateFormatter(date: string): string {
     const d = new Date(date);
     return d.toISOString().split('T')[0];
-  } 
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -129,25 +139,25 @@ export class SprintComponent {
   }
 
   showModalCreateSprint(show: number, type: string, sprintId?: number) {
-    
+
     $("#modal-create-sprint").toggle("fast");
     if (type === 'create') {
-       this.dataSprintUpdate = null;
-       this.formSprint.reset({
+      this.dataSprintUpdate = null;
+      this.formSprint.reset({
         status: 'planned',
         project_id: this.projectId
-    });        
+      });
     } else {
-      this.dataSprintUpdate = this.sprints.find(sprint => sprint.sprint_id === sprintId);   
+      this.dataSprintUpdate = this.sprints.find(sprint => sprint.sprint_id === sprintId);
       this.dataSprintUpdate.start_date = this.setFormatDate(this.dataSprintUpdate.start_date);
-      this.dataSprintUpdate.end_date = this.setFormatDate(this.dataSprintUpdate.end_date);     
+      this.dataSprintUpdate.end_date = this.setFormatDate(this.dataSprintUpdate.end_date);
       this.formSprint.patchValue(this.dataSprintUpdate);
-    } 
+    }
   }
 
-  createSprint() {  
+  createSprint() {
     if (this.formSprint.valid) {
-      if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {    
+      if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {
         this.sprintService.createSprint(this.formSprint.value).subscribe({
           next: (response) => {
             this.toastService.toast('Sprint created successfully', 'success');
@@ -157,11 +167,11 @@ export class SprintComponent {
             console.log(error);
           }
         })
-        this.showModalCreateSprint(0, 'create');   
+        this.showModalCreateSprint(0, 'create');
         this.formSprint.reset({
           status: 'planned',
           project_id: this.projectId
-      });     
+        });
       } else {
         this.toastService.toast('Start date must be less than end date', 'error');
       }
@@ -169,7 +179,7 @@ export class SprintComponent {
       this.formSprint.markAllAsTouched();
       this.formSprint.updateValueAndValidity();
 
-    } 
+    }
   }
 
   setFormatDate(date: string): string {
@@ -177,13 +187,13 @@ export class SprintComponent {
     return d.toISOString().split('T')[0];
   }
 
-  updateSprint(sprintId: number){ 
+  updateSprint(sprintId: number) {
 
     if (this.formSprint.valid) {
-      if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {    
+      if (Date.parse(this.formSprint.value.start_date) < Date.parse(this.formSprint.value.end_date)) {
         const originalSprint = this.dataSprintUpdate;
         const changes: any = {};
-     
+
         Object.keys(this.formSprint.value).forEach(key => {
           if (key !== 'project_id' && this.formSprint.value[key] !== originalSprint[key]) {
             changes[key] = this.formSprint.value[key];
@@ -191,18 +201,18 @@ export class SprintComponent {
         });
         this.sprintService.updateSprint(sprintId, changes).subscribe({
           next: (response) => {
-            this.toastService.toast('Sprint updated successfully', 'success'); 
+            this.toastService.toast('Sprint updated successfully', 'success');
             this.sprints = this.sprints.map(sprint => sprint.sprint_id === sprintId ? response.object : sprint);
           },
           error: (error) => {
             console.log(error);
           }
         })
-        this.showModalCreateSprint(0, 'create');   
+        this.showModalCreateSprint(0, 'create');
         this.formSprint.reset({
           status: 'planned',
-          project_id: this.projectId      
-      });     
+          project_id: this.projectId
+        });
       } else {
         this.toastService.toast('Start date must be less than end date', 'error');
       }
@@ -210,13 +220,13 @@ export class SprintComponent {
       this.formSprint.markAllAsTouched();
       this.formSprint.updateValueAndValidity();
 
-    } 
+    }
   }
-  modalConfirmDeleteSprint(sprintId: number){
-    $("#modal-delete-sprint").toggle("fast");   
+  modalConfirmDeleteSprint(sprintId: number) {
+    $("#modal-delete-sprint").toggle("fast");
   }
 
-  deleteSprint(sprintId: number){
+  deleteSprint(sprintId: number) {
     this.sprintService.deleteSprint(sprintId).subscribe({
       next: (response) => {
         this.toastService.toast('Sprint deleted successfully', 'success');
@@ -228,7 +238,7 @@ export class SprintComponent {
     })
   }
 
-  openModalCreateTask( sprintId: number){
+  openModalCreateTask(sprintId: number) {
     this.router.navigate(['task'], {
       relativeTo: this.route,
       queryParams: {
@@ -238,8 +248,8 @@ export class SprintComponent {
     });
   }
 
-  openModalTaskDetail(taskId: number,sprintId: number){
-    this.taskService.taskSelected.set(this.taskService.tasks().find(task => task.task_id === taskId) ?? {} as Task); 
+  openModalTaskDetail(taskId: number, sprintId: number) {
+    this.taskService.taskSelected.set(this.taskService.tasks().find(task => task.task_id === taskId) ?? {} as Task);
     this.router.navigate(['task-detail'], {
       relativeTo: this.route,
       queryParams: {
@@ -250,17 +260,17 @@ export class SprintComponent {
     });
   }
 
-   toggleMenu(menuId: string): void {
-     this.openedMenuId = this.openedMenuId === `menu-${menuId}` ? null : `${menuId}`;
-   }
-   closeMenu(): void {
-     this.openedMenuId = null;
-   }
- 
-   @HostListener('document:click')
-   onDocumentClick(): void {
-     this.closeMenu(); 
-   }
+  toggleMenu(menuId: string): void {
+    this.openedMenuId = this.openedMenuId === `menu-${menuId}` ? null : `${menuId}`;
+  }
+  closeMenu(): void {
+    this.openedMenuId = null;
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.closeMenu();
+  }
 
   hasErrors(controlName: string, validation: string, type: string): boolean {
     const control = this.formSprint.get(controlName);

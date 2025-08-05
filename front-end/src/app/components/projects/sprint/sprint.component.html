@@ -185,11 +185,12 @@
                             </td>
                             <td>
                                 <div class="flex flex-row text-white font-normal">
-                                   
+                                @for (user of userAssignedByTask[task.task_id]; track $index){
                                         <div class="flex items-center justify-center text-center w-[30px] relative custom-shadow h-[30px] 
                                         rounded-full bg-blue-300">                                      
-
+                                        {{user.first_name.charAt(0).toUpperCase() + user.last_name.charAt(0).toUpperCase()}}
                                         </div>
+                                    }                                    
                                                                     
                                 </div>
                             </td>

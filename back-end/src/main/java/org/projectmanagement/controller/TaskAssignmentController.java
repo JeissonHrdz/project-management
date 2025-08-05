@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.AccessDeniedException;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("project/{project_id}/sprint/{sprint_id}/task/{task_id}")
@@ -42,6 +44,27 @@ public class TaskAssignmentController {
                     .build(),
                     HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/tasks-assigned")
+    public ResponseEntity<?> getTasksAssignedByTaskId( @PathVariable Integer task_id) {
+        if (!roleService.hasPermission("tasks", "read")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        try {
+            List<TaskAssignmentResponseDto> getTasksAssignedByTaskId = taskAssignmentService.geTaskAssignmentsByTaskId(task_id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Tasks retrieved successfully")
+                    .object(getTasksAssignedByTaskId)
+                    .build(),
+                    HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping("/unassign")
