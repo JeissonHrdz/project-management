@@ -1,7 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environment/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { User } from '../core/model/entity/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 export class UserService {
   private urlBase: string = environment.baseUrl + '/users';
   private http = inject(HttpClient);
+  userAssignedByTask = signal<{ [task_id: number]: User[] }>({}); 
 
 
   getEmailUser(email: string ): Observable<any> {

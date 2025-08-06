@@ -48,7 +48,7 @@ export class SprintComponent {
 
   sprints: Sprint[] = [];
   dataSprintUpdate: Sprint | any;
-  openedMenuId: string | null = null;
+  openedMenuId: string | null = null;  
   userAssignedByTask: { [task_id: number]: User[] } = {};
   tasks: Task[] = [];
   tasksAssignedBySprint: { [sprint_id: number]:any[] } = {};
@@ -70,10 +70,12 @@ export class SprintComponent {
   //Effect para actualizar la lista de tareas cuando se crean nuevas tareas
   readonly tasksEffect = effect(() => {
     this.tasks = this.taskService.tasks();
+    this.userAssignedByTask = this.userService.userAssignedByTask();
   });
 
   ngOnInit(): void {
     this.getSprints();
+    
   }
 
 
@@ -118,8 +120,9 @@ export class SprintComponent {
         takeUntil(this.destroy$)
       ).subscribe({
         next: (response) => {
-          this.userAssignedByTask[task.task_id] = response.object;
-          console.log(this.userAssignedByTask);
+          this.userService.userAssignedByTask.update((users) => ({ ...users, [task.task_id]: response.object }));
+          this.userAssignedByTask = this.userService.userAssignedByTask();
+        
         },
         error: (error) => {
           console.log(error);

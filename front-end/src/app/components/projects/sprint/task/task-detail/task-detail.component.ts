@@ -120,7 +120,7 @@ export class TaskDetailComponent {
     ).subscribe({
       next: (response) => {
         this.usersAssigned.set(response.object);
-        console.log(this.usersAssigned());
+        this.userService.userAssignedByTask.update((users) => ({ ...users, [this.task.task_id]: response.object }));
       },
       error: (error) => {
         console.log(error);
@@ -209,6 +209,7 @@ export class TaskDetailComponent {
     ).subscribe({
       next: (response) => {
         this.usersAssigned.update((users) => users.filter(user => user.user_id !== user_id));
+        this.getUsersByTaskAssigned();
         this.toastService.toast('Task unassigned successfully', 'success');
       },
       error: (error) => {
