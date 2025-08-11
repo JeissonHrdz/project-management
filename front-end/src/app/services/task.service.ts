@@ -42,8 +42,7 @@ export class TaskService {
     )
   } 
 
-  updateTask(task_id: number, sprint_id: number, task: any): Observable<any> {
-    console.log(task);
+  updateTask(task_id: number, sprint_id: number, task: any): Observable<any> { 
     return this.http.patch<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/update/' + task_id, task).pipe(
       catchError(this.handleError),
       tap((data) => {

@@ -92,12 +92,35 @@ export class SprintComponent {
           this.sprints = response.object;
           this.sprints.forEach(sprint => {
             this.getTasksBySprint(sprint.sprint_id);
+            this.setSprintStatus(sprint);
           });
         },
         error: (error) => {
           console.log(error);
         }
     });  
+  }
+
+  setSprintStatus(sprint: Sprint){
+
+    const data:any = {}
+     
+    if(this.dateFormatter(sprint.start_date) >= new Date().toISOString().split('T')[0] && this.dateFormatter(sprint.end_date) > new Date().toISOString().split('T')[0]){
+     
+      data.status = "in_progress";
+    }else if(this.dateFormatter(sprint.end_date) < new Date().toISOString().split('T')[0]){
+      data.status = "completed";
+    }
+
+    this.sprintService.updateSprint(sprint.sprint_id, data).subscribe({
+      next: (response) => {        
+       // this.sprints = this.sprints.map(sprint => sprint.sprint_id === sprint.sprint_id ? response.object : sprint);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+    
   }
 
   //Funcion para obtener las tareas de un sprint
