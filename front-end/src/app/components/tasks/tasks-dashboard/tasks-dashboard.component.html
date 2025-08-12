@@ -1,0 +1,39 @@
+<section class="w-full flex flex-row justify-between items-center justify-items-center ">
+    <div class="w-full p-6 pl-7 ">
+        <h1 class="text-3xl font-bold">Tasks</h1>
+    </div>
+    <div class="w-auto h-[48px] z-10 p-2 pl-6">
+        <ul class="grid grid-cols-[repeat(4,minmax(auto,1fr))] *:px-4 rounded-[10px]  font-semibold text-[14px] p-2  w-fit ">
+            <li id="1" class="flex flex-row items-center bg-white text-neutral-500  border-1 border-r-0 shadow-sm rounded-l-[10px] border-gray-300 font-medium px-2 py-2 
+            text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors"
+              >
+                <ng-icon class="mr-1" size="20" name="heroDocumentText"></ng-icon>
+                Overview
+            </li>
+            <li id="2"  class="flex flex-row items-center bg-white text-neutral-500  border-1 border-r-0 shadow-sm border-gray-300 font-medium px-2 py-2 
+            text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors"
+                (click)="openItem('board','2')"   >  
+                <ng-icon class="mr-1" size="20" name="heroViewColumns"></ng-icon>
+                Board
+            </li>
+            <li id="3" 
+                class="flex flex-row items-center bg-white text-neutral-500  border-1 border-r-0  shadow-sm border-gray-300 font-medium px-2 py-2 
+            text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors"
+                (click)="openItem('list','3')"> 
+                <ng-icon class="mr-1" size="20" name="heroArrowPathRoundedSquare"></ng-icon>
+                List
+            </li>
+            <li id="4" 
+            class="flex flex-row items-center bg-white text-neutral-500  border-1 rounded-r-[10px] shadow-sm border-gray-300 font-medium px-2 py-2 
+        text-[14px] cursor-pointer  hover:bg-neutral-100  transition-colors"
+            (click)="openItem('calendar','4')"> 
+            <ng-icon class="mr-1" size="20" name="heroCalendar"></ng-icon>
+            Calendar
+        </li>
+          
+        </ul>
+    </div>
+</section>
+<section class="w-full ">
+    <router-outlet></router-outlet>
+</section>

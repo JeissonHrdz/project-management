@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroMagnifyingGlass, heroQuestionMarkCircle, heroArrowLeftStartOnRectangle,
-   heroBell, heroChevronDown } from '@ng-icons/heroicons/outline';
+   heroBell, heroChevronDown, heroRectangleStack } from '@ng-icons/heroicons/outline';
 import $ from 'jquery';
 import { Project } from '../../../core/model/entity/project.model';
 import { ProjectService } from '../../../services/project.service';
@@ -13,7 +13,7 @@ import { AuthServiceService } from '../../../services/auth-service.service';
   selector: 'app-main-menu',
   imports: [NgIcon, RouterLink, CommonModule,],
   providers: [provideIcons({ heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroQuestionMarkCircle,
-     heroMagnifyingGlass, heroBell, heroChevronDown, heroArrowLeftStartOnRectangle })],
+     heroMagnifyingGlass, heroBell, heroChevronDown, heroArrowLeftStartOnRectangle, heroRectangleStack })],
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.css'
 })

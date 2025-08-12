@@ -4,6 +4,7 @@ import { BacklogComponent } from './components/projects/backlog/backlog.componen
 import { SprintComponent } from './components/projects/sprint/sprint.component';
 import { CreateTaskComponent } from './components/projects/sprint/task/create-task/create-task.component';
 import { TaskDetailComponent } from './components/projects/sprint/task/task-detail/task-detail.component';
+import { BoardComponent } from './components/tasks/board/board.component';
 
 export const routes: Routes = [
     {
@@ -47,6 +48,19 @@ export const routes: Routes = [
                         ]
                     }
                   
+                ]
+            },
+            {
+                path: 'tasks/dashboard',
+                loadComponent: () => import('./components/tasks/tasks-dashboard/tasks-dashboard.component')
+                    .then(m => m.TasksDashboardComponent),
+                canActivate: [authGuard],
+                children: [
+                    {
+                        path: 'board',
+                        component: BoardComponent,
+                        canActivate: [authGuard]
+                    }
                 ]
             }
 
