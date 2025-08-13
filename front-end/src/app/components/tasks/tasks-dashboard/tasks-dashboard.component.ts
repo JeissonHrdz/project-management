@@ -2,8 +2,9 @@ import { Component, inject } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroDocumentText, heroRectangleStack, heroListBullet, heroArrowPathRoundedSquare, heroCalendar, heroViewColumns } from '@ng-icons/heroicons/outline';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+
 @Component({
-  selector: 'app-tasks-dashboard',
+  selector: 'app-tasks-dashboard', 
   imports: [NgIcon, RouterModule],
   providers: [provideIcons({heroDocumentText,heroRectangleStack, heroListBullet, heroArrowPathRoundedSquare, heroCalendar, heroViewColumns})],
   templateUrl: './tasks-dashboard.component.html', 

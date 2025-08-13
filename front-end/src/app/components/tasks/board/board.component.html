@@ -3,35 +3,88 @@
     <!-- KANBAN SECTION -->
     <div class="flex flex-row w-full p-2">
         <div class="w-full p-2">
-            <h2 class="p-2 border-1 rounded-[10px] font-semibold text-[14px] border-gray-200">Pending</h2>
+            <h2 class="p-2 border-1 bg-amber-50 text-amber-500 rounded-[10px] font-semibold text-[14px] border-gray-200">Pending</h2>
             <br> 
-            <div class="w-full p-2 border-1 border-gray-200 rounded-[10px] h-[200px]">
-              
-                    <div class="w-full p-2 border-1 border-gray-200 rounded-[10px] h-auto">
+            <div
+            cdkDropList
+            [cdkDropListData]="todo"
+            [cdkDropListConnectedTo]="[progressList, completedList]"
+            #todoList="cdkDropList"          
+            class="pending-list w-full flex flex-col overflow-y-auto p-3 border-1 bg-gray-50
+             border-gray-200 rounded-[10px] h-[calc(100vh-200px)]"
+            (cdkDropListDropped)="drop($event)">            
+              @for(todo of todo; track $index){ 
+                    <div class="w-full p-2 mb-2 border-1 border-gray-200 bg-white rounded-[10px] h-[120px] cursor-grab"
+                    cdkDrag>
                         <div class="flex flex-row p-2">
                             <span class="font-semibold text-[12px] text-red-500 mr-2 bg-red-200 px-2 py-1 rounded-[10px]">Critical</span>
                             <span class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">Refactor</span>
                         </div>
                         <div class="flex flex-col p-2">
-                            <span class="font-semibold text-[16px]">Task Name</span>
+                            <span class="font-semibold text-[16px]">{{todo}}</span>
                             <p class="text-[12px]">Task Description</p>
                         </div>
                         
                     </div>
+                }
                 
             </div>
         </div>
         <div class="w-full p-2">
-            <h2 class="p-2 border-1 rounded-[10px] font-semibold text-[14px] border-gray-200">Progress</h2>
+            <h2 class="p-2 border-1 bg-blue-50 text-blue-500 rounded-[10px] font-semibold text-[14px] border-gray-200">In Progress</h2>
             <br> 
-            <div class="w-full p-2 border-1 border-gray-200 rounded-[10px] h-[200px]">
+            <div
+            cdkDropList
+            [cdkDropListData]="progress"
+            [cdkDropListConnectedTo]="[todoList, completedList]"
+            #progressList="cdkDropList"          
+            class="progress-list w-full flex flex-col overflow-y-auto p-3 border-1 bg-gray-50
+             border-gray-200 rounded-[10px] h-[calc(100vh-200px)]"    
+            (cdkDropListDropped)="drop($event)">
+            
+              @for(progress of progress; track $index){ 
+                    <div class="w-full p-2 mb-2 border-1 border-gray-200 bg-white rounded-[10px] h-[120px] cursor-grab"
+                    cdkDrag>
+                        <div class="flex flex-row p-2">
+                            <span class="font-semibold text-[12px] text-red-500 mr-2 bg-red-200 px-2 py-1 rounded-[10px]">Critical</span>
+                            <span class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">Refactor</span>
+                        </div>
+                        <div class="flex flex-col p-2">
+                            <span class="font-semibold text-[16px]">{{progress}}</span>
+                            <p class="text-[12px]">Task Description</p>
+                        </div>
+                        
+                    </div>
+                }
                 
             </div>
         </div>
         <div class="w-full p-2">
-            <h2 class="p-2 border-1 rounded-[10px] font-semibold text-[14px] border-gray-200">Completed</h2>
+            <h2 class="p-2 border-1 bg-green-50 text-green-500 rounded-[10px] font-semibold text-[14px] border-gray-200 cursor-grab">Completed</h2>
             <br> 
-            <div class="w-full p-2 border-1 border-gray-200 rounded-[10px] h-[200px]">
+            <div
+            cdkDropList
+            [cdkDropListData]="done"
+            [cdkDropListConnectedTo]="[todoList, progressList]"
+            #completedList="cdkDropList"          
+            class="completed-list w-full flex flex-col overflow-y-auto p-3 border-1    bg-gray-50
+             border-gray-200 rounded-[10px] h-[calc(100vh-200px)]"
+            (cdkDropListDropped)="drop($event)">
+              
+              @for(done of done; track $index){ 
+                    <div class="w-full p-2 mb-2 border-1 border-gray-200 bg-white rounded-[10px] h-[120px] cursor-grab"
+                    cdkDrag>
+                        <div class="flex flex-row p-2">
+                            <span class="font-semibold text-[12px] text-red-500 mr-2 bg-red-200 px-2 py-1 rounded-[10px]">Critical</span>
+                            <span class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">Refactor</span>
+                        </div>
+                        <div class="flex flex-col p-2">
+                            <span class="font-semibold text-[16px]">{{done}}</span>
+                            <p class="text-[12px]">Task Description</p>
+                        </div>
+                        
+                    </div>
+                }
                 
             </div>
         </div>

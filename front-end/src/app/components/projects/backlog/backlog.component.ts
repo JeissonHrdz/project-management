@@ -13,7 +13,7 @@ import { ProjectService } from '../../../services/project.service';
 
 @Component({
   selector: 'app-backlog',
-  imports: [NgIcon, ReactiveFormsModule, CommonModule],
+  imports: [NgIcon, ReactiveFormsModule, CommonModule], 
   providers: [provideIcons({ heroArrowTurnDownRight, heroEllipsisHorizontal, heroPlus, heroTrash, heroPencilSquare, heroTrashSolid, heroChevronUpDown })],
   templateUrl: './backlog.component.html',
   styleUrl: './backlog.component.css'

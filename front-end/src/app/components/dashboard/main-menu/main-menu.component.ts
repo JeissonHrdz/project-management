@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthServiceService } from '../../../services/auth-service.service';
 @Component({
   selector: 'app-main-menu',
-  imports: [NgIcon, RouterLink, CommonModule,],
+  imports: [NgIcon, RouterLink, CommonModule], 
   providers: [provideIcons({ heroSquares2x2, heroRectangleGroup, heroUsers, heroCog6Tooth, heroQuestionMarkCircle,
      heroMagnifyingGlass, heroBell, heroChevronDown, heroArrowLeftStartOnRectangle, heroRectangleStack })],
   templateUrl: './main-menu.component.html',
