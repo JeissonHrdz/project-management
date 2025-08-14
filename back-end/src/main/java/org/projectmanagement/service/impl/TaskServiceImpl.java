@@ -13,6 +13,7 @@ import org.projectmanagement.model.mapper.TaskMapper;
 import org.projectmanagement.repository.ProjectRepository;
 import org.projectmanagement.repository.SprintRepository;
 import org.projectmanagement.repository.TaskRepository;
+import org.projectmanagement.service.TaskAssignmentsService;
 import org.projectmanagement.service.TaskService;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
@@ -28,6 +29,7 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
+    private final TaskAssignmentsService taskAssignmentService;
 
     @Override
     public TaskResponseDto createTask(TaskCreateDto taskCreateDto) {
@@ -86,6 +88,34 @@ public class TaskServiceImpl implements TaskService {
                 task.getEnd_date()
         )).toList();
         return taskReadDtos;
+
+    }
+
+    @Override
+    public List<TaskReadDto> getTasksById(String user_id) {
+        List<Task> tasks = new java.util.ArrayList<>();
+        taskAssignmentService.geTaskAssignmentsByUserId(user_id).forEach(taskAssignment -> {
+            tasks.add(taskRepository.findById(taskAssignment.task_id()).get());
+
+        });
+        if(tasks.isEmpty()) return List.of();
+        return tasks.stream().map(task -> new TaskReadDto(
+                task.getTask_id(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getBacklog_item_id(),
+                task.getProject_id().getProject_id(),
+                task.getSprint_id().getSprint_id(),
+                task.getStatus(),
+                task.getPriority(),
+                task.getType(),
+                task.getStory_points(),
+                task.getEstimate_hours(),
+                task.getActual_hours(),
+                task.getBlockers(),
+                task.getStart_date(),
+                task.getEnd_date()
+        )).toList();
 
     }
 

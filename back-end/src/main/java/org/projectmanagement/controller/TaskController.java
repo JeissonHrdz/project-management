@@ -5,9 +5,11 @@ import org.projectmanagement.model.dto.task.TaskCreateDto;
 import org.projectmanagement.model.dto.task.TaskReadDto;
 import org.projectmanagement.model.dto.task.TaskResponseDto;
 import org.projectmanagement.model.payload.ResponseMessage;
+import org.projectmanagement.service.JwtService;
 import org.projectmanagement.service.RoleService;
 import org.projectmanagement.service.TaskService;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,6 +25,8 @@ public class TaskController {
 
     private final RoleService roleService;
     private final TaskService taskService;
+    private final JwtService jwtService;
+
 
 
     @PostMapping("create")
@@ -84,6 +88,27 @@ public class TaskController {
                     HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @GetMapping(value = "/tasks-user")
+    public ResponseEntity<?> getAllTasksByUser(@Param("user_id") String user_id) {
+        if (!roleService.hasPermission("tasks", "read")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+
+        try {
+            List<TaskReadDto> getAllTasksByUser = taskService.getTasksById( user_id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Tasks retrieved successfully")
+                    .object(getAllTasksByUser)
+                    .build(),
+                    HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping(value = "/update/{id}")

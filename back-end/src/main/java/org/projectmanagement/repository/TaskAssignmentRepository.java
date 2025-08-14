@@ -15,6 +15,9 @@ public interface TaskAssignmentRepository  extends CrudRepository<TaskAssignment
     @Query("SELECT t FROM TaskAssignments t WHERE t.task.task_id = :task_id")
     List<TaskAssignments> findTaskAssignments (Integer task_id);
 
+    @Query("SELECT t FROM TaskAssignments t WHERE t.user.user_id = :user_id")
+    List<TaskAssignments> findTaskAssignmentsByUserId (String user_id);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM TaskAssignments t WHERE t.task.task_id = :task_id AND t.user.user_id = :user_id")

@@ -69,6 +69,12 @@ export class TaskService {
     )
   }
 
+  getTasksByUser(user_id: string, sprint_id: number): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/tasks-user', {params: { user_id: user_id}}).pipe(
+      catchError(this.handleError)
+    )
+  }
+
   getTaskAssigmentsByTask(task_id: number, sprint_id: number): Observable<any> {
     return this.http.get<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprint_id + '/task/' + task_id + '/tasks-assigned').pipe(
       catchError(this.handleError)

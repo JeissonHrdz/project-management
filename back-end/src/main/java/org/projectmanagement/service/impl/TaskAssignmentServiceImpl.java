@@ -57,6 +57,22 @@ public class TaskAssignmentServiceImpl  implements TaskAssignmentsService {
     }
 
     @Override
+    public List<TaskAssignmentResponseDto> geTaskAssignmentsByUserId(String user_id) {
+        List<TaskAssignments> taskAssignments = taskAssignmentRepository.findTaskAssignmentsByUserId(user_id);
+        if(taskAssignments.isEmpty()) return List.of();
+        List<TaskAssignmentResponseDto> tasksAssigned = taskAssignments.stream()
+                .map( taskAssignment -> new TaskAssignmentResponseDto(
+                        taskAssignment.getTask().getTask_id(),
+                        taskAssignment.getUser().getUser_id(),
+                        taskAssignment.getAssignment_type(),
+                        taskAssignment.getAssigned_at()
+                )).collect(Collectors.toList());
+        return tasksAssigned;
+
+    }
+
+
+    @Override
     public void unassignTaskToUser(Integer task_id, String user_id) {
         taskAssignmentRepository.unassignTaskToUser(task_id, user_id);
     }

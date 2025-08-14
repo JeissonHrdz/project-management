@@ -12,4 +12,7 @@ public interface TaskRepository  extends CrudRepository<Task, Integer> {
 
     @Query("SELECT t FROM Task t WHERE t.sprint_id.sprint_id = :sprint_id")
     List<Task> getTasksBySprintId(Integer sprint_id);
+
+    @Query("SELECT t FROM Task t WHERE t.task_id = :task_id")
+    List<Task> getTasksById(Integer task_id);
 }

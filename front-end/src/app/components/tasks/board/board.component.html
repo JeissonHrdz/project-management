@@ -7,13 +7,13 @@
             <br> 
             <div
             cdkDropList
-            [cdkDropListData]="todo"
+            [cdkDropListData]="tasksTodo"
             [cdkDropListConnectedTo]="[progressList, completedList]"
             #todoList="cdkDropList"          
             class="pending-list w-full flex flex-col overflow-y-auto p-3 border-1 bg-gray-50
              border-gray-200 rounded-[10px] h-[calc(100vh-200px)]"
-            (cdkDropListDropped)="drop($event)">            
-              @for(todo of todo; track $index){ 
+            (cdkDropListDropped)="drop($event)">             
+              @for(todo of tasksTodo; track $index){ 
                     <div class="w-full p-2 mb-2 border-1 border-gray-200 bg-white rounded-[10px] h-[120px] cursor-grab"
                     cdkDrag>
                         <div class="flex flex-row p-2">
@@ -21,7 +21,7 @@
                             <span class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">Refactor</span>
                         </div>
                         <div class="flex flex-col p-2">
-                            <span class="font-semibold text-[16px]">{{todo}}</span>
+                            <span class="font-semibold text-[16px]">{{todo.title}}</span>
                             <p class="text-[12px]">Task Description</p>
                         </div>
                         
@@ -35,14 +35,14 @@
             <br> 
             <div
             cdkDropList
-            [cdkDropListData]="progress"
+            [cdkDropListData]="tasksProgress"
             [cdkDropListConnectedTo]="[todoList, completedList]"
             #progressList="cdkDropList"          
             class="progress-list w-full flex flex-col overflow-y-auto p-3 border-1 bg-gray-50
              border-gray-200 rounded-[10px] h-[calc(100vh-200px)]"    
             (cdkDropListDropped)="drop($event)">
             
-              @for(progress of progress; track $index){ 
+              @for(progress of tasksProgress; track $index){ 
                     <div class="w-full p-2 mb-2 border-1 border-gray-200 bg-white rounded-[10px] h-[120px] cursor-grab"
                     cdkDrag>
                         <div class="flex flex-row p-2">
@@ -50,7 +50,7 @@
                             <span class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">Refactor</span>
                         </div>
                         <div class="flex flex-col p-2">
-                            <span class="font-semibold text-[16px]">{{progress}}</span>
+                            <span class="font-semibold text-[16px]">{{progress.title}}</span>
                             <p class="text-[12px]">Task Description</p>
                         </div>
                         
@@ -64,14 +64,14 @@
             <br> 
             <div
             cdkDropList
-            [cdkDropListData]="done"
+            [cdkDropListData]="tasksDone"
             [cdkDropListConnectedTo]="[todoList, progressList]"
             #completedList="cdkDropList"          
             class="completed-list w-full flex flex-col overflow-y-auto p-3 border-1    bg-gray-50
              border-gray-200 rounded-[10px] h-[calc(100vh-200px)]"
             (cdkDropListDropped)="drop($event)">
               
-              @for(done of done; track $index){ 
+              @for(done of tasksDone; track $index){ 
                     <div class="w-full p-2 mb-2 border-1 border-gray-200 bg-white rounded-[10px] h-[120px] cursor-grab"
                     cdkDrag>
                         <div class="flex flex-row p-2">
@@ -79,7 +79,7 @@
                             <span class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">Refactor</span>
                         </div>
                         <div class="flex flex-col p-2">
-                            <span class="font-semibold text-[16px]">{{done}}</span>
+                            <span class="font-semibold text-[16px]">{{done.title}}</span>
                             <p class="text-[12px]">Task Description</p>
                         </div>
                         
