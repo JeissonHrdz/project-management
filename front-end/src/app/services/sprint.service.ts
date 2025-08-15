@@ -34,6 +34,12 @@ export class SprintService {
       )
     }
 
+    getSprintById(sprintId: number): Observable<any> {
+      return this.http.get<any>(this.urlBase + '/' + this.projectId + '/sprint/' + sprintId).pipe(
+        catchError(this.handleError)
+      )
+    }
+
     deleteSprint(sprintId: number): Observable<any> {
       return this.http.delete<any>(this.urlBase + '/' + this.projectId + '/sprint/delete/' + sprintId).pipe(
         catchError(this.handleError)

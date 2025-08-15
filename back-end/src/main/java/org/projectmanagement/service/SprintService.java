@@ -14,5 +14,7 @@ public interface SprintService {
 
     public SprintResponseDto updateSprint(int id, Map<String, Object> updates);
 
+    public SprintReadDto getSprintById(Integer sprint_id);
+
     public void deleteSprint(Integer sprint_id);
 }

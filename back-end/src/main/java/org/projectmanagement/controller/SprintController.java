@@ -67,6 +67,27 @@ public class SprintController {
         }
     }
 
+    @GetMapping(value = "/{sprint_id}")
+    public ResponseEntity<?> getSprintById(@PathVariable Integer sprint_id) {
+        if (!roleService.hasPermission("sprints", "read")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        try {
+            SprintReadDto getSprint = sprintService.getSprintById(sprint_id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Sprint retrieved successfully")
+                    .object(getSprint)
+                    .build(),
+                    HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
     @PatchMapping(value = "/update/{id}")
     public ResponseEntity<?> updateSprint(@PathVariable int id, @RequestBody Map<String, Object> updates) {
             for (Map.Entry<String, Object> entry : updates.entrySet()) {

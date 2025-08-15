@@ -117,6 +117,23 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
+    public SprintReadDto getSprintById(Integer sprint_id) {
+        Optional<Sprint> sprint = sprintRepository.findById(sprint_id);
+        return new SprintReadDto(
+                sprint.get().getSprint_id(),
+                sprint.get().getProject_id().getProject_id(),
+                sprint.get().getName(),
+                sprint.get().getGoal(),
+                sprint.get().getStart_date(),
+                sprint.get().getEnd_date(),
+                sprint.get().getStatus(),
+                sprint.get().getEstimated_velocity(),
+                sprint.get().getActual_velocity(),
+                sprint.get().getCreated_at()
+        );
+    }
+
+    @Override
     public void deleteSprint(Integer sprint_id) {
         sprintRepository.deleteById(sprint_id);
 
