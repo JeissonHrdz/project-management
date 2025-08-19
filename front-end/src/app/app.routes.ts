@@ -59,7 +59,14 @@ export const routes: Routes = [
                     {
                         path: 'board',
                         component: BoardComponent,
-                        canActivate: [authGuard]
+                        canActivate: [authGuard],
+                        children: [
+                            {
+                                path: 'task-detail',
+                                component: TaskDetailComponent,
+                                canActivate: [authGuard]
+                            }
+                        ]
                     }
                 ]
             }

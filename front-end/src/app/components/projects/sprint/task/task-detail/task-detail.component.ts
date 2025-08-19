@@ -215,12 +215,15 @@ export class TaskDetailComponent {
         console.log(error);
       }
     })
-  }
-
-  
+  }  
 
   showBoxTaskAssigment() {
     $(".box-task-assigment").animate({ height: "toggle" }, "fast");
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 
