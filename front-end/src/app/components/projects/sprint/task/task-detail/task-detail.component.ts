@@ -51,7 +51,7 @@ export class TaskDetailComponent {
   ngOnInit(): void {
     this.getTaskDetail();
     $("#modal-task-detail").toggle("fast");
-    $(".modal-container").animate({ width: '450px' }, 150);
+    $(".modal-container").animate({ width: '500px' }, 150);
   }
 
   toggleEditField(field: 'status' | 'priority' | 'type' | 'estimated_hours' | 'start_date'

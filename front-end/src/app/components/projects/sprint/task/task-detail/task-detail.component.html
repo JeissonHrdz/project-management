@@ -3,10 +3,9 @@
     <div class="fixed inset-0 z-10 w-screen p-1 overflow-y-auto">
         <div class="flex min-h-full w-full flex-row-reverse   sm:p-0">
             <div class="modal-container  relative float-right transform overflow-hidden rounded-lg bg-white 
-             text-left shadow-xl transition-all sm:my-1 
-                sm:w-[0px] sm:max-w-fit ">
-                <div class="sm:flex sm:items-end">
-                    <div class=" text-center sm:mt-0 sm:text-left w-full">
+             text-left shadow-xl transition-all sm:my-1 sm:w-[500px] sm:max-w-[500px] ">
+                <div class=" sm:items-end">
+                    <div class=" text-center sm:mt-0 sm:text-left ">
                         <div class=" flex flex-row justify-between items-center border-b-1 p-4 border-gray-200">
                             <h3 class=" text-lg font-medium leading-6 text-gray-900" id="modal-title">Task Detail </h3>
                             <button (click)="closeModal()"
@@ -14,47 +13,43 @@
                                 <ng-icon name="heroXMark" size="20" color="#0C0C0C"></ng-icon>
                             </button>
                         </div>
-                        <div class="p-2">
-
-                            <div class="my-2 px-4">
-                                <p (click)="toggleEditField('title')"
-                                    class="title-span font-bold text-neutral-800  text-[18px]">
-                                    {{task.title}}</p>
-                                <div class="title-select flex-row hidden">
-                                    <input type="text" name="title" id="task-title-input" class="title-input w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
-                                     border-gray-200 text-[14px]">
-                                    <button (click)="updateTask(task.task_id, 'title')"
-                                        class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
-                                     text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
-                                </div>
-                                <p (click)="toggleEditField('description')"
-                                    class="description-span text-neutral-500 text-[14px]">
-                                    {{task.description}}</p>
-                                <div class="description-select flex-row hidden">
-                                    <input type="text" name="description" id="task-description-input" class="description-input w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
-                                    border-gray-200 text-[14px]">
-                                    <button (click)="updateTask(task.task_id, 'description')"
-                                        class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0 text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
-                                     text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
-                                </div>
-
-                            </div>
+                        <div class="p-2 w-full">
 
                             <div class="border-y-1 text-[14px] p-2 border-gray-300 border-dashed w-full">
                                 <table class="w-full">
+                                    <tr class="align-baseline">
+                                        <td class="font-medium text-gray-500 p-2 w-[160px]">Task Name</td>
+                                        <td> <span (click)="toggleEditField('title')"
+                                                class="title-span font-medium  text-[14px]">
+                                                {{task.title}}</span>
+                                        </td>
+                                        <div class="title-select flex-row hidden">
+                                            <input type="text" name="title" id="task-title-input" class="title-input w-full cursor-pointer
+                                         shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                         border-gray-200 text-[14px]">
+                                            <button (click)="updateTask(task.task_id, 'title')"
+                                                class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0
+                                             text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                         text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                        </div>
+                                    </tr>
                                     <tr>
-                                        <td class="font-semibold p-2 w-[160px]">Assigned</td>
+                                        <td class="font-medium text-gray-500 p-2 w-[160px]">Assigned</td>
                                         <td class=" cursor-pointer">
                                             <div class="flex flex-row text-white font-normal">
                                                 @if(usersAssigned().length === 0){
-                                                <span>No assigned</span>
+                                                <span class="text-neutral-500">No assigned</span>
                                                 } @else {
                                                 @for (user of usersAssigned(); track $index){
-                                                <div
-                                                    class="flex text-neutral-800 items-center justify-center text-center mr-1 w-[30px] 
-                                                relative h-[30px] rounded-full bg-{{userAssignedIconColor[$index]}}-300 ">
-                                                    {{user.first_name.charAt(0)}} {{user.last_name.charAt(0)}}
+                                                <div class=" w-auto flex flex-row p-0 items-center bg-gray-200 rounded-l-full rounded-r-[10px] ">
+                                                    <div
+                                                        class=" w-[25px] h-[25px] rounded-full bg-purple-500 ">                                                      
+                                                    </div>
+                                                    <div class="ml-1">
+                                                        <span class="font-normal text-neutral-600 text-[10px]">{{user.first_name}} {{user.last_name}}</span>                                                      
+                                                    </div>
                                                 </div>
+
                                                 }
                                                 }
                                                 <div (click)="showBoxTaskAssigment()"
@@ -77,23 +72,25 @@
                                     <p *ngIf="usersAssigned().length === 0" class="text-neutral-500 mt-4 px-2">Not
                                         assigned</p>
                                     @for (user of usersAssigned(); track $index){
-                                    <div class="flex items-center justify-between mt-1 rounded-[10px] p-2 hover:bg-gray-200 cursor-pointer">
+                                    <div
+                                        class="flex items-center justify-between mt-1 rounded-[10px] p-2 hover:bg-gray-200 cursor-pointer">
                                         <div class="flex items-center w-full">
-                                        <div class="flex text-[16px] text-neutral-800 items-center justify-center text-center mr-1 w-[40px] 
+                                            <div class="flex text-[16px] text-neutral-800 items-center justify-center text-center mr-1 w-[40px] 
                                         relative h-[40px] rounded-full bg-{{userAssignedIconColor[$index]}}-300 ">
-                                            {{user.first_name.charAt(0)}} {{user.last_name.charAt(0)}}
-                                        </div>
-                                        <div class="flex ml-2 flex-col">
-                                            <p class="cursor-pointer font-medium text-[14px] text-neutral-800
+                                                {{user.first_name.charAt(0)}} {{user.last_name.charAt(0)}}
+                                            </div>
+                                            <div class="flex ml-2 flex-col">
+                                                <p class="cursor-pointer font-medium text-[14px] text-neutral-800
                                                 ">{{user.first_name}} {{user.last_name}}</p>
-                                             <p class="cursor-pointer text-[12px] text-neutral-600
-                                                ">{{user.email}}</p>   
+                                                <p class="cursor-pointer text-[12px] text-neutral-600
+                                                ">{{user.email}}</p>
+                                            </div>
                                         </div>
-                                        </div>
-                                        <button (click)="unassignUserToTask(user.user_id)" class="float-end cursor-pointer rounded-[10px] font-medium px-2 py-2 text-[14px]  transition-colors">
-                                        <ng-icon name="heroXMark" size="20" color="gray"></ng-icon>
+                                        <button (click)="unassignUserToTask(user.user_id)"
+                                            class="float-end cursor-pointer rounded-[10px] font-medium px-2 py-2 text-[14px]  transition-colors">
+                                            <ng-icon name="heroXMark" size="20" color="gray"></ng-icon>
                                         </button>
-                                    </div>  
+                                    </div>
                                     }
 
 
@@ -111,11 +108,11 @@
                                 </div>
                                 <table>
                                     <tr>
-                                        <td class="font-semibold p-2 w-[160px]">User Story</td>
+                                        <td class="font-medium text-gray-500 p-2 w-[160px]">User Story</td>
                                         <td>{{backlogItem.title }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-2">Status</td>
+                                        <td class="font-medium text-gray-500 p-2">Status</td>
                                         <td class="font-medium cursor-pointer">
                                             @switch(task.status){
                                             @case('in_progress'){
@@ -162,7 +159,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-2">Priority</td>
+                                        <td class="font-medium text-gray-500 p-2">Priority</td>
                                         <td class="font-medium cursor-pointer text-[12px]">
                                             @switch(task.priority){
                                             @case('low'){
@@ -192,7 +189,8 @@
                                             }
 
                                             <div class="priority-select flex-row hidden">
-                                                <select name="priority" id="task-priority-input" class="w-[120px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                <select name="priority" id="task-priority-input" class="w-[120px] cursor-pointer shadow-sm 
+                                                font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
                                                  border-gray-200 text-[14px]">
                                                     <option [value]="priority"
                                                         *ngFor="let priority of ['low', 'medium', 'high', 'critical']"
@@ -208,7 +206,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-2">Type</td>
+                                        <td class="font-medium text-gray-500 p-2">Type</td>
                                         <td>
                                             <span (click)="toggleEditField('type')" class="type-span cursor-pointer py-1
                                                w-fit text-[14px] "> {{task.type}}</span>
@@ -227,7 +225,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-2">Start Date</td>
+                                        <td class="font-medium text-gray-500 p-2">Start Date</td>
                                         <td>
                                             <span (click)="toggleEditField('start_date')"
                                                 class="start_date-span cursor-pointer py-1 rounded-[10px] w-fit text-[14px] ">
@@ -245,7 +243,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-2">End Date</td>
+                                        <td class="font-medium text-gray-500 p-2">End Date</td>
                                         <td>
                                             <span (click)="toggleEditField('end_date')"
                                                 class="end_date-span cursor-pointer py-1 rounded-[10px] w-fit text-[14px] ">
@@ -263,7 +261,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-2">Estimated Hours</td>
+                                        <td class="font-medium text-gray-500 p-2">Estimated Hours</td>
                                         <td>
                                             <span (click)="toggleEditField('estimated_hours')" class="estimated_hours-span cursor-pointer 
                                             py-1 rounded-[10px] w-fit text-[14px] "> {{task.estimate_hours}}</span>
@@ -279,7 +277,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-semibold p-2">Actual Hours</td>
+                                        <td class="font-medium text-gray-500 p-2">Actual Hours</td>
                                         <td>
                                             <span (click)="toggleEditField('actual_hours')" class="cursor-pointer actual_hours-span 
                                              py-1 rounded-[10px] w-fit text-[14px] ">
@@ -299,6 +297,26 @@
                                                  text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
                                             </div>
 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium text-gray-500 p-2">Description</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="p-2">
+                                            <span (click)="toggleEditField('description')"
+                                                class="description-span text-neutral-500 text-[14px]">
+                                                {{task.description}}
+                                            </span>
+                                            <div class="description-select flex-row hidden">
+                                                <input type="text" name="description" id="task-description-input" class="description-input
+                                     w-[350px] cursor-pointer shadow-sm font-medium outline-0 p-2  rounded-r-none 
+                                      placeholder:text-gray-500 rounded-[10px] border-1 border-gray-200 text-[14px]">
+                                                <button (click)="updateTask(task.task_id, 'description')"
+                                                    class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0
+                                         text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                     text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </table>
