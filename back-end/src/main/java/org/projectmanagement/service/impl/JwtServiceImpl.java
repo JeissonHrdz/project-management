@@ -25,8 +25,8 @@ public class JwtServiceImpl implements JwtService {
 
 
     @Override
-    public String getToken(UserDetails user, String user_id) {
-        return getToken(new HashMap<>(), user, user_id);
+    public String getToken(UserDetails user, String user_id, Integer role) {
+        return getToken(new HashMap<>(), user, user_id, role);
     }
 
     @Override
@@ -36,8 +36,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String getToken(Map<String, Object> extraClaims, UserDetails user, String user_id) {
+    public String getToken(Map<String, Object> extraClaims, UserDetails user, String user_id, Integer role) {
         extraClaims.put("UUID", user_id);
+        extraClaims.put("ROLE", role);
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

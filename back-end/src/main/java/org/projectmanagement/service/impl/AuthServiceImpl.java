@@ -30,8 +30,9 @@ public class AuthServiceImpl implements AuthService {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         UserDetails user =  userRepository.findByUsername(request.username()).orElseThrow();
+        Integer role = userRepository.findByUsername(request.username()).orElseThrow().getRole_id().getRole_id();
         String user_id =  userRepository.findByUsername(request.username()).orElseThrow().getUser_id();
-        String token = jwtService.getToken(user, user_id);
+        String token = jwtService.getToken(user, user_id,role);
         System.out.println("token: " + token);
        // User user1 = userService.findUser(jwtService.getUserNameFromToken(token));
         return  AuthResponseDto.builder()

@@ -131,7 +131,8 @@ export class BoardComponent {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);    
     } else {
      const task_id: number = Number(event.item.element.nativeElement.id.split('-')[1]);
-     const status =  event.container.id    
+     const status =  event.container.id   
+     alert(status) 
       this.updateTask(task_id, status);   
       transferArrayItem(
         event.previousContainer.data,

@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { ToastService } from '../../../../../services/toast.service';
 import { UserService } from '../../../../../services/user.service';
 import { User } from '../../../../../core/model/entity/user.model';
+import { AuthServiceService } from '../../../../../services/auth-service.service';
 
 
 @Component({
@@ -32,10 +33,12 @@ export class TaskDetailComponent {
   private toastService = inject(ToastService);
   private destroy$ = new Subject<void>();
   private userService = inject(UserService);
+  private authService = inject(AuthServiceService)
 
   emailFinded = signal<string[]>([]);
   mailSelected = signal<string>('');
   usersAssigned = signal<User[]>([]);
+  userRole: number = 0;
 
   task: Task = {} as Task;
   backlogItem: BacklogItem = {} as BacklogItem;
@@ -52,10 +55,12 @@ export class TaskDetailComponent {
     this.getTaskDetail();
     $("#modal-task-detail").toggle("fast");
     $(".modal-container").animate({ width: '500px' }, 150);
+    this.userRole = parseInt(this.authService.getRoleFromToken());
   }
 
   toggleEditField(field: 'status' | 'priority' | 'type' | 'estimated_hours' | 'start_date'
     | 'end_date' | 'actual_hours' | 'title' | 'description') {
+    if(this.userRole == 2) return;
     $(`.${field}-select`).toggle();
     $(`.${field}-span`).toggle();
     this.setInputValue(field, $(`.${field}-span`).text());

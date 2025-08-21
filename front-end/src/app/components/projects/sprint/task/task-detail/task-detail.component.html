@@ -19,49 +19,63 @@
                                 <table class="w-full">
                                     <tr class="align-baseline">
                                         <td class="font-medium text-gray-500 p-2 w-[160px]">Task Name</td>
+                                        <div class="title-select flex-row hidden mb-1">
+                                            <div class="w-full">
+                                                <input type="text" name="title" id="task-title-input" class="title-input cursor-pointer
+                                                shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
+                                                border-gray-200 text-[14px]">
+                                                <button (click)="updateTask(task.task_id, 'title')"
+                                                    class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0
+                                                    text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
+                                                text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
+
+                                            </div>
+
+                                        </div>
                                         <td> <span (click)="toggleEditField('title')"
                                                 class="title-span font-medium  text-[14px]">
                                                 {{task.title}}</span>
                                         </td>
-                                        <div class="title-select flex-row hidden">
-                                            <input type="text" name="title" id="task-title-input" class="title-input w-full cursor-pointer
-                                         shadow-sm font-medium outline-0 p-2  rounded-r-none  placeholder:text-gray-500 rounded-[10px] border-1
-                                         border-gray-200 text-[14px]">
-                                            <button (click)="updateTask(task.task_id, 'title')"
-                                                class=" cursor-pointer border-1 border-gray-200 rounded-l-none bg-white border-l-0
-                                             text-neutral-500 shadow-sm rounded-[10px] font-medium px-2 py-2
-                                         text-[14px] hover:bg-neutral-100 hover:text-neutral-500 transition-colors">Save</button>
-                                        </div>
+
                                     </tr>
                                     <tr>
-                                        <td class="font-medium text-gray-500 p-2 w-[160px]">Assigned</td>
+                                        <td class=" font-medium text-gray-500 p-2 w-[160px]">Assigned</td>
                                         <td class=" cursor-pointer">
-                                            <div class="flex flex-row text-white font-normal">
+                                            <div class=" flex flex-row text-white font-normal">
                                                 @if(usersAssigned().length === 0){
                                                 <span class="text-neutral-500">No assigned</span>
                                                 } @else {
                                                 @for (user of usersAssigned(); track $index){
-                                                <div class=" w-auto flex flex-row p-0 items-center bg-gray-200 rounded-l-full rounded-r-[10px] ">
+                                                    @if($index <= 1){
+                                                <div class="flex-1 w-full p-0 items-center ">
                                                     <div
-                                                        class=" w-[25px] h-[25px] rounded-full bg-purple-500 ">                                                      
-                                                    </div>
-                                                    <div class="ml-1">
-                                                        <span class="font-normal text-neutral-600 text-[10px]">{{user.first_name}} {{user.last_name}}</span>                                                      
+                                                        class="w-auto inline-flex items-center bg-gray-200 rounded-[10px]">
+                                                        <div class=" w-[25px] h-[25px] rounded-full bg-purple-500 ">
+                                                        </div>
+                                                        <div class="ml-1 flex-1 w-[100px]">
+                                                            <span
+                                                                class="font-normal p-0 text-neutral-600 text-[10px]">{{user.first_name}}
+                                                                {{user.last_name}}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            }
 
                                                 }
                                                 }
+                                                @if(this.userRole == 1){
                                                 <div (click)="showBoxTaskAssigment()"
                                                     class="hover:bg-gray-200 flex items-center justify-center text-center mr-1 w-[30px] 
                                                 relative h-[30px] rounded-full bg-white border-1 border-gray-300 cursor-pointer">
                                                     <ng-icon name="heroPlus" size="20" color="gray"></ng-icon>
                                                 </div>
+                                            }
 
                                             </div>
                                         </td>
 
                                 </table>
+                                @if(this.userRole == 1){
                                 <div (click)="$event.stopPropagation()" class="box-task-assigment h-auto  hidden flex-col w-full  bg-white shadow-sm rounded-[10px] 
                                 border-1 border-gray-200 p-2">
                                     <input id="task-assigment-input" value="{{mailSelected()}}"
@@ -106,6 +120,7 @@
                                     </div>
 
                                 </div>
+                            }
                                 <table>
                                     <tr>
                                         <td class="font-medium text-gray-500 p-2 w-[160px]">User Story</td>
@@ -321,11 +336,13 @@
                                     </tr>
                                 </table>
                             </div>
+                            @if(this.userRole == 1){
                             <div class="flex items-end flex-row absolute bottom-2 w-[96%]">
                                 <button (click)="deleteTask(task.task_id)"
                                     class="w-full  cursor-pointer  rounded-[10px] bg-red-500 text-white  font-medium px-2 py-2
                                                  text-[14px] hover:bg-red-600 hover:text-white transition-colors">Delete Task</button>
                             </div>
+                        }
 
 
                         </div>

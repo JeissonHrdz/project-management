@@ -10,9 +10,9 @@ import java.util.function.Function;
 
 public interface JwtService {
 
-    public String getToken(UserDetails user, String user_id);
+    public String getToken(UserDetails user, String user_id, Integer role);
     public Key getKey();
-    public String getToken(Map<String, Object> extraClaims, UserDetails user, String user_id);
+    public String getToken(Map<String, Object> extraClaims, UserDetails user, String user_id, Integer role);
     public String getUserNameFromToken(String token);
     public Claims getAllClaims(String token);
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver);

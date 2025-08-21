@@ -84,6 +84,12 @@ export class AuthServiceService {
     return decodedToken.UUID;
   }
 
+  getRoleFromToken(): string{
+    const token = this.currentUser();
+    const decodedToken = JSON.parse(atob(token.split('.')[1]))
+    return decodedToken.ROLE
+  }
+
   get userToken(): String {
     return this.currentUser();
   }
