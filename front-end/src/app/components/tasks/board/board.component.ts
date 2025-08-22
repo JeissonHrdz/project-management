@@ -74,10 +74,11 @@ export class BoardComponent {
 
   updateTask(taskId: number, statusNew: string) {
     const status: { [key: string]: string } = {
-      'cdk-drop-list-0': 'pending',
-      'cdk-drop-list-1': 'in_progress',
-      'cdk-drop-list-2': 'completed'
+      'pending-list': 'pending',
+      'progress-list': 'in_progress',
+      'completed-list': 'completed'
     };
+
     const data = {
       status: status[statusNew] 
     };
@@ -131,8 +132,7 @@ export class BoardComponent {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);    
     } else {
      const task_id: number = Number(event.item.element.nativeElement.id.split('-')[1]);
-     const status =  event.container.id   
-     alert(status) 
+     const status =  event.container.element.nativeElement.classList[1];    
       this.updateTask(task_id, status);   
       transferArrayItem(
         event.previousContainer.data,

@@ -6,16 +6,22 @@
              text-left shadow-xl transition-all sm:my-1 sm:w-[500px] sm:max-w-[500px] ">
                 <div class=" sm:items-end">
                     <div class=" text-center sm:mt-0 sm:text-left ">
-                        <div class=" flex flex-row justify-between items-center border-b-1 p-4 border-gray-200">
-                            <h3 class=" text-lg font-medium leading-6 text-gray-900" id="modal-title">Task Detail </h3>
-                            <button (click)="closeModal()"
-                                class=" cursor-pointer hover:bg-gray-200 transition-colors  rounded-[10px]">
-                                <ng-icon name="heroXMark" size="20" color="#0C0C0C"></ng-icon>
+                        <div class=" flex flex-row justify-between items-center  bg-gradient-to-r
+                         from-purple-200  via-purple-100 to-purple-200 border-b-1 p-4 border-gray-200"
+                        >
+                        <div class="w-[500px] h-[59px] absolute" style="background-image: url('pattern2.png'); background-size: 100%; 
+                             background-repeat: no-repeat; background-position: center; opacity: 0.1; z-index: 0">
+                            
+                        </div>
+                            <h3 class=" text-2xl  font-semibold leading-6 text-neutral-800 z-10" id="modal-title">Task Detail </h3>
+                            <button (click)="closeModal()" 
+                                class=" cursor-pointer hover:text-purple-500 transition-colors  rounded-[10px] z-10">
+                                <ng-icon name="heroXMark" size="20" color="c0c0c0"></ng-icon>
                             </button>
                         </div>
                         <div class="p-2 w-full">
 
-                            <div class="border-y-1 text-[14px] p-2 border-gray-300 border-dashed w-full">
+                            <div class=" text-[14px] p-2  w-full">
                                 <table class="w-full">
                                     <tr class="align-baseline">
                                         <td class="font-medium text-gray-500 p-2 w-[160px]">Task Name</td>
