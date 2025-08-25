@@ -17,11 +17,7 @@
                 <div id="todo-{{todo.task_id}}"
                     class="w-full p-2 mb-2 border-1 border-gray-200 bg-white rounded-[10px] h-auto cursor-grab" cdkDrag>
                     <div class="flex flex-row p-2 justify-between">
-                        <div>
-                            <span
-                                class=" {{colorPriority()[todo.priority]}} font-semibold text-[12px]  mr-2 px-2 py-1 rounded-[10px]">
-                                {{todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}}
-                            </span>
+                        <div>                          
 
                             <span
                                 class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">
@@ -36,10 +32,27 @@
                     </div>
 
                     <div class="flex flex-col p-2">
+                        @for(project of projectTask; track $index){                          
+                            @if(project.task_id === todo.task_id){
+                                <span class="font-bold text-[12px] text-purple-500">{{project.project.name}}</span>                                
+                            }                                                      
+                        }
                         <span class="font-semibold text-[16px]">{{todo.title}}</span>
                         <p class="text-[12px]">{{todo.description}}</p>
+                        
                     </div>
-                    <div class="flex flex-col px-2">
+                    <div class="mt-2 flex flex-row justify-between items-center  ">
+                        <div class="flex flex-row items-center justify-center text-gray-500 px-2">    
+                            <ng-icon name="heroFlag" class="mr-2"></ng-icon>                    
+                            <span class="font-medium text-[14px]">{{formatDateToString(todo.end_date)}}</span>
+                        </div>
+                        <span
+                        class=" {{colorPriority()[todo.priority]}} font-semibold text-[12px] px-2 py-1 rounded-[10px]">
+                        {{todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}}
+                    </span>
+                    </div>
+                 
+                    <div class="flex flex-col px-2 mt-2">
                         <div class="flex flex-row justify-between">
 
                             <span class="font-semibold text-[12px] text-gray-500 mr-2 rounded-[10px]">Progress</span>
@@ -51,6 +64,10 @@
                         <div class="w-full h-[8px] bg-gray-200 rounded-[5px] mt-2">
                             <div class=" h-full  bg-gradient-to-r from-fuchsia-500 to-cyan-500 rounded-[5px]"
                                 [style.width]="progressBarDasy(todo.start_date, todo.end_date) + '%'"></div>
+                        </div>
+                        <div class="flex mt-2 flex-row items-center justify-end text-[14px] font-medium text-gray-500 px-2"> 
+                            <ng-icon name="heroChatBubbleBottomCenterText" size="17px" ></ng-icon> 
+                            <span class="ml-1 text-[14px]">10 Comments</span>
                         </div>
 
                     </div>
@@ -77,10 +94,7 @@
 
                     <div class="flex flex-row p-2 justify-between">
                         <div>
-                            <span
-                                class="font-semibold text-[12px] {{colorPriority()[progress.priority]}} mr-2 px-2 py-1 rounded-[10px]">
-                                {{progress.priority.charAt(0).toUpperCase() + progress.priority.slice(1)}}
-                            </span>
+                         
                             <span
                                 class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">
                                 {{progress.type.charAt(0).toUpperCase() + progress.type.slice(1)}}
@@ -93,10 +107,25 @@
                         </button>
                     </div>
                     <div class="flex flex-col p-2">
+                        @for(project of projectTask; track $index){                          
+                            @if(project.task_id === progress.task_id){
+                                <span class="font-bold text-[12px] text-purple-500">{{project.project.name}}</span>                                
+                            }                                                      
+                        }
                         <span class="font-semibold text-[16px]">{{progress.title}}</span>
                         <p class="text-[12px]">{{progress.description}}</p>
                     </div>
-                    <div class="flex flex-col px-2">
+                    <div class="mt-2 flex flex-row justify-between items-center  ">
+                        <div class="flex flex-row items-center justify-center text-gray-500 px-2">    
+                            <ng-icon name="heroFlag" class="mr-2"></ng-icon>                    
+                            <span class="font-medium text-[14px]">{{formatDateToString(progress.end_date)}}</span>
+                        </div>
+                        <span
+                        class=" {{colorPriority()[progress.priority]}} font-semibold text-[12px] px-2 py-1 rounded-[10px]">
+                        {{progress.priority.charAt(0).toUpperCase() + progress.priority.slice(1)}}
+                    </span>
+                    </div>
+                    <div class="flex flex-col px-2 mt-2">
                         <div class="flex flex-row justify-between">
 
                             <span class="font-semibold text-[12px] text-gray-500 mr-2 rounded-[10px]">Progress</span>
@@ -109,6 +138,11 @@
                             <div class=" h-full bg-gradient-to-r from-fuchsia-500 to-cyan-500 rounded-[5px]"
                                 [style.width]="progressBarDasy(progress.start_date, progress.end_date) + '%'"></div>
                         </div>
+                        <div class="flex mt-2 flex-row items-center justify-end text-[14px] font-medium text-gray-500 px-2"> 
+                            <ng-icon name="heroChatBubbleBottomCenterText" size="17px" ></ng-icon> 
+                            <span class="ml-1 text-[14px]">10 Comments</span>
+                        </div>
+
 
                     </div>
 
@@ -133,11 +167,7 @@
                     class="w-full p-2 mb-2  border-1 border-gray-200 bg-white rounded-[10px] h-auto cursor-grab"
                     cdkDrag>
                     <div class="flex flex-row p-2 justify-between">
-                        <div>
-                            <span
-                                class="font-semibold text-[12px] {{colorPriority()[done.priority]}} mr-2 px-2 py-1 rounded-[10px]">
-                                {{done.priority.charAt(0).toUpperCase() + done.priority.slice(1)}}
-                            </span>
+                        <div>                          
                             <span
                                 class="font-semibold text-[12px] text-gray-500 mr-2 bg-gray-200 px-2 py-1 rounded-[10px]">
                                 {{done.type.charAt(0).toUpperCase() + done.type.slice(1)}}
@@ -150,10 +180,25 @@
                         </button>
                     </div>
                     <div class="flex flex-col p-2">
+                        @for(project of projectTask; track $index){                          
+                            @if(project.task_id === done.task_id){
+                                <span class="font-bold text-[12px] text-purple-500">{{project.project.name}}</span>                                
+                            }                                                      
+                        }
                         <span class="font-semibold text-[16px]">{{done.title}}</span>
                         <p class="text-[12px]">{{done.description}}</p>
                     </div>
-                    <div class="flex flex-col px-2">
+                    <div class="mt-2 flex flex-row justify-between items-center  ">
+                        <div class="flex flex-row items-center justify-center text-gray-500 px-2">    
+                            <ng-icon name="heroFlag" class="mr-2"></ng-icon>                    
+                            <span class="font-medium text-[14px]">{{formatDateToString(done.end_date)}}</span>
+                        </div>
+                        <span
+                        class=" {{colorPriority()[done.priority]}} font-semibold text-[12px] px-2 py-1 rounded-[10px]">
+                        {{done.priority.charAt(0).toUpperCase() + done.priority.slice(1)}}
+                    </span>
+                    </div>
+                    <div class="flex flex-col px-2 mt-2">
                         <div class="flex flex-row justify-between">
 
                             <span class="font-semibold text-[12px] text-gray-500 mr-2 rounded-[10px]">Progress</span>
@@ -166,6 +211,11 @@
                             <div class=" h-full bg-gradient-to-r from-fuchsia-500 to-cyan-500 rounded-[5px]"
                                 [style.width]="progressBarDasy(done.start_date, done.end_date) + '%'"></div>
                         </div>
+                        <div class="flex mt-2 flex-row items-center justify-end text-[14px] cursor-pointer *:hover:text-purple-500 font-medium text-gray-500 px-2"> 
+                            <ng-icon name="heroChatBubbleBottomCenterText" size="17px" ></ng-icon> 
+                            <span class="ml-1 text-[14px]">10 Comments</span>
+                        </div>
+
 
                     </div>
 

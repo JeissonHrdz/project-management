@@ -14,12 +14,14 @@ import { Sprint } from '../../../core/model/entity/sprint.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { NgIcon,provideIcons } from '@ng-icons/core';
-import { heroEllipsisVertical } from '@ng-icons/heroicons/outline'; 
+import { heroEllipsisVertical, heroFlag, heroChatBubbleBottomCenterText } from '@ng-icons/heroicons/outline'; 
+import { ProjectService } from '../../../services/project.service';
+import { Project } from '../../../core/model/entity/project.model';
 
 @Component({
   selector: 'app-board',
   imports: [CdkDrag, CdkDropList, RouterOutlet, NgIcon],
-  providers: [provideIcons({heroEllipsisVertical})],
+  providers: [provideIcons({heroEllipsisVertical, heroFlag, heroChatBubbleBottomCenterText})],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })
@@ -29,12 +31,14 @@ export class BoardComponent {
   private taskService = inject(TaskService);
   private sprintService = inject(SprintService);
   private authService = inject(AuthServiceService)
+  private proyectService = inject(ProjectService)
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+
   user_id = this.authService.getIdfromToken() ?? ""
   sprints: Sprint[] = [];
   tasks: Task[] = [];
-
+  projectTask: {task_id: number, project: Project}[] = [];
   tasksTodo: Task[] = [];
   tasksProgress: Task[] = [];
   tasksDone: Task[] = [];
@@ -53,6 +57,7 @@ export class BoardComponent {
       this.tasksDone = data.object.filter((task: Task) => task.status === 'completed'); 
       data.object.forEach((task: Task) => {
         this.getSprintById(task.sprint_id);
+        this.getProyectById(task.project_id, task.task_id);
       })      
     })
 
@@ -69,6 +74,14 @@ export class BoardComponent {
       takeUntil(this.destroy$) 
     ).subscribe(data => {     
       this.sprints.push(data.object);
+    })
+  }
+
+  getProyectById(proyectId: number,task_id: number) {
+    this.proyectService.getProjectById(proyectId).pipe(
+      takeUntil(this.destroy$) 
+    ).subscribe(data => {     
+      this.projectTask.push({task_id: task_id, project: data.object});
     })
   }
 
@@ -124,6 +137,10 @@ export class BoardComponent {
       },
       skipLocationChange: true
     });
+  }
+
+  formatDateToString(date: string) {
+    return new Date(date).toDateString();
   }
 
 
