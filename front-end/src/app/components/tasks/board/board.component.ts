@@ -139,6 +139,18 @@ export class BoardComponent {
     });
   }
 
+  openModalComments(taskId: number) {   
+  //  this.taskService.taskSelected.set(this.tasks.find(task => task.task_id === taskId) ?? {} as Task);
+   
+    this.router.navigate(['comments'], {
+      relativeTo: this.route,
+      queryParams: {
+        task_id: taskId      
+      },
+      skipLocationChange: true
+    });
+  }
+
   formatDateToString(date: string) {
     return new Date(date).toDateString();
   }

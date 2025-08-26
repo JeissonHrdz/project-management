@@ -5,6 +5,7 @@ import { SprintComponent } from './components/projects/sprint/sprint.component';
 import { CreateTaskComponent } from './components/projects/sprint/task/create-task/create-task.component';
 import { TaskDetailComponent } from './components/projects/sprint/task/task-detail/task-detail.component';
 import { BoardComponent } from './components/tasks/board/board.component';
+import { CommentsComponent } from './components/tasks/board/comments/comments.component';
 
 export const routes: Routes = [
     {
@@ -64,6 +65,11 @@ export const routes: Routes = [
                             {
                                 path: 'task-detail',
                                 component: TaskDetailComponent,
+                                canActivate: [authGuard]
+                            },
+                            {
+                                path: 'comments',
+                                component: CommentsComponent,
                                 canActivate: [authGuard]
                             }
                         ]
