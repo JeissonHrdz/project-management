@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environment/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
+import { Comment } from '../core/model/entity/comment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,12 @@ export class CommentService {
 
   createComment(comment: Comment): Observable<any> {
     return this.http.post<any>(this.urlBase + '/create', comment).pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getCommentsByTask(taskId: number): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/comment-task/' + taskId).pipe(
       catchError(this.handleError)
     )
   }

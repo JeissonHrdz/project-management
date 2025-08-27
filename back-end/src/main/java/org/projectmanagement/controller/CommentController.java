@@ -28,6 +28,7 @@ public class CommentController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createComment(@RequestBody CommentCreateDto commentCreateDto) {
+
         if(!roleService.hasPermission( "comments","create")){
              throw new AccessDeniedException("Access Denied");
         }
@@ -47,8 +48,9 @@ public class CommentController {
 
     }
 
-    @GetMapping("/{task_id}")
-    public ResponseEntity<?> getCommentsByTaskId(@PathVariable int task_id) {
+    @GetMapping( value = "/comment-task/{task_id}")
+    public ResponseEntity<?> getCommentsByTaskId(@PathVariable Integer task_id) {
+        System.err.println(task_id);
         if(!roleService.hasPermission( "comments","read")){
              throw new AccessDeniedException("Access Denied");
         }

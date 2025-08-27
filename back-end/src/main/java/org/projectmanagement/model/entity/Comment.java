@@ -12,7 +12,7 @@ import java.sql.Date;
 @ToString
 @Builder
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 public class Comment {
 
     @Id

@@ -50,9 +50,9 @@ public class CommentServiceImpl  implements CommentService {
         List<CommentReadDto> commentReadDtos = comments.stream()
                 .map( comment -> new CommentReadDto(
                 comment.getComment_id(),
-                comment.getContent(),
                 comment.getTask_id().getTask_id(),
                 comment.getUser_id().getUser_id(),
+                        comment.getContent(),
                 comment.is_edited(),
                 comment.getCreated_at(),
                 comment.getUpdated_at()
