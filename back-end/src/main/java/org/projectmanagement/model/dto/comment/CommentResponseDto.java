@@ -1,6 +1,7 @@
 package org.projectmanagement.model.dto.comment;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public record CommentResponseDto(
         Integer comment_id,
@@ -8,7 +9,7 @@ public record CommentResponseDto(
         Integer task_id,
         String user_id,
         boolean is_edited,
-        Date created_at,
-        Date updated_at
+        Timestamp created_at,
+        Timestamp updated_at
 ) {
 }

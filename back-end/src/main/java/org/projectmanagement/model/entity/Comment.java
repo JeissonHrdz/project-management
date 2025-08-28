@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 
 @Data
@@ -35,8 +36,8 @@ public class Comment {
     private boolean is_edited;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP", insertable = false)
-    private Date created_at;
+    private Timestamp created_at;
 
     @Column(name = "updated_at")
-    private Date updated_at;
+    private Timestamp updated_at;
 }
