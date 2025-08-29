@@ -9,10 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +32,28 @@ public class UserController {
             return new ResponseEntity<>(ResponseMessage.builder()
                     .message("Users retrieved successfully")
                     .object(emails)
+                    .build(),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @GetMapping( value = "/user/{user_id}")
+    public ResponseEntity<?> getUserById(@PathVariable("user_id") String user_id) {
+        if (!roleService.hasPermission("users", "read")) {
+            throw new AccessDeniedException("You do not have permission to access this resource");
+        }
+        try {
+            UserReadDto user = userService.getUserById(user_id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("User retrieved successfully")
+                    .object(user)
                     .build(),
                     HttpStatus.OK
             );

@@ -10,6 +10,8 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { CommonModule } from '@angular/common';
 import { Comment } from '../../../../core/model/entity/comment.model';
 import { CommentReadDTO } from '../../../../core/model/dto/comment-read-dto';
+import { UserService } from '../../../../services/user.service';
+import { User } from '../../../../core/model/entity/user.model';
 
 @Component({
   selector: 'app-comments',
@@ -24,10 +26,11 @@ export class CommentsComponent {
   private commentService = inject(CommentService);
   private authService = inject(AuthServiceService)
   private formBuilder = inject(FormBuilder);
+  private userService = inject(UserService);
   commentForm!: FormGroup;
   comments: CommentReadDTO[] = [];
   commentsDate = new Map<number, string>();
-  
+  user =  new Map<string, User>();
 
   private destroy$ = new Subject<void>();
 
@@ -35,6 +38,7 @@ export class CommentsComponent {
   ngOnInit(): void {
     this.taskId = Number(this.route.snapshot.queryParamMap.get('task_id')) || 0;
     this.getComments();
+
     this.commentForm = this.formBuilder.group({
       content: ['', Validators.required],
       task_id: [this.taskId, Validators.required],
@@ -48,7 +52,9 @@ export class CommentsComponent {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
-        // this.closeModal();
+        this.comments.push(response.object);
+        this.commentsDate.set(response.object.comment_id, this.dateFormatCountingDaysAgo(new Date().getTime()));
+        this.getUserById(response.object.user_id);     
         console.log(response);
       },
       error: (error) => {
@@ -66,7 +72,22 @@ export class CommentsComponent {
         this.commentsDate = new Map<number, string>();
         this.comments.forEach(comment => {
           this.commentsDate.set(comment.comment_id, this.dateFormatCountingDaysAgo(Number(comment.created_at)));
+          this.getUserById(comment.user_id);
         });
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
+  getUserById(id: string) {
+    this.userService.getUserById(id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.user.set(response.object.user_id, response.object); 
+        console.log(this.user);
       },
       error: (error) => {
         console.log(error);
@@ -77,19 +98,20 @@ export class CommentsComponent {
   dateFormatCountingDaysAgo(timestamp: number) {
     this.debugCommentTime(timestamp);
 
-    const now = new Date().getTime();
+    const now = new Date().getTime();  
     const diff = now - Number(timestamp); // En milisegundos
-  
+   
     if (diff < 0) return "En el futuro"; // Prevención si el servidor está adelantado
-  
+
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
-  
+
     if (seconds < 60) return `Hace ${seconds} segundo${seconds !== 1 ? "s" : ""}`;
+    if(seconds === 0) return "Hace un momento";    
     if (minutes < 60) return `Hace ${minutes} minuto${minutes !== 1 ? "s" : ""}`;
     if (hours < 24) return `Hace ${hours} hora${hours !== 1 ? "s" : ""}`;
     if (days < 30) return `Hace ${days} día${days !== 1 ? "s" : ""}`;
@@ -100,34 +122,34 @@ export class CommentsComponent {
   }
 
 
-   debugCommentTime(timestamp: number) {
+  debugCommentTime(timestamp: number) {
     // Convierte el timestamp a fecha local
     const commentDate = new Date(timestamp);
     const now = new Date();
-  
+
     console.log("Timestamp recibido:", timestamp);
     console.log("Fecha local del comentario:", commentDate.toString());
     console.log("Fecha local actual:", now.toString());
-  
+
     // Ahora calculamos "hace cuánto"
     const diff = now.getTime() - commentDate.getTime();
-  
+
     if (diff < 0) {
       console.log("El comentario está FECHADO EN EL FUTURO (servidor adelantado)");
       return;
     }
-  
+
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-  
+
     let resultado = "";
     if (seconds < 60) resultado = `Hace ${seconds} segundo${seconds !== 1 ? "s" : ""}`;
     else if (minutes < 60) resultado = `Hace ${minutes} minuto${minutes !== 1 ? "s" : ""}`;
     else if (hours < 24) resultado = `Hace ${hours} hora${hours !== 1 ? "s" : ""}`;
     else resultado = `Hace ${days} día${days !== 1 ? "s" : ""}`;
-  
+
     console.log("Resultado:", resultado);
   }
 

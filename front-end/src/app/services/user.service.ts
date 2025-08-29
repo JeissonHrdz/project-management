@@ -19,6 +19,12 @@ export class UserService {
     );
   }
 
+  getUserById(id: string): Observable<any> {
+    return this.http.get<any>(this.urlBase + '/user/' + id).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   getUsersByTaskAssigned(task_id: number): Observable<any> {
     return this.http.get<any>(this.urlBase +  '/users-task', { params: { task_id: task_id } }).pipe(
       catchError(this.handleError)

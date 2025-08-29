@@ -63,6 +63,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserReadDto getUserById(String user_id) {
+        User user = userRepository.findById(user_id).get();
+        return new UserReadDto(
+                user.getUser_id(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getFirst_name(),
+                user.getLast_name(),
+                user.getRole_id().getRole_id(),
+                user.getIs_scrum_master(),
+                user.getIs_product_owner()
+        );
+    }
+
+    @Override
     public List<UserReadDto> findAllUsersAssignedTasks(Integer task_id) {
       List<TaskAssignmentResponseDto> taskAssignments = taskAssignmentService.geTaskAssignmentsByTaskId(task_id);
       List<User> users = new ArrayList<>();

@@ -30,14 +30,20 @@ public class CommentServiceImpl  implements CommentService {
          .user_id(userRepository.findById(commentCreateDto.user_id()).orElseThrow(() -> new RuntimeException("User not found")))
                  .build();
          Comment savedComment = commentRepository.save(comment);
+         Comment commentResponse =  commentRepository.getCommentById( savedComment.getComment_id());
+
         return new CommentResponseDto(
-                savedComment.getComment_id(),
-                savedComment.getContent(),
-                savedComment.getTask_id().getTask_id(),
-                savedComment.getUser_id().getUser_id(),
-                savedComment.is_edited(),
-                savedComment.getCreated_at(),
-                savedComment.getUpdated_at());
+                commentResponse.getComment_id(),
+                commentResponse.getContent(), 
+                commentResponse.getTask_id().getTask_id(),
+                commentResponse.getUser_id().getUser_id(),
+                commentResponse.is_edited(),
+                commentResponse.getCreated_at(),
+                commentResponse.getUpdated_at()
+        );
+
+
+
     }
 
     @Override

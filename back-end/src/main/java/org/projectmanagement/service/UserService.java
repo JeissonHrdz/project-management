@@ -13,6 +13,7 @@ public interface UserService {
 
     public User findUser(String username);
     public String findUserId(String username);
+    public UserReadDto getUserById(String user_id);
     List<UserReadDto> findAllUsersAssignedTasks(Integer task_id);
     List<String> findUserEmail(String email);
 }
