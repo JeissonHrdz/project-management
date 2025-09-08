@@ -11,17 +11,28 @@
                         <div class=" border-b-1 p-4 border-gray-200">
                             <h3 class=" text-lg font-medium leading-6 text-gray-900" id="modal-title">Comments</h3>
                         </div>
-                        <div class="h-[250px] overflow-y-auto">
+                        <div id="comments" class="max-h-[360px] overflow-y-auto">
                             @for (comment of comments; track $index){
-                                <div class="p-3 mb-2 w-full flex flex-col transition-normal ease-in">
+                                <div (mouseover)="showOptionsComment(comment.comment_id)" (mouseout)="hideOptionsComment(comment.comment_id)" class="p-3 mb-2 w-full flex flex-col transition-normal ease-in   hover:bg-gray-100">
                                     <div class="flex flex-row items-center">
-                                        <div class="w-[30px] h-[30px] rounded-full bg-gray-200"></div>
-                                        <div class="ml-2">
+                                        <div class="w-[31px] h-[31px] rounded-full bg-purple-300 border-1 border-gray-300"></div>
+                                        <div class="ml-2 w-full flex flex-row justify-between items-center">
+                                            <div>
                                             <span class="font-semibold text-[14px]">
                                                     {{user.get(comment.user_id)?.first_name}} {{user.get(comment.user_id)?.last_name}}</span> 
                                             <span class="text-[12px] text-gray-500 ml-2"> 
                                                 {{commentsDate.get(comment.comment_id)}}
                                                </span>
+                                            </div>
+                                            <div id="options-{{comment.comment_id}}"  class="hidden flex-row items-center   text-gray-400">   
+                                                <div class="hover:text-purple-500">
+                                                    <ng-icon title="Edit" class="cursor-pointer mr-2" name="heroPencilSquare"  size="17px" >
+                                                    </ng-icon>                                                                                                        
+                                                </div>    
+                                                <div class="hover:text-red-500">
+                                                    <ng-icon title="Delete"  class="cursor-pointer" name="heroTrash" size="17px" ></ng-icon> 
+                                                </div>                                      
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="mt-1 ml-10"> 

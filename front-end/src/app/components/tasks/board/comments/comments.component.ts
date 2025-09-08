@@ -2,11 +2,11 @@ import { Component, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import $ from 'jquery';
-import { heroPaperAirplane } from '@ng-icons/heroicons/outline';
+import { heroPaperAirplane, heroPencilSquare, heroTrash } from '@ng-icons/heroicons/outline';
 import { CommentService } from '../../../../services/comment.service';
 import { AuthServiceService } from '../../../../services/auth-service.service';
-import { Subject, takeUntil, Timestamp, TimestampProvider } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Comment } from '../../../../core/model/entity/comment.model';
 import { CommentReadDTO } from '../../../../core/model/dto/comment-read-dto';
@@ -16,7 +16,7 @@ import { User } from '../../../../core/model/entity/user.model';
 @Component({
   selector: 'app-comments',
   imports: [NgIcon, ReactiveFormsModule, FormsModule, CommonModule],
-  providers: [provideIcons({ heroPaperAirplane })],
+  providers: [provideIcons({ heroPaperAirplane, heroPencilSquare, heroTrash })],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.css'
 })
@@ -27,17 +27,19 @@ export class CommentsComponent {
   private authService = inject(AuthServiceService)
   private formBuilder = inject(FormBuilder);
   private userService = inject(UserService);
+  
   commentForm!: FormGroup;
   comments: CommentReadDTO[] = [];
   commentsDate = new Map<number, string>();
-  user =  new Map<string, User>();
+  user = new Map<string, User>();
+  showOptions: boolean = false;
 
   private destroy$ = new Subject<void>();
 
   taskId: number = 0;
   ngOnInit(): void {
     this.taskId = Number(this.route.snapshot.queryParamMap.get('task_id')) || 0;
-    this.getComments();
+    this.getComments(); 
 
     this.commentForm = this.formBuilder.group({
       content: ['', Validators.required],
@@ -52,10 +54,11 @@ export class CommentsComponent {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
-        this.comments.push(response.object);
+        this.comments.unshift(response.object);
         this.commentsDate.set(response.object.comment_id, this.dateFormatCountingDaysAgo(new Date().getTime()));
-        this.getUserById(response.object.user_id);     
+        this.getUserById(response.object.user_id);
         console.log(response);
+        
       },
       error: (error) => {
         console.log(error);
@@ -74,6 +77,7 @@ export class CommentsComponent {
           this.commentsDate.set(comment.comment_id, this.dateFormatCountingDaysAgo(Number(comment.created_at)));
           this.getUserById(comment.user_id);
         });
+        
       },
       error: (error) => {
         console.log(error);
@@ -81,12 +85,22 @@ export class CommentsComponent {
     })
   }
 
+  showOptionsComment( comment_id: number) {   
+    $("#options-" + comment_id).removeClass("hidden");
+    $("#options-" + comment_id).addClass("flex");
+  }
+
+  hideOptionsComment( comment_id: number) {   
+    $("#options-" + comment_id).removeClass("flex");
+    $("#options-" + comment_id).addClass("hidden");
+  }
+
   getUserById(id: string) {
     this.userService.getUserById(id).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
-        this.user.set(response.object.user_id, response.object); 
+        this.user.set(response.object.user_id, response.object);
         console.log(this.user);
       },
       error: (error) => {
@@ -95,12 +109,14 @@ export class CommentsComponent {
     })
   }
 
+  
+
   dateFormatCountingDaysAgo(timestamp: number) {
     this.debugCommentTime(timestamp);
 
-    const now = new Date().getTime();  
+    const now = new Date().getTime();
     const diff = now - Number(timestamp); // En milisegundos
-   
+
     if (diff < 0) return "En el futuro"; // Prevención si el servidor está adelantado
 
     const seconds = Math.floor(diff / 1000);
@@ -111,7 +127,7 @@ export class CommentsComponent {
     const years = Math.floor(days / 365);
 
     if (seconds < 60) return `Hace ${seconds} segundo${seconds !== 1 ? "s" : ""}`;
-    if(seconds === 0) return "Hace un momento";    
+    if (seconds === 0) return "Hace un momento";
     if (minutes < 60) return `Hace ${minutes} minuto${minutes !== 1 ? "s" : ""}`;
     if (hours < 24) return `Hace ${hours} hora${hours !== 1 ? "s" : ""}`;
     if (days < 30) return `Hace ${days} día${days !== 1 ? "s" : ""}`;
