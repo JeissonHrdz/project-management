@@ -10,6 +10,7 @@ import java.util.List;
 public interface CommentService {
 
     public CommentResponseDto createComment(CommentCreateDto commentCreateDto);
+    public CommentResponseDto updateComment(CommentUpdateDto commentUpdateDto);
     List<CommentReadDto> getAllCommentsByTask( Integer task_id);
     CommentReadDto getCommentById(Integer comment_id);
     CommentReadDto getCommentByUserId(String user_id);

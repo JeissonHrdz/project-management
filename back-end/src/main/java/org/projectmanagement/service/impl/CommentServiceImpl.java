@@ -1,9 +1,11 @@
 package org.projectmanagement.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.projectmanagement.model.dto.comment.CommentCreateDto;
 import org.projectmanagement.model.dto.comment.CommentReadDto;
 import org.projectmanagement.model.dto.comment.CommentResponseDto;
+import org.projectmanagement.model.dto.comment.CommentUpdateDto;
 import org.projectmanagement.model.entity.Comment;
 import org.projectmanagement.repository.CommentRepository;
 import org.projectmanagement.repository.TaskRepository;
@@ -12,6 +14,7 @@ import org.projectmanagement.service.CommentService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +46,24 @@ public class CommentServiceImpl  implements CommentService {
         );
 
 
+
+    }
+
+    @Override
+    @Transactional
+    public CommentResponseDto updateComment(CommentUpdateDto commentUpdateDto) {
+        System.out.println("ID CONTENT: ------ "+commentUpdateDto.content());
+        commentRepository.updateCommentContent(commentUpdateDto.comment_id(), commentUpdateDto.content());
+        Optional<Comment> comment = commentRepository.findById(commentUpdateDto.comment_id());
+        return comment.map(c -> new CommentResponseDto(
+                c.getComment_id(),
+                c.getContent(),
+                c.getTask_id().getTask_id(),
+                c.getUser_id().getUser_id(),
+                c.is_edited(),
+                c.getCreated_at(),
+                c.getUpdated_at()
+        )).orElse(null);
 
     }
 
@@ -79,6 +100,6 @@ public class CommentServiceImpl  implements CommentService {
 
     @Override
     public void deleteComment(Integer comment_id) {
-
+        commentRepository.deleteById(comment_id);
     }
 }

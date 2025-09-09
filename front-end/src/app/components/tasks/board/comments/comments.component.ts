@@ -12,6 +12,7 @@ import { Comment } from '../../../../core/model/entity/comment.model';
 import { CommentReadDTO } from '../../../../core/model/dto/comment-read-dto';
 import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../core/model/entity/user.model';
+import { ToastService } from '../../../../services/toast.service';
 
 @Component({
   selector: 'app-comments',
@@ -27,12 +28,14 @@ export class CommentsComponent {
   private authService = inject(AuthServiceService)
   private formBuilder = inject(FormBuilder);
   private userService = inject(UserService);
+  private toastService = inject(ToastService);
   
   commentForm!: FormGroup;
   comments: CommentReadDTO[] = [];
   commentsDate = new Map<number, string>();
   user = new Map<string, User>();
   showOptions: boolean = false;
+  showEditComment = new Map<number, boolean>();
 
   private destroy$ = new Subject<void>();
 
@@ -76,6 +79,7 @@ export class CommentsComponent {
         this.comments.forEach(comment => {
           this.commentsDate.set(comment.comment_id, this.dateFormatCountingDaysAgo(Number(comment.created_at)));
           this.getUserById(comment.user_id);
+          this.showEditComment.set(comment.comment_id, false);
         });
         
       },
@@ -85,6 +89,46 @@ export class CommentsComponent {
     })
   }
 
+  updateComment(comment_id: number){
+    const data = {
+      content: $("#edit-comment-" + comment_id).val(),
+      comment_id: comment_id,    
+    }
+    this.commentService.updateComment(data).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.comments.forEach(comment => {
+          if(comment.comment_id == comment_id){
+            comment.content = response.object.content;
+            comment.is_edited = true;            
+          }
+          this.showEditComment.set(comment_id, false);
+          $("#comment-" + comment_id).removeClass("hidden");
+          this.toastService.toast("Comment updated successfully", "success");
+        })
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
+  deleteComment(comment_id: number){
+    this.commentService.deleteComment(comment_id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.comments = this.comments.filter(comment => comment.comment_id != comment_id);
+        this.toastService.toast("Comment deleted successfully", "success");
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+
+  }
+ 
   showOptionsComment( comment_id: number) {   
     $("#options-" + comment_id).removeClass("hidden");
     $("#options-" + comment_id).addClass("flex");
@@ -93,6 +137,16 @@ export class CommentsComponent {
   hideOptionsComment( comment_id: number) {   
     $("#options-" + comment_id).removeClass("flex");
     $("#options-" + comment_id).addClass("hidden");
+  }
+
+  openEditCommentBox(comment_id: number) {
+    if(this.showEditComment.get(comment_id) == true){
+      $("#comment-" + comment_id).removeClass("hidden");
+      this.showEditComment.set(comment_id, false);
+    }else{
+      this.showEditComment.set(comment_id, true);
+      $("#comment-" + comment_id).addClass("hidden");      
+    }
   }
 
   getUserById(id: string) {

@@ -26,6 +26,18 @@ export class CommentService {
     )
   }
 
+  updateComment(comment: any): Observable<any> {
+    return this.http.put<any>(this.urlBase + '/update', comment).pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  deleteComment(comment_id: number): Observable<any> {
+    return this.http.delete<any>(this.urlBase + '/delete/' + comment_id).pipe(
+      catchError(this.handleError)
+    )
+  }
+
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error';
     if (error.error instanceof ErrorEvent) {

@@ -23,20 +23,36 @@
                                             <span class="text-[12px] text-gray-500 ml-2"> 
                                                 {{commentsDate.get(comment.comment_id)}}
                                                </span>
+                                               <span class="text-[12px] text-gray-500 ml-2"> 
+                                                {{comment.is_edited ? 'Edited' : ''}}
+                                               </span>
                                             </div>
                                             <div id="options-{{comment.comment_id}}"  class="hidden flex-row items-center   text-gray-400">   
-                                                <div class="hover:text-purple-500">
+                                                <div class="hover:text-purple-500" (click)="openEditCommentBox(comment.comment_id)">
                                                     <ng-icon title="Edit" class="cursor-pointer mr-2" name="heroPencilSquare"  size="17px" >
                                                     </ng-icon>                                                                                                        
                                                 </div>    
                                                 <div class="hover:text-red-500">
-                                                    <ng-icon title="Delete"  class="cursor-pointer" name="heroTrash" size="17px" ></ng-icon> 
+                                                    <ng-icon title="Delete"  (click)="deleteComment(comment.comment_id)" class="cursor-pointer" name="heroTrash" size="17px" ></ng-icon> 
                                                 </div>                                      
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mt-1 ml-10"> 
-                                        <p class="text-[14px]">{{comment.content}}</p>
+                                        <p id="comment-{{comment.comment_id}}" class="text-[14px]">{{comment.content}}</p>
+                                        @if(showEditComment.get(comment.comment_id)){
+                                            <div class="flex flex-col items-center border-1 p-2 border-gray-200 rounded-[10px]">
+                                                <textarea id="edit-comment-{{comment.comment_id}}" type="text" placeholder="Edit comment" class="p-2 w-full  
+                                                outline-0 resize-none h-[80px]  placeholder:text-gray-500 text-[14px] " value="{{comment.content}}"></textarea>
+                                                <div class="flex flex-row justify-end w-full">
+                                                <button (click)="updateComment(comment.comment_id)" class="bg-gray-300 hover:bg-purple-500 transition-colors text-[16px] cursor-pointer text-white inline-flex items-center justify-center
+                                                 rounded-[10px] p-2">
+                                                    <ng-icon size="18px" name="heroPaperAirplane"></ng-icon>
+                                                </button>
+                                                </div>
+                                            </div>                                            
+                                        }
+                                       
                                     </div>
                                 </div>
                             }

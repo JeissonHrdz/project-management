@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.projectmanagement.model.dto.comment.CommentCreateDto;
 import org.projectmanagement.model.dto.comment.CommentReadDto;
 import org.projectmanagement.model.dto.comment.CommentResponseDto;
+import org.projectmanagement.model.dto.comment.CommentUpdateDto;
 import org.projectmanagement.model.payload.ResponseMessage;
 import org.projectmanagement.service.CommentService;
 import org.projectmanagement.service.RoleService;
@@ -67,4 +68,43 @@ public class CommentController {
                     HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateComment(@RequestBody CommentUpdateDto commentUpdateDto) {
+        if(!roleService.hasPermission( "comments","update")){
+            throw new AccessDeniedException("Access Denied");
+        }
+        try{
+            CommentResponseDto updateComment = commentService.updateComment(commentUpdateDto);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Comment updated successfully")
+                    .object(updateComment)
+                    .build(), HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{comment_id}")
+    public ResponseEntity<?> deleteComment(@PathVariable Integer comment_id) {
+        if(!roleService.hasPermission( "comments","delete")){
+            throw new AccessDeniedException("Access Denied");
+        }
+        try{
+            commentService.deleteComment(comment_id);
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message("Comment deleted successfully")
+                    .build(), HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .message(e.getMessage())
+                    .build(),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }
