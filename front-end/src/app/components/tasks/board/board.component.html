@@ -137,7 +137,7 @@
                             <div class=" h-full bg-gradient-to-r from-fuchsia-500 to-cyan-500 rounded-[5px]"
                                 [style.width]="progressBarDasy(progress.start_date, progress.end_date) + '%'"></div>
                         </div>
-                        <div class="flex mt-2 flex-row items-center justify-end text-[14px] font-medium text-gray-500 px-2"> 
+                        <div  (click)="openModalComments(progress.task_id)" class="flex mt-2 flex-row items-center justify-end text-[14px] font-medium text-gray-500 px-2"> 
                             <ng-icon name="heroChatBubbleBottomCenterText" size="17px" ></ng-icon> 
                             <span class="ml-1 text-[14px]">10 Comments</span>
                         </div>
@@ -210,7 +210,7 @@
                             <div class=" h-full bg-gradient-to-r from-fuchsia-500 to-cyan-500 rounded-[5px]"
                                 [style.width]="progressBarDasy(done.start_date, done.end_date) + '%'"></div>
                         </div>
-                        <div class="flex mt-2 flex-row items-center justify-end text-[14px] cursor-pointer *:hover:text-purple-500 font-medium text-gray-500 px-2"> 
+                        <div   (click)="openModalComments(done.task_id)"class="flex mt-2 flex-row items-center justify-end text-[14px] cursor-pointer *:hover:text-purple-500 font-medium text-gray-500 px-2"> 
                             <ng-icon name="heroChatBubbleBottomCenterText" size="17px" ></ng-icon> 
                             <span class="ml-1 text-[14px]">10 Comments</span>
                         </div>

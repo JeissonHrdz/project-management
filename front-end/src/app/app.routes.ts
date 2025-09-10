@@ -6,6 +6,7 @@ import { CreateTaskComponent } from './components/projects/sprint/task/create-ta
 import { TaskDetailComponent } from './components/projects/sprint/task/task-detail/task-detail.component';
 import { BoardComponent } from './components/tasks/board/board.component';
 import { CommentsComponent } from './components/tasks/board/comments/comments.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 export const routes: Routes = [
     {
@@ -73,6 +74,11 @@ export const routes: Routes = [
                                 canActivate: [authGuard]
                             }
                         ]
+                    },
+                    {
+                        path: 'calendar',
+                        component: CalendarComponent,
+                        canActivate: [authGuard]
                     }
                 ]
             }

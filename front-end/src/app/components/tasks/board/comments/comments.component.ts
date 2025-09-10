@@ -29,6 +29,7 @@ export class CommentsComponent {
   private formBuilder = inject(FormBuilder);
   private userService = inject(UserService);
   private toastService = inject(ToastService);
+
   
   commentForm!: FormGroup;
   comments: CommentReadDTO[] = [];
@@ -36,6 +37,7 @@ export class CommentsComponent {
   user = new Map<string, User>();
   showOptions: boolean = false;
   showEditComment = new Map<number, boolean>();
+  userUUID:string = this.authService.getIdfromToken();
 
   private destroy$ = new Subject<void>();
 
