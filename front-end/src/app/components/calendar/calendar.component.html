@@ -18,9 +18,17 @@
         (click)="selectDay(day)">
         <span>{{ day.getDate() }}</span>
   
-        <!-- <div class="event" *ngFor="let event of getEventsForDay(day)">
-          {{ event.title }}
-        </div> -->
+        <div 
+        class="event"
+        *ngFor="let item of getEventsForDay(day)"
+        [ngClass]="{
+          'event-start': item.position === 'start',
+          'event-middle': item.position === 'middle',
+          'event-end': item.position === 'end',
+          'event-single': item.position === 'single'
+        }">
+      {{ item.event.title }}
+    </div>
       </div>
     </div>
   </div>

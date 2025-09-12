@@ -30,7 +30,7 @@
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     min-height: 120px;
-    padding: 4px;
+    padding: 0px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -47,17 +47,7 @@
     border-color: #1890ff;
   }
   
-  .event {
-    background: #1890ff;
-    color: white;
-    border-radius: 4px;
-    padding: 2px 4px;
-    font-size: 0.8rem;
-    margin-top: 2px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  
   
   /* Modal */
   .modal-backdrop {
@@ -85,4 +75,52 @@
     justify-content: flex-end;
     gap: 0.5rem;
   }
+
+  .event {
+    background: #1890ff;
+    color: white;
+    font-size: 0.8rem;
+    margin-top: 2px;
+    display: block;
+    width: 100%;
+    height: 20px; /* 🔥 asegura que el bloque tenga altura aunque no haya texto */
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+    box-sizing: border-box;
+  }
+  
+  .event span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  /* Evento de un solo día */
+  .event-single {
+    border-radius: 12px;
+  }
+  
+  /* Primer día del evento */
+  .event-start {
+    height: 20px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  /* Días intermedios */
+  .event-middle {
+    border-radius: 0;
+  }
+  
+  /* Último día del evento */
+  .event-end {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  
   
